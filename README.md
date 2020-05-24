@@ -1,5 +1,5 @@
-# License server - Werbot Lime
-The very light license server
+## The very light license server - Werbot Lime
+<img src="https://werbot.com/img/projects/lime.png" height="70" />
 
 
 ## Installation 
