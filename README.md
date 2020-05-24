@@ -1,5 +1,5 @@
 # License server - Werbot Lime
-Wery light license server
+The very light license server
 
 
 ## Installation 
