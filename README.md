@@ -34,6 +34,8 @@ $ go run main.go server
 ## To-do
 - [x] Generating license
 - [x] Verification license
+- [ ] Auto regenerate and install license
+- [ ] Utilites for generate key pair 
 - [ ] Integration with Stripe
 - [ ] Example client
 - [ ] Admin-panel
