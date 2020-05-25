@@ -8,8 +8,6 @@ import (
 	"github.com/werbot/lime/version"
 )
 
-var cfgFile string
-
 var rootCmd = &cobra.Command{
 	Use:   "version",
 	Short: "Print the version number",
