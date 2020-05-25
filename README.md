@@ -1,3 +1,5 @@
+[![Go Report Card](https://goreportcard.com/badge/github.com/werbot/lime)](https://goreportcard.com/report/github.com/werbot/lime) ![Docker](https://github.com/werbot/lime/workflows/Docker/badge.svg)
+
 <img src="https://werbot.com/img/projects/lime.png" height="70" />
 
 
@@ -34,9 +36,9 @@ $ go run main.go server
 ## To-do
 - [x] Generating license
 - [x] Verification license
-- [ ] Auto regenerate and install license
-- [ ] Utilites for generate key pair 
+- [ ] Auto-create and install license on the client
+- [ ] Command-line utility for generating key pair 
 - [ ] Integration with Stripe
 - [ ] Example client
-- [ ] Admin-panel
-- [ ] Support ip check
+- [ ] Admin console
+- [ ] Support IP address check
