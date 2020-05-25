@@ -14,7 +14,7 @@ var (
 	ErrInvalidSignature = errors.New("Invalid signature")
 	ErrMalformedLicense = errors.New("Malformed License")
 
-	// generate new ed25519 key and replase !!!
+	// generate new ed25519 key and replaces !!!
 	privateKey = []byte("5GvXN6OIrsgF3/ehJ17HvRPrrbNTLw/gtAmy4X5bKlH9rmXwQgFSVLt//nMsl0qFG28pjc1IN7PhgH01Z+QCTQ==")
 	publicKey  = []byte("/a5l8EIBUlS7f/5zLJdKhRtvKY3NSDez4YB9NWfkAk0=")
 )
