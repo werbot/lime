@@ -5,10 +5,10 @@ $(document).ready(function () {
                 url: "/admin/login",
                 type: "POST",
                 data: $('#ajax_form').serialize(),
-                success: function (response) {
+                success: function () {
                     location.reload();
                 },
-                error: function (response) {
+                error: function () {
                     $('#result_form').html('<p>Incorrect login or password</p>');
                 }
             });
@@ -21,10 +21,10 @@ $(document).ready(function () {
             $.ajax({
                 url: "/admin/logout",
                 type: "POST",
-                success: function (response) {
+                success: function () {
                     window.location.href = "/admin";
                 },
-                error: function (response) {
+                error: function () {
                     $('#result_form').html('<p>Incorrect session</p>');
                 }
             });

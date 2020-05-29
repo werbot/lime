@@ -11,7 +11,8 @@ $ git clone https://github.com/werbot/lime.git
 
 ## Setup
 1. Modify config for DB in `config/config.go`
-2. Update parameters for privateKey, publicKey in file `license/license.go`
+2. Update parameters for privateKey, publicKey in file `license/license.go` 
+To generate new key pair use command ```go run main.go pkey```
 
 ## Run server
 ```
@@ -22,11 +23,12 @@ $ go run main.go server
 - `healthcheck` : Check healthcheck
 - `help` : Help about any command
 - `server` : Start license server
+- `pkey` : Generating key pair
+
 
 ## Admin console
 Link for admin console http://localhost:8080/admin/
 default login - admin, password - admin
-
 <img src="https://werbot.com/img/projects/lime/login.png" />
 <img src="https://werbot.com/img/projects/lime/customers.png" />
 <img src="https://werbot.com/img/projects/lime/subscriptions.png" />
@@ -44,7 +46,7 @@ default login - admin, password - admin
 - [x] Generating license
 - [x] Verification license
 - [ ] Auto-create and install license on the client
-- [ ] Command-line utility for generating key pair 
+- [x] Command-line utility for generating key pair 
 - [ ] Integration with Stripe
 - [ ] Example client
 - [x] Admin console

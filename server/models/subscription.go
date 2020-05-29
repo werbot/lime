@@ -40,8 +40,8 @@ func (s *Subscription) FindSubscriptionByID(uid uint32) (*Subscription, error) {
 }
 
 // FindSubscriptionByStripeID is a ...
-func (s *Subscription) FindSubscriptionByStripeID(stripe_id string) (*Subscription, error) {
-	err := config.DB.Model(Subscription{}).Where("stripe_id = ? AND status = ?", stripe_id, true).Take(&s).Error
+func (s *Subscription) FindSubscriptionByStripeID(stripeID string) (*Subscription, error) {
+	err := config.DB.Model(Subscription{}).Where("stripe_id = ? AND status = ?", stripeID, true).Take(&s).Error
 	if err != nil {
 		return &Subscription{}, err
 	}
@@ -96,9 +96,9 @@ type CustomerSubscriptionsList struct {
 }
 
 // SubscriptionsByCustomerID is a ...
-func SubscriptionsByCustomerID(customer_id string) *[]CustomerSubscriptionsList {
+func SubscriptionsByCustomerID(customerID string) *[]CustomerSubscriptionsList {
 	result := []CustomerSubscriptionsList{}
-	db := config.DB.Raw("SELECT subscriptions.ID,subscriptions.stripe_id,subscriptions.customer_id,customers.NAME AS customer_name,subscriptions.tariff_id,tariffs.NAME AS tariff_name,subscriptions.status,subscriptions.created_at,subscriptions.updated_at FROM subscriptions INNER JOIN customers ON subscriptions.customer_id=customers.ID INNER JOIN tariffs ON subscriptions.tariff_id=tariffs.ID WHERE subscriptions.customer_id=? ORDER BY subscriptions.created_at DESC ", customer_id).Scan(&result)
+	db := config.DB.Raw("SELECT subscriptions.ID,subscriptions.stripe_id,subscriptions.customer_id,customers.NAME AS customer_name,subscriptions.tariff_id,tariffs.NAME AS tariff_name,subscriptions.status,subscriptions.created_at,subscriptions.updated_at FROM subscriptions INNER JOIN customers ON subscriptions.customer_id=customers.ID INNER JOIN tariffs ON subscriptions.tariff_id=tariffs.ID WHERE subscriptions.customer_id=? ORDER BY subscriptions.created_at DESC ", customerID).Scan(&result)
 	if db.Error != nil {
 		return &result
 	}

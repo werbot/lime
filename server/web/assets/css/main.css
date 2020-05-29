@@ -145,9 +145,8 @@ th {
   background-color: #e4f7e6;
 }
 
-
 .td-license-hash {
-  white-space: nowrap; 
-  overflow: hidden; 
+  white-space: nowrap;
+  overflow: hidden;
   text-overflow: ellipsis;
- }
+}

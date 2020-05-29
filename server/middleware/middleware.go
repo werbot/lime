@@ -9,6 +9,7 @@ import (
 	"github.com/werbot/lime/config"
 )
 
+// IdentityKey is a ...
 const IdentityKey = "id"
 
 // AuthRequired is a middleware to check the session

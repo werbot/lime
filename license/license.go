@@ -11,7 +11,10 @@ import (
 )
 
 var (
+	// ErrInvalidSignature is a ...
 	ErrInvalidSignature = errors.New("Invalid signature")
+
+	// ErrMalformedLicense is a ...
 	ErrMalformedLicense = errors.New("Malformed License")
 
 	// generate new ed25519 key and replaces !!!

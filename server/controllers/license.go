@@ -14,6 +14,7 @@ import (
 	"github.com/werbot/lime/server/models"
 )
 
+// VerifyKey is a ...
 // @Accept application/json
 // @Produce application/json
 // @Param
@@ -25,13 +26,13 @@ func VerifyKey(c *gin.Context) {
 	reques := &requestLicense{}
 	c.BindJSON(&reques)
 
-	license_key, err := base64.StdEncoding.DecodeString(reques.License)
+	licenseKey, err := base64.StdEncoding.DecodeString(reques.License)
 	if err != nil {
 		respondJSON(c, http.StatusNotFound, err.Error())
 		return
 	}
 
-	_license, err := modelLicense.FindLicense(license_key)
+	_license, err := modelLicense.FindLicense(licenseKey)
 	if err != nil {
 		respondJSON(c, http.StatusNotFound, err.Error())
 		return
@@ -41,7 +42,7 @@ func VerifyKey(c *gin.Context) {
 		return
 	}
 
-	l, err := license.Decode([]byte(license_key), license.GetPublicKey())
+	l, err := license.Decode([]byte(licenseKey), license.GetPublicKey())
 	if err != nil {
 		respondJSON(c, http.StatusNotFound, err.Error())
 		return
@@ -54,6 +55,7 @@ func VerifyKey(c *gin.Context) {
 	respondJSON(c, http.StatusOK, "Active")
 }
 
+// CreateKey is a ...
 // @Accept application/json
 // @Produce application/json
 // @Param
@@ -134,6 +136,7 @@ func CreateKey(c *gin.Context) {
 	respondJSON(c, http.StatusOK, base64.StdEncoding.EncodeToString([]byte(encoded)))
 }
 
+// GetKey is a ...
 // @Accept application/json
 // @Produce application/json
 // @Param
@@ -143,6 +146,7 @@ func GetKey(c *gin.Context) {
 	respondJSON(c, http.StatusOK, "GetKey")
 }
 
+// UpdateKey is a ...
 // @accept application/json
 // @Produce application/json
 // @Param
