@@ -7,7 +7,8 @@ import (
 	"github.com/werbot/lime/config"
 )
 
-type Tarif struct {
+// Tariff is a ...
+type Tariff struct {
 	ID        uint32    `gorm:"primary_key;auto_increment" json:"id"`
 	Name      string    `gorm:"size:255;not null;unique" json:"name"`
 	Price     int       `gorm:"size:6;not null;unique" json:"price"`
@@ -18,27 +19,30 @@ type Tarif struct {
 	UpdatedAt time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
 }
 
-func (t *Tarif) SaveTarif() (*Tarif, error) {
-	err := config.DB.Debug().Create(&t).Error
+// SaveTariff is a ...
+func (t *Tariff) SaveTariff() (*Tariff, error) {
+	err := config.DB.Create(&t).Error
 	if err != nil {
-		return &Tarif{}, err
+		return &Tariff{}, err
 	}
 	return t, nil
 }
 
-func (t *Tarif) FindTarifByID(uid uint32) (*Tarif, error) {
-	err := config.DB.Debug().Model(Tarif{}).Where("id = ?", uid).Take(&t).Error
+// FindTariffByID is a ...
+func (t *Tariff) FindTariffByID(uid uint32) (*Tariff, error) {
+	err := config.DB.Model(Tariff{}).Where("id = ?", uid).Take(&t).Error
 	if err != nil {
-		return &Tarif{}, err
+		return &Tariff{}, err
 	}
 	if gorm.IsRecordNotFoundError(err) {
-		return &Tarif{}, ErrTarifNotFound
+		return &Tariff{}, ErrTariffNotFound
 	}
 	return t, err
 }
 
-func (t *Tarif) UpdateTarif(uid uint32) (*Tarif, error) {
-	db := config.DB.Debug().Model(&Tarif{}).Where("id = ?", uid).Take(&Tarif{}).UpdateColumns(
+// UpdateTariff is a ...
+func (t *Tariff) UpdateTariff(uid uint32) (*Tariff, error) {
+	db := config.DB.Model(&Tariff{}).Where("id = ?", uid).Take(&Tariff{}).UpdateColumns(
 		map[string]interface{}{
 			"name":      t.Name,
 			"price":     t.Price,
@@ -49,18 +53,19 @@ func (t *Tarif) UpdateTarif(uid uint32) (*Tarif, error) {
 		},
 	)
 	if db.Error != nil {
-		return &Tarif{}, db.Error
+		return &Tariff{}, db.Error
 	}
 
-	err := db.Debug().Model(&Tarif{}).Where("id = ?", uid).Take(&t).Error
+	err := db.Model(&Tariff{}).Where("id = ?", uid).Take(&t).Error
 	if err != nil {
-		return &Tarif{}, err
+		return &Tariff{}, err
 	}
 	return t, nil
 }
 
-func (t *Tarif) DeleteTarif(uid uint32) (int64, error) {
-	db := config.DB.Debug().Model(&Tarif{}).Where("id = ?", uid).Take(&Tarif{}).Delete(&Tarif{})
+// DeleteTariff is a ...
+func (t *Tariff) DeleteTariff(uid uint32) (int64, error) {
+	db := config.DB.Model(&Tariff{}).Where("id = ?", uid).Take(&Tariff{}).Delete(&Tariff{})
 	if db.Error != nil {
 		return 0, db.Error
 	}

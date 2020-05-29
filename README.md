@@ -1,4 +1,4 @@
-[![Go Report Card](https://goreportcard.com/badge/github.com/werbot/lime)](https://goreportcard.com/report/github.com/werbot/lime) ![Docker](https://github.com/werbot/lime/workflows/Docker/badge.svg)
+[![Go Report Card](https://goreportcard.com/badge/github.com/werbot/lime)](https://goreportcard.com/report/github.com/werbot/lime) [![CodeFactor](https://www.codefactor.io/repository/github/werbot/lime/badge)](https://www.codefactor.io/repository/github/werbot/lime) ![Docker](https://github.com/werbot/lime/workflows/Docker/badge.svg) 
 
 <img src="https://werbot.com/img/projects/lime.png" height="70" />
 
@@ -13,32 +13,39 @@ $ git clone https://github.com/werbot/lime.git
 1. Modify config for DB in `config/config.go`
 2. Update parameters for privateKey, publicKey in file `license/license.go`
 
-### Run server
+## Run server
 ```
 $ go run main.go server 
 ```
 
-
-### Available Commands:
+## Available Commands:
 - `healthcheck` : Check healthcheck
 - `help` : Help about any command
 - `server` : Start license server
 
+## Admin console
+Link for admin console http://localhost:8080/admin/
+default login - admin, password - admin
+
+<img src="https://werbot.com/img/projects/lime/login.png" />
+<img src="https://werbot.com/img/projects/lime/customers.png" />
+<img src="https://werbot.com/img/projects/lime/subscriptions.png" />
+
 
 ## API list
-* `GET /ping ` : Health server
-* `POST /key` : Generate new license
-* `GET /key/:customer_id ` : Get active license
-* `PATCH  /key/:customer_id` : Update license
-* `POST   /verify` : Check status license
+* `GET      /api/ping ` : Health server
+* `POST     /api/key` : Generate new license
+* `GET      /api/key/:customer_id ` : Get active license
+* `PATCH    /api/key/:customer_id` : Update license
+* `POST     /api/verify` : Check status license
 
 
-## To-do
+## TODO
 - [x] Generating license
 - [x] Verification license
 - [ ] Auto-create and install license on the client
 - [ ] Command-line utility for generating key pair 
 - [ ] Integration with Stripe
 - [ ] Example client
-- [ ] Admin console
+- [x] Admin console
 - [ ] Support IP address check

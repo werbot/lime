@@ -7,6 +7,7 @@ import (
 	"github.com/werbot/lime/config"
 )
 
+// Logger is a ...
 type Logger interface {
 	Debug(args ...interface{})
 	Debugf(format string, args ...interface{})
@@ -40,6 +41,7 @@ func init() {
 	defaultLogger = newLogrusLogger(config.Config())
 }
 
+// NewLogger is a ...
 func NewLogger(cfg config.Provider) *logrus.Logger {
 	return newLogrusLogger(cfg)
 }

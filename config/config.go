@@ -6,10 +6,13 @@ import (
 	"time"
 
 	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"github.com/spf13/viper"
+
+	// Register postgres driver
+	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
+// Provider is a ...
 type Provider interface {
 	ConfigFileUsed() string
 	Get(key string) interface{}
@@ -31,13 +34,17 @@ type Provider interface {
 
 var (
 	defaultConfig *viper.Viper
-	DB            *gorm.DB
+
+	// DB is a ...
+	DB *gorm.DB
 )
 
+// Config is a ...
 func Config() Provider {
 	return defaultConfig
 }
 
+// LoadConfigProvider is a ...
 func LoadConfigProvider(appName string) Provider {
 	return readViperConfig(appName)
 }
@@ -64,7 +71,11 @@ func readViperConfig(appName string) *viper.Viper {
 	v.SetDefault("mode", "debug") // release
 	v.SetDefault("port", ":8080")
 
-	v.SetDefault("api_secret", "TGq7dTjt@G.vkuDYwQfdf7uZvmwr@MzV.r2r6NGtPF")
+	v.SetDefault("admin_username", "admin")
+	v.SetDefault("admin_password", "admin")
+
+	v.SetDefault("cookie_secret", "TGq7dTjt@G.vkuDYwQfdf7uZvmwr@MzV.r2r6NGtPF")
+	v.SetDefault("cookie_name", "console")
 
 	v.SetDefault("db_host", "127.0.0.1")
 	v.SetDefault("db_user", "postgres")

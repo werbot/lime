@@ -1,0 +1,51 @@
+{{define "customers.html"}}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ .title }}</title>
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/milligram/1.3.0/milligram.css">
+    <link rel="stylesheet" href="/assets/css/main.css">
+</head>
+
+<body>
+    <main class="wrapper">
+        {{template "_header.html"}}
+        <section class="container">
+            <h3>{{ .title }}</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Name</th>
+                        <th>Created</th>
+                        <th>Updated</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{ range $i,$value := .customers}}
+                    <tr>
+                        <td><a href="/admin/subscription/{{$value.ID}}/">{{$value.ID}}</a></td>
+                        <td><a href="/admin/subscription/{{$value.ID}}/">{{$value.Name}}</a></td>
+                        <td>{{$value.CreatedAt | formatAsDate}}</td>
+                        <td>{{$value.UpdatedAt | formatAsDate}}</td>
+                        <td>{{ $value.Status | columnStatus}}</td>
+                    </tr>
+                    {{end}}
+                </tbody>
+            </table>
+
+        </section>
+
+    </main>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="/assets/js/main.js"></script>
+</body>
+
+</html>
+{{end}}

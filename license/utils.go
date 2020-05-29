@@ -6,6 +6,7 @@ import (
 	"golang.org/x/crypto/ed25519"
 )
 
+// DecodePublicKey is a ...
 func DecodePublicKey(data []byte) (ed25519.PublicKey, error) {
 	decoded, err := decode(data)
 	if err != nil {
@@ -14,6 +15,7 @@ func DecodePublicKey(data []byte) (ed25519.PublicKey, error) {
 	return ed25519.PublicKey(decoded), nil
 }
 
+// DecodePrivateKey is a ...
 func DecodePrivateKey(data []byte) (ed25519.PrivateKey, error) {
 	decoded, err := decode(data)
 	if err != nil {

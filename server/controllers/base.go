@@ -9,6 +9,7 @@ type requestLicense struct {
 	License  string `json:"license"`
 }
 
+// ResponseData is a ...
 type ResponseData struct {
 	Status int    `json:"status"`
 	Msg    string `json:"msg"`

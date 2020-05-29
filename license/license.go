@@ -19,6 +19,7 @@ var (
 	publicKey  = []byte("/a5l8EIBUlS7f/5zLJdKhRtvKY3NSDez4YB9NWfkAk0=")
 )
 
+// License is a ...
 type License struct {
 	Iss string          `json:"iss,omitempty"` // Issued By
 	Cus string          `json:"cus,omitempty"` // Customer ID
@@ -30,16 +31,19 @@ type License struct {
 	Dat json.RawMessage `json:"dat,omitempty"` // Metadata
 }
 
+// Limits is a ...
 type Limits struct {
 	Servers   int `json:"servers"`
 	Companies int `json:"companies"`
 	Users     int `json:"users"`
 }
 
+// Expired is a ...
 func (l *License) Expired() bool {
 	return l.Exp.IsZero() == false && time.Now().After(l.Exp)
 }
 
+// Encode is a ...
 func (l *License) Encode(privateKey ed25519.PrivateKey) ([]byte, error) {
 	msg, err := json.Marshal(l)
 	if err != nil {
@@ -58,6 +62,7 @@ func (l *License) Encode(privateKey ed25519.PrivateKey) ([]byte, error) {
 	return pem.EncodeToMemory(block), nil
 }
 
+// Decode is a ...
 func Decode(data []byte, publicKey ed25519.PublicKey) (*License, error) {
 	block, _ := pem.Decode(data)
 	if block == nil || len(block.Bytes) < ed25519.SignatureSize {
@@ -76,11 +81,13 @@ func Decode(data []byte, publicKey ed25519.PublicKey) (*License, error) {
 	return out, err
 }
 
+// GetPrivateKey is a ...
 func GetPrivateKey() ed25519.PrivateKey {
 	key, _ := DecodePrivateKey(privateKey)
 	return key
 }
 
+// GetPublicKey is a ...
 func GetPublicKey() ed25519.PublicKey {
 	key, _ := DecodePublicKey(publicKey)
 	return key

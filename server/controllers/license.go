@@ -1,7 +1,9 @@
 package controllers
 
 import (
+	"crypto/md5"
 	"encoding/base64"
+	"encoding/hex"
 	"encoding/json"
 	"net/http"
 	"os"
@@ -60,7 +62,7 @@ func VerifyKey(c *gin.Context) {
 func CreateKey(c *gin.Context) {
 	month := time.Hour * 24 * 31
 	modelSubscription := models.Subscription{}
-	modelTarif := models.Tarif{}
+	modelTariff := models.Tariff{}
 	modelCustomer := models.Customer{}
 
 	reques := &requestLicense{}
@@ -78,27 +80,27 @@ func CreateKey(c *gin.Context) {
 
 	_customer, _ := modelCustomer.FindCustomerByID(_subscription.CustomerID)
 
-	_tarif, err := modelTarif.FindTarifByID(_subscription.TarifID)
+	_tariff, err := modelTariff.FindTariffByID(_subscription.TariffID)
 	if err != nil {
 		respondJSON(c, http.StatusNotFound, err.Error())
 		return
 	}
-	if _tarif.ID == 0 {
-		respondJSON(c, http.StatusNotFound, "Tarif not found!")
+	if _tariff.ID == 0 {
+		respondJSON(c, http.StatusNotFound, "Tariff not found!")
 		return
 	}
 
 	limit := license.Limits{
-		Servers:   _tarif.Servers,
-		Companies: _tarif.Companies,
-		Users:     _tarif.Users,
+		Servers:   _tariff.Servers,
+		Companies: _tariff.Companies,
+		Users:     _tariff.Users,
 	}
 	metadata := []byte(`{"message": "test message"}`)
 	_license := &license.License{
 		Iss: _customer.Name,
 		Cus: _subscription.StripeID,
-		Sub: _subscription.TarifID,
-		Typ: _tarif.Name,
+		Sub: _subscription.TariffID,
+		Typ: _tariff.Name,
 		Lim: limit,
 		Dat: metadata,
 		Exp: time.Now().UTC().Add(month),
@@ -113,9 +115,13 @@ func CreateKey(c *gin.Context) {
 
 	models.DeactivateLicenseBySubID(_subscription.ID)
 
+	hash := md5.Sum([]byte(encoded))
+	licenseHash := hex.EncodeToString(hash[:])
+
 	key := &models.License{
 		SubscriptionID: _subscription.ID,
 		License:        encoded,
+		Hash:           licenseHash,
 		Status:         true,
 	}
 
