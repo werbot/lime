@@ -1,6 +1,6 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/werbot/lime)](https://goreportcard.com/report/github.com/werbot/lime) [![CodeFactor](https://www.codefactor.io/repository/github/werbot/lime/badge)](https://www.codefactor.io/repository/github/werbot/lime) ![Docker](https://github.com/werbot/lime/workflows/Docker/badge.svg) 
 
-<img src="https://werbot.com/img/projects/lime.png" height="70" />
+<img src="https://werbot.com/assets/github/lime.png" height="70" />
 
 
 ## Installation 
@@ -29,9 +29,9 @@ $ go run main.go server
 ## Admin console
 Link for admin console http://localhost:8080/admin/
 default login - admin, password - admin
-<img src="https://werbot.com/img/projects/lime/login.png" />
-<img src="https://werbot.com/img/projects/lime/customers.png" />
-<img src="https://werbot.com/img/projects/lime/subscriptions.png" />
+<img src="https://werbot.com/assets/github/lime/login.png" />
+<img src="https://werbot.com/assets/github/lime/customers.png" />
+<img src="https://werbot.com/assets/github/lime/subscriptions.png" />
 
 
 ## API list
