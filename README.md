@@ -51,3 +51,4 @@ default login - admin, password - admin
 - [ ] Example client
 - [x] Admin console
 - [ ] Support IP address check
+- [ ] Support country check
