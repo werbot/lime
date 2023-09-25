@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+#set -e
+
+ROOT_PATH="$(git rev-parse --show-toplevel)"
+source ${ROOT_PATH}/scripts/_helper
+
+LC_BASE_DIR="${ROOT_PATH}/cmd/lime_base"
+DB_FILE="${LC_BASE_DIR}/data.db"
+
+mkdir -p "${LC_BASE_DIR}"
+
+if ! [ -f "${DB_FILE}" ]; then
+  sqlite3 "${DB_FILE}" "PRAGMA auto_vacuum;"
+fi
+
+sqlite3 "${DB_FILE}" "VACUUM;"

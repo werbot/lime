@@ -1,0 +1,49 @@
+version: "3.7"
+
+networks:
+  public:
+    driver: bridge
+  private:
+    #internal: true
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.20.0.0/16
+          gateway: 10.20.0.1
+
+volumes:
+  postgres_data: {}
+
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: "20M"
+    max-file: "10"
+
+x-resources: &default-resources
+  limits:
+    memory: 50M
+    cpus: "0.15"
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    restart: always
+    ports:
+      - 5430:5432
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-user}
+      POSTGRES_DB: ${POSTGRES_DB:-lime}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-user}"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    networks:
+      - private
+    logging: *default-logging

@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "baseUrl": ".",
+    //"target": "esnext",
+    //"module": "esnext",
+    //"moduleResolution": "node",
+    "paths": {
+      "@/*": ["./src/*"],
+    }
+  },
+  "include": [
+    "env.d.ts",
+    "src/**/*.vue",
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/app.vue",
+    "src/router.ts",
+    "src/main.ts",
+  ],
+  "exclude": ["node_modules","dist","public"]
+}

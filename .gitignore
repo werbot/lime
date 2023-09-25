@@ -42,6 +42,18 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-bin/*
+.env*
+!.env*.example
 
-.vscode/*
+node_modules
+!.gitkeep
+.sequence
+rest.http
+
+web/dist
+cmd/__debug_bin*
+cmd/main
+cmd/lime_*/
+/cmd/lime.toml
+fixtures/migration/*_private.sql
+.DS_Store
