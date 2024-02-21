@@ -1,4 +1,4 @@
-package app
+package config
 
 import (
 	"os"
@@ -8,6 +8,15 @@ import (
 	"github.com/werbot/lime/pkg/storage"
 	"github.com/werbot/lime/pkg/storage/postgres"
 	"github.com/werbot/lime/pkg/storage/sqlite"
+)
+
+const (
+	ConfigFile         = "./lime.toml"
+	KeyDir             = "./lime_keys"
+	JWTPubKeyFile      = "jwt_public.key"
+	JWTPrivKeyFile     = "jwt_private.key"
+	LicensePubKeyFile  = "license_public.key"
+	LicensePrivKeyFile = "license_private.key"
 )
 
 type Config struct {
@@ -43,8 +52,8 @@ func DefaultConfig() *Config {
 func LoadConfig() (*Config, error) {
 	config := DefaultConfig()
 
-	if fsutil.IsFile(configFile) {
-		file, err := os.ReadFile(configFile)
+	if fsutil.IsFile(ConfigFile) {
+		file, err := os.ReadFile(ConfigFile)
 		if err != nil {
 			return nil, err
 		}
@@ -63,7 +72,7 @@ func SaveConfig(config *Config) error {
 	if err != nil {
 		return err
 	}
-	if err := os.WriteFile(configFile, byteConfig, 0666); err != nil {
+	if err := os.WriteFile(ConfigFile, byteConfig, 0o666); err != nil {
 		return err
 	}
 

@@ -16,10 +16,6 @@ var (
 
 	// ErrMalformedLicense is a ...
 	ErrMalformedLicense = errors.New("Malformed License")
-
-	// generate new ed25519 key and replaces !!!
-	//privateKey = []byte("5GvXN6OIrsgF3/ehJ17HvRPrrbNTLw/gtAmy4X5bKlH9rmXwQgFSVLt//nMsl0qFG28pjc1IN7PhgH01Z+QCTQ==")
-	//publicKey  = []byte("/a5l8EIBUlS7f/5zLJdKhRtvKY3NSDez4YB9NWfkAk0=")
 )
 
 // License is a ...
@@ -28,17 +24,16 @@ type License struct {
 	Cus string          `json:"cus,omitempty"` // Customer ID
 	Sub uint32          `json:"sub,omitempty"` // Subscriber ID
 	Typ string          `json:"typ,omitempty"` // License Type
-	Lim Limits          `json:"lim,omitempty"` // License Limit (e.g. Site)
+	Lim []Limits        `json:"lim,omitempty"` // License Limit (e.g. Site)
 	Iat time.Time       `json:"iat,omitempty"` // Issued At
 	Exp time.Time       `json:"exp,omitempty"` // Expires At
 	Dat json.RawMessage `json:"dat,omitempty"` // Metadata
 }
 
-// Limits is a ...
+// Limits is ...
 type Limits struct {
-	Servers   int `json:"servers"`
-	Companies int `json:"companies"`
-	Users     int `json:"users"`
+	Key   string `json:"key"`
+	Value string `json:"value"`
 }
 
 // Expired is a ...

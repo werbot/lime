@@ -5,10 +5,10 @@ CREATE TABLE "user" (
     "login" varchar(255) UNIQUE NOT NULL,
     "email" varchar(255) UNIQUE NOT NULL,
     "password" varchar(255) NOT NULL,
-    "enabled" bool NOT NULL DEFAULT true,
-    "role" int4 NOT NULL DEFAULT 1,
-    "Updated" timestamp DEFAULT NULL,
-    "created" timestamp NOT NULL
+    "status" bool NOT NULL DEFAULT true,
+    "role" varchar(5) CHECK ("role" == 'admin' OR "role" == 'user'),
+    "updated_at" timestamp DEFAULT NULL,
+    "created_at" timestamp NOT NULL
 );
 CREATE INDEX idx_user_id ON "user" ("id");
 CREATE INDEX idx_user_login ON "user" ("login");

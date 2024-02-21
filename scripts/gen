@@ -6,21 +6,25 @@ ROOT_PATH="$(git rev-parse --show-toplevel)"
 source ${ROOT_PATH}/scripts/_helper
 
 KEYS_DIR="${ROOT_PATH}/cmd/lime_keys"
-TYPE_KEY=$1
 
 mkdir -p "${KEYS_DIR}"
 
-if [[ $TYPE_KEY == "jwt" ]]; then
+case $1 in
+jwt)
   print_header "Generate JWT keys"
-	openssl genrsa -out "${ROOT_PATH}/cmd/lime_keys/jwt_private.key" 2048
-	openssl rsa -in "${ROOT_PATH}/cmd/lime_keys/jwt_private.key" -pubout -outform PEM -out "${ROOT_PATH}/cmd/lime_keys/jwt_public.key" >/dev/null 2>&1
+  openssl genrsa -out "${ROOT_PATH}/cmd/lime_keys/jwt_private.key" 2048
+  openssl rsa -in "${ROOT_PATH}/cmd/lime_keys/jwt_private.key" -pubout -outform PEM -out "${ROOT_PATH}/cmd/lime_keys/jwt_public.key" >/dev/null 2>&1
   print_answer "SUCCESS" green
-elif [[ $TYPE_KEY == "license" ]]; then
+  ;;
+
+license)
   print_header "Generate License keys"
-	openssl genpkey -algorithm ed25519 -out "${ROOT_PATH}/cmd/lime_keys/license_private.key"
-	openssl pkey -in "${ROOT_PATH}/cmd/lime_keys/license_private.key" -pubout -out "${ROOT_PATH}/cmd/lime_keys/license_public.key"
+  openssl genpkey -algorithm ed25519 -out "${ROOT_PATH}/cmd/lime_keys/license_private.key"
+  openssl pkey -in "${ROOT_PATH}/cmd/lime_keys/license_private.key" -pubout -out "${ROOT_PATH}/cmd/lime_keys/license_public.key"
   print_answer "SUCCESS" green
-else
+  ;;
+
+*)
   echo "Parameters not passed"
   echo
   echo "$0 <command>"
@@ -28,4 +32,5 @@ else
   echo "command:"
   print_help jwt "Generate JWT keys"
   print_help license "Generate License keys"
-fi
+  ;;
+esac

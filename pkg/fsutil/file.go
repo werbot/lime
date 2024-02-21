@@ -26,10 +26,19 @@ func IsFile(path string) bool {
 	return false
 }
 
+// MustReadFile read file contents, will panic on error
+func MustReadFile(filePath string) []byte {
+	bs, err := os.ReadFile(filePath)
+	if err != nil {
+		panic(err)
+	}
+	return bs
+}
+
 // OpenFile like os.OpenFile, but will auto create dir.
 func OpenFile(filepath string, flag int, perm os.FileMode) (*os.File, error) {
 	fileDir := path.Dir(filepath)
-	if err := os.MkdirAll(fileDir, 0775); err != nil {
+	if err := os.MkdirAll(fileDir, 0o775); err != nil {
 		return nil, err
 	}
 

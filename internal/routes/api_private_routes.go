@@ -2,20 +2,24 @@ package routes
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"github.com/werbot/lime/internal/handlers"
+
+	handlers "github.com/werbot/lime/internal/handlers/private"
 	"github.com/werbot/lime/internal/middleware"
 )
 
 // ApiPrivateRoutes is ...
 func ApiPrivateRoutes(c *fiber.App) {
-	root := c.Group("/_")
+	api := c.Group("/_/api" /*, middleware.JWTProtected()*/)
 
-	sign := root.Group("/api/sign")
-	sign.Post("/in", handlers.SignIn)                              // middleware.Login
-	sign.Post("/out", middleware.JWTProtected(), handlers.SignOut) // middleware.Logout
+	sign := api.Group("/sign")
+	sign.Post("/in", handlers.SignIn)
+	sign.Post("/out", middleware.JWTProtected(), handlers.SignOut)
 
-	api := root.Group("/api", middleware.JWTProtected())
-	api.Get("/", handlers.MainHandler)                          // controllers.MainHandler
-	api.Get("/subscription/:id/*action", handlers.CustomerList) // controllers.CustomerSubscrptionList
-	//api.Get("/license/:id", handlers.DownloadLicense)                      // controllers.DownloadLicense
+	subscription := api.Group("/subscription")
+	subscription.Get("/:id/*action", handlers.Customers)
+
+	license := api.Group("/license")
+	license.Post("/", handlers.NewLicense)
+	license.Get("/:id", handlers.GetLicense)
+	license.Patch("/:id", handlers.UpdateLicense)
 }

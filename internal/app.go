@@ -8,20 +8,37 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/rs/zerolog/log"
 
+	"github.com/werbot/lime/internal/config"
 	"github.com/werbot/lime/internal/middleware"
 	"github.com/werbot/lime/internal/queries"
 	"github.com/werbot/lime/internal/routes"
 	"github.com/werbot/lime/migrations"
+	"github.com/werbot/lime/pkg/fsutil"
 	"github.com/werbot/lime/pkg/logging"
 )
 
 // NewApp is ...
 func NewApp() error {
 	log := logging.Log()
-	cfg, err := LoadConfig()
+	cfg, err := config.LoadConfig()
 	if err != nil {
 		log.Err(err).Send()
 		return err
+	}
+
+	// generate keys if need
+	if !fsutil.IsDir(config.KeyDir) {
+		if err := fsutil.MkDirs(0o775, config.KeyDir); err != nil {
+			return err
+		}
+	}
+
+	if !fsutil.IsFile(config.JWTPrivKeyFile) || !fsutil.IsFile(config.JWTPubKeyFile) {
+		GenJWTKeys()
+	}
+
+	if !fsutil.IsFile(config.LicensePrivKeyFile) || !fsutil.IsFile(config.LicensePubKeyFile) {
+		GenLicenseKeys()
 	}
 
 	if err := queries.Init(cfg.Database, migrations.Embed()); err != nil {

@@ -26,7 +26,7 @@ func GenerateRSA() (*Key, error) {
 }
 
 func GenerateEd25519() (*Key, error) {
-	pubKey, privKey, err := ed25519.GenerateKey(nil)
+	pubKey, privKey, err := ed25519.GenerateKey(rand.Reader)
 	if err != nil {
 		return nil, err
 	}
@@ -38,9 +38,15 @@ func GenerateEd25519() (*Key, error) {
 }
 
 func (k *Key) PublicKeyToPEM() []byte {
-	return pem.EncodeToMemory(&pem.Block{Type: "PUBLIC KEY", Bytes: k.publicKey})
+	return pem.EncodeToMemory(&pem.Block{
+		Type:  "PUBLIC KEY",
+		Bytes: k.publicKey,
+	})
 }
 
 func (k *Key) PrivateKeyToPEM() []byte {
-	return pem.EncodeToMemory(&pem.Block{Type: "PRIVATE KEY", Bytes: k.privateKey})
+	return pem.EncodeToMemory(&pem.Block{
+		Type:  "PRIVATE KEY",
+		Bytes: k.privateKey,
+	})
 }

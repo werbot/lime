@@ -32,7 +32,6 @@ func main() {
 
 	rootCmd.AddCommand(cmdServe())
 	rootCmd.AddCommand(cmdGen())
-	rootCmd.AddCommand(cmdInit())
 
 	if err := rootCmd.Execute(); err != nil {
 		os.Exit(1)
@@ -64,19 +63,19 @@ func cmdGen() *cobra.Command {
 			}
 			if configFile {
 				if err := app.GenConfigFile(); err != nil {
-					//fmt.Print("Config file generated")
+					fmt.Print("Config file generated")
 					os.Exit(1)
 				}
 			}
 			if keyJWT {
 				if err := app.GenJWTKeys(); err != nil {
-					//fmt.Print("JWT key files generated")
+					fmt.Print("JWT key files generated")
 					os.Exit(1)
 				}
 			}
 			if keyLicense {
 				if err := app.GenLicenseKeys(); err != nil {
-					//fmt.Print("Root license key files generated")
+					fmt.Print("Root license key files generated")
 					os.Exit(1)
 				}
 			}
@@ -86,19 +85,5 @@ func cmdGen() *cobra.Command {
 	cmd.PersistentFlags().BoolVar(&configFile, "config", false, "config file")
 	cmd.PersistentFlags().BoolVar(&keyJWT, "jwt", false, "jwt keys")
 	cmd.PersistentFlags().BoolVar(&keyLicense, "license", false, "license keys")
-	return cmd
-}
-
-func cmdInit() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "init",
-		Short: "Initialize the lime",
-		Run: func(serveCmd *cobra.Command, args []string) {
-			if err := app.Init(); err != nil {
-				os.Exit(1)
-			}
-		},
-	}
-
 	return cmd
 }
