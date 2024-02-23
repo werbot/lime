@@ -65,7 +65,7 @@ func NewApp() error {
 	routes.NotFoundRoute(app)
 
 	fmt.Print("🍋 Lime - lite license server\n")
-	fmt.Printf("├─ Public API: http://%s/api/v1/\n", cfg.HTTPAddr)
+	fmt.Printf("├─ Public API: http://%s/api/\n", cfg.HTTPAddr)
 	fmt.Printf("└─ Admin UI: http://%s/_/\n", cfg.HTTPAddr)
 
 	if cfg.DevMode {

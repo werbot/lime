@@ -10,7 +10,7 @@ import (
 // @Produce application/json
 // @Param
 // @Success 200 {string} string "{"status":"200", "msg":""}"
-// @Router /_/api/sign/in [post]]
+// @Router /api/sign/in [post]]
 func SignIn(c *fiber.Ctx) error {
 	return webutil.StatusOK(c, "SignIn", nil)
 }
@@ -20,7 +20,7 @@ func SignIn(c *fiber.Ctx) error {
 // @Produce application/json
 // @Param
 // @Success 200 {string} string "{"status":"200", "msg":""}"
-// @Router /_/api/sign/out [post]
+// @Router /api/sign/out [post]
 func SignOut(c *fiber.Ctx) error {
 	return webutil.StatusOK(c, "SignOut", nil)
 }

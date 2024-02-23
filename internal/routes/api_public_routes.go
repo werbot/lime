@@ -12,9 +12,12 @@ func ApiPublicRoutes(c *fiber.App) {
 
 	api := c.Group("/api")
 
+	sign := api.Group("/sign")
+	sign.Post("/in", handlers.SignIn)
+	sign.Post("/out" /*middleware.JWTProtected(),*/, handlers.SignOut)
+
 	manager := api.Group("/manager")
 	manager.Post("/license", handlers.ManageLicense)
-	manager.Get("/access-link", handlers.AccessLink)
 
 	license := api.Group("/license")
 	license.Get("/download/:id", handlers.DownloadLicense)

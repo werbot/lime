@@ -11,6 +11,7 @@ export function getCookie(cname: string): string {
   }
   return "";
 }
+
 export function setCookie(cname: string, cvalue: string, days: number): void {
   const date = new Date();
   date.setDate(date.getDate() + days);

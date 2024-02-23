@@ -13,11 +13,11 @@ import (
 func FiberMiddleware(a *fiber.App, log zerolog.Logger) {
 	a.Use(
 		cors.New(cors.Config{
-			AllowOrigins:     "*",
-			AllowMethods:     "GET,POST,HEAD,OPTIONS,PUT,DELETE,PATCH",
-			AllowHeaders:     "Origin, Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, X-Requested-With",
-			ExposeHeaders:    "Origin",
-			AllowCredentials: true,
+			AllowOrigins:  "*",
+			AllowMethods:  "GET,POST,HEAD,OPTIONS,PUT,DELETE,PATCH",
+			AllowHeaders:  "Origin, Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, X-Requested-With",
+			ExposeHeaders: "Origin",
+			// AllowCredentials: true,
 		}),
 		etag.New(),
 	)
@@ -27,5 +27,4 @@ func FiberMiddleware(a *fiber.App, log zerolog.Logger) {
 	a.Use(fiberzerolog.New(fiberzerolog.Config{
 		Logger: &log,
 	}))
-
 }

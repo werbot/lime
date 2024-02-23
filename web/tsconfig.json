@@ -2,9 +2,9 @@
   "compilerOptions": {
     "composite": true,
     "baseUrl": ".",
-    //"target": "esnext",
-    //"module": "esnext",
-    //"moduleResolution": "node",
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
     "paths": {
       "@/*": ["./src/*"],
     }
