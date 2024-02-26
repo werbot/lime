@@ -20,14 +20,14 @@ var (
 
 // License is a ...
 type License struct {
-	Iss string          `json:"iss,omitempty"` // Issued By
-	Cus string          `json:"cus,omitempty"` // Customer ID
-	Sub uint32          `json:"sub,omitempty"` // Subscriber ID
-	Typ string          `json:"typ,omitempty"` // License Type
-	Lim []Limits        `json:"lim,omitempty"` // License Limit (e.g. Site)
-	Iat time.Time       `json:"iat,omitempty"` // Issued At
-	Exp time.Time       `json:"exp,omitempty"` // Expires At
-	Dat json.RawMessage `json:"dat,omitempty"` // Metadata
+	IssuedBy     string          `json:"iss,omitempty"`
+	CustomerID   string          `json:"cus,omitempty"`
+	SubscriberID uint32          `json:"sub,omitempty"`
+	Type         string          `json:"typ,omitempty"`
+	Limit        []Limits        `json:"lim,omitempty"`
+	IssuedAt     time.Time       `json:"iat,omitempty"`
+	ExpiresAt    time.Time       `json:"exp,omitempty"`
+	Metadata     json.RawMessage `json:"dat,omitempty"`
 }
 
 // Limits is ...
@@ -38,7 +38,7 @@ type Limits struct {
 
 // Expired is a ...
 func (l *License) Expired() bool {
-	return l.Exp.IsZero() == false && time.Now().After(l.Exp)
+	return !l.ExpiresAt.IsZero() && time.Now().After(l.ExpiresAt)
 }
 
 // Encode is a ...
@@ -78,17 +78,3 @@ func Decode(data []byte, publicKey ed25519.PublicKey) (*License, error) {
 	err := json.Unmarshal(msg, out)
 	return out, err
 }
-
-/*
-// GetPrivateKey is a ...
-func GetPrivateKey(privateKey []byte) ed25519.PrivateKey {
-	key, _ := DecodePrivateKey(privateKey)
-	return key
-}
-
-// GetPublicKey is a ...
-func GetPublicKey(publicKey []byte) ed25519.PublicKey {
-	key, _ := DecodePublicKey(publicKey)
-	return key
-}
-*/

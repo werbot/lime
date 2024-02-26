@@ -22,11 +22,11 @@ func NewLicense(c *fiber.Ctx) error {
 	month := time.Hour * 24 * 31
 
 	licenseInfo := &license.License{
-		Iss: "customer.Name",
-		Cus: "subscription.StripeID",
-		Sub: 123,
-		Typ: "tariff.Name",
-		Lim: []license.Limits{
+		IssuedBy:     "customer.Name",
+		CustomerID:   "subscription.StripeID",
+		SubscriberID: 123,
+		Type:         "tariff.Name",
+		Limit: []license.Limits{
 			{
 				Key:   "key1",
 				Value: "value1",
@@ -36,9 +36,9 @@ func NewLicense(c *fiber.Ctx) error {
 				Value: "value2",
 			},
 		},
-		Dat: []byte(`{"message": "test message"}`),
-		Exp: time.Now().UTC().Add(month),
-		Iat: time.Now().UTC(),
+		Metadata:  []byte(`{"message": "test message"}`),
+		ExpiresAt: time.Now().UTC().Add(month),
+		IssuedAt:  time.Now().UTC(),
 	}
 
 	privKey := fsutil.MustReadFile(filepath.Join(config.KeyDir, config.LicensePrivKeyFile))
