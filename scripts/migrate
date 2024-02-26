@@ -1,0 +1,147 @@
+#!/usr/bin/env bash
+
+#set -e
+
+ROOT_PATH="$(git rev-parse --show-toplevel)"
+source ${ROOT_PATH}/scripts/_helper
+
+MIGRATION_DIR=${ROOT_PATH}/migrations
+MIGRATION_DIR_TMP=${ROOT_PATH}/.vscode/migrate_tmp
+DB_POSTFIX="migrate_db_version"
+MIGRATION=$1
+GOOSE_ACTION=$2
+
+LIME_CONFIG="${ROOT_PATH}/cmd/lime.toml"
+LIME_SQLITE_DIR="${ROOT_PATH}/cmd/lime_base"
+LIME_SQLITE="${LIME_SQLITE_DIR}/data.db"
+LIME_STORAGE="sqlite"
+LIME_STORAGE_CONN="${LIME_STORAGE} ${LIME_SQLITE}"
+
+required_commands=("yq" "goose")
+for cmd in "${required_commands[@]}"; do
+  if ! command -v "$cmd" >/dev/null 2>&1; then
+    echo "Please, install $cmd"
+    exit 1
+  fi
+done
+
+if [ -r "${LIME_CONFIG}" ]; then
+  LIME_STORAGE=$(yq e '.database.storage' ${LIME_CONFIG})
+
+  case "$LIME_STORAGE" in
+  sqlite)
+    LIME_SQLITE=$(yq e '.database.sqlite.db-path' "${LIME_CONFIG}")
+    LIME_SQLITE="${LIME_SQLITE/#.\//${LIME_SQLITE_DIR%/lime_base}/}"
+    LIME_STORAGE_CONN="sqlite3 ${LIME_SQLITE}"
+    ;;
+  postgres)
+    POSTGRES_USER=$(yq e '.database.postgres.user' ${LIME_CONFIG})
+    POSTGRES_PASSWORD=$(yq e '.database.postgres.password' ${LIME_CONFIG})
+    POSTGRES_HOST=$(yq e '.database.postgres.host' ${LIME_CONFIG})
+    POSTGRES_DB=$(yq e '.database.postgres.database' ${LIME_CONFIG})
+    LIME_STORAGE_CONN="postgres postgres://${POSTGRES_USER:-user}:${POSTGRES_PASSWORD:-password}@${POSTGRES_HOST:-localhost:5432}/${POSTGRES_DB:-lime}"
+    ;;
+  *)
+    echo "Unsupported storage type: $LIME_STORAGE"
+    exit 1
+    ;;
+  esac
+fi
+
+if [ "$LIME_STORAGE" == "sqlite" ] && [ ! -r "$LIME_SQLITE" ]; then
+  mkdir -p "${LIME_SQLITE_DIR}"
+  if command -v sqlite >/dev/null 2>&1; then
+    sqlite "${LIME_SQLITE}" "PRAGMA auto_vacuum;"
+  else
+    : >"$LIME_SQLITE"
+  fi
+fi
+
+run_goose() {
+  arr_goose=("create" "up" "up1" "down" "down1" "redo" "status")
+  if [[ " ${arr_goose[*]} " =~ " $1 " ]]; then
+    GOOSE_CMD="goose -dir $MIGRATION_DIR -table $DB_POSTFIX $LIME_STORAGE_CONN"
+
+    case "$1" in
+    "create") OTPUT=$($GOOSE_CMD create migration_name sql 2>&1) ;;
+    "up") OTPUT=$($GOOSE_CMD up 2>&1) ;;
+    "up1") OTPUT=$($GOOSE_CMD up-by-one 2>&1) ;;
+    "down") OTPUT=$($GOOSE_CMD reset 2>&1) ;;
+    "down1") OTPUT=$($GOOSE_CMD down 2>&1) ;;
+    "redo") OTPUT=$($GOOSE_CMD redo 2>&1) ;;
+    "status") OTPUT=$($GOOSE_CMD status 2>&1) ;;
+    esac
+
+    rm -rf $MIGRATION_DIR_TMP
+
+    print_answer "SUCCESS" green
+    if [ -n "${OTPUT}" ]; then
+      echo "${OTPUT}"
+      echo
+    fi
+  else
+    if [ -d $MIGRATION_DIR_TMP ]; then
+      rm -rf $MIGRATION_DIR_TMP
+    fi
+    print_answer "ERROR" red
+    echo "Parameters not passed"
+    echo
+    echo "$0 <command> [option...]"
+    echo
+    echo "command:"
+    print_help "<empty>" "Core version"
+    print_help test "Test version"
+    print_help dev "Development fixtures"
+    echo
+    echo "option:"
+    print_help create "Create cleare migration"
+    print_help up "Migrate the DB to the most recent version available"
+    print_help up1 "Migrate the DB up by 1"
+    print_help down "Roll back all migrations"
+    print_help down1 "Roll back the version by 1"
+    print_help redo "Re-run the latest migration"
+    print_help status "Dump the migration status for the current DB"
+  fi
+}
+
+if [[ $MIGRATION == "test" ]]; then
+  print_header "Migrations sql $MIGRATION:$GOOSE_ACTION"
+
+  if [ "$MIGRATION" == "test" ]; then
+    mkdir -p "${MIGRATION_DIR_TMP}"
+    for file_migrate in $(find ${ROOT_PATH} -path '*/fixtures/migration/*' | sort -r); do
+      cp "$file_migrate" ${MIGRATION_DIR_TMP}/
+    done
+    MIGRATION_DIR=${MIGRATION_DIR_TMP}
+    DB_POSTFIX=${DB_POSTFIX}"_test"
+  fi
+  run_goose $GOOSE_ACTION
+elif [[ $MIGRATION == "dev" ]]; then
+  arr_goose=(up down reset)
+  if [[ " ${arr_goose[*]} " =~ " $GOOSE_ACTION " ]]; then
+    SOURCE=${BASH_SOURCE[0]}
+    if [ $GOOSE_ACTION == "up" ]; then
+      $SOURCE up
+      $SOURCE test up
+    elif [ $GOOSE_ACTION == "down" ]; then
+      $SOURCE test down
+      $SOURCE down
+    elif [ $GOOSE_ACTION == "reset" ]; then
+      $SOURCE dev down
+      $SOURCE dev up
+    fi
+  else
+    print_header "Migrations sql"
+    print_answer "ERROR" red
+    echo "Parameters not passed"
+    echo
+    echo "Use next command:"
+    print_help up "Run all available migrations"
+    print_help down "Delete all migrations from database"
+    print_help reset "Reset all migrations"
+    exit
+  fi
+else
+  print_header "Migrations sql"
+  run_goose $MIGRATION
+fi

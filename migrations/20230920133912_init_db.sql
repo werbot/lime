@@ -1,22 +1,69 @@
 -- +goose Up
 -- +goose StatementBegin
-CREATE TABLE "user" (
-    "id" varchar(32) PRIMARY KEY NOT NULL,
-    "login" varchar(255) UNIQUE NOT NULL,
-    "email" varchar(255) UNIQUE NOT NULL,
-    "password" varchar(255) NOT NULL,
-    "status" bool NOT NULL DEFAULT true,
-    "role" varchar(5) CHECK ("role" == 'admin' OR "role" == 'user'),
-    "updated_at" timestamp DEFAULT NULL,
-    "created_at" timestamp NOT NULL
+CREATE TABLE "setting" (
+	"id"     TEXT PRIMARY KEY NOT NULL,
+	"key"    TEXT UNIQUE NOT NULL,
+	"value"  TEXT DEFAULT NULL
 );
-CREATE INDEX idx_user_id ON "user" ("id");
-CREATE INDEX idx_user_login ON "user" ("login");
-CREATE INDEX idx_user_email ON "user" ("email");
--- +goose StatementEnd
+CREATE INDEX idx_setting_key ON "setting" ("key");
+INSERT INTO "setting" VALUES ('klA5PpR36La0Kr4', 'installed', 0);
+INSERT INTO "setting" VALUES ('6jqS6sVJQ3Mvm84', 'jwt_secret', 'secret');
+INSERT INTO "setting" VALUES ('V2Hf326Kh8SskFv', 'jwt_secret_expire_hours', '24');
+INSERT INTO "setting" VALUES ('BCc8A0whWaH3b00', 'smtp_host', '');
+INSERT INTO "setting" VALUES ('zOZ71doNtD5Tn95', 'smtp_port', '0');
+INSERT INTO "setting" VALUES ('9kkA0aK3KXx3Yy9', 'smtp_username', '');
+INSERT INTO "setting" VALUES ('Sq51dDsQoO61D6d', 'smtp_password', '');
+INSERT INTO "setting" VALUES ('VfI89zlF3vLiZ42', 'smtp_encryption', '');
+INSERT INTO "setting" VALUES ('7v38n58hXHVsNxS', 'mail_sender_name', '');
+INSERT INTO "setting" VALUES ('6kK99i33PZXzpxI', 'mail_sender_email', '');
+INSERT INTO "setting" VALUES ('6lABbUqQ70Lau40', 'mail_letter_access_link', '{"subject":"","text":"","html":""}');
 
+CREATE TABLE "customer" (
+  "id" varchar(15) PRIMARY KEY NOT NULL,
+  "email" varchar(255) UNIQUE NOT NULL,
+  "status" bool NOT NULL DEFAULT true,
+  "updated_at" timestamp DEFAULT NULL,
+  "created_at" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+CREATE INDEX idx_customer_id ON "customer" ("id");
+CREATE INDEX idx_customer_email ON "customer" ("email");
+
+CREATE TABLE "template" (
+  "id" varchar(15) PRIMARY KEY NOT NULL,
+  "name" varchar(255) UNIQUE NOT NULL,
+  "limit" json DEFAULT '{}' NOT NULL,
+  "term"  varchar(1) NOT NULL CHECK ("term" = 'd' OR "term" = 'w' OR "term" = 'm' OR "term" = 'y'),
+  "price" varchar(10) NOT NULL,
+  "check" json DEFAULT '{}' NOT NULL,
+  "hide" bool NOT NULL DEFAULT false,
+  "status" bool NOT NULL DEFAULT true,
+  "updated_at" timestamp DEFAULT NULL,
+  "created_at" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+CREATE INDEX idx_template_id ON "template" ("id");
+
+CREATE TABLE "license" (
+  "id" varchar(15) PRIMARY KEY NOT NULL,
+  "template_id" varchar(15) NOT NULL,
+  "customer_id" varchar(15) NOT NULL,
+  "payment" json DEFAULT '{}' NOT NULL,
+  "type" varchar(15) NOT NULL,
+  "status" bool NOT NULL DEFAULT true,
+  "metadata" json DEFAULT '{}' NOT NULL,
+  "updated_at" timestamp DEFAULT NULL,
+  "created_at" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY ("template_id") REFERENCES "template"("id") ON UPDATE CASCADE ON DELETE CASCADE,
+  FOREIGN KEY ("customer_id") REFERENCES "customer"("id") ON UPDATE CASCADE ON DELETE CASCADE
+);
+CREATE INDEX idx_license_id ON "license" ("id");
+CREATE INDEX idx_license_template_id ON "license" ("template_id");
+CREATE INDEX idx_license_customer_id ON "license" ("customer_id");
+-- +goose StatementEnd
 
 -- +goose Down
 -- +goose StatementBegin
-DROP TABLE user;
+DROP TABLE IF EXISTS "license";
+DROP TABLE IF EXISTS "template";
+DROP TABLE IF EXISTS "customer";
+DROP TABLE IF EXISTS "setting";
 -- +goose StatementEnd
