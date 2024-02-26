@@ -21,8 +21,14 @@ const (
 
 type Config struct {
 	HTTPAddr string           `toml:"http-addr" comment:"Ports <= 1024 are privileged ports. You can't use them unless you're root or have the explicit\npermission to use them. See this answer for an explanation or wikipedia or something you trust more.\nsudo setcap 'cap_net_bind_service=+ep' /opt/yourGoBinary"`
-	DevMode  bool             `toml:"dev-mode"  comment:"Active develop mode"`
+	DevMode  bool             `toml:"dev-mode" comment:"Active develop mode"`
+	Admin    Admin            `toml:"admin" comment:"Admin section"`
 	Database storage.Database `toml:"database"`
+}
+
+type Admin struct {
+	Email    string `toml:"email"`
+	Password string `toml:"password"`
 }
 
 // DefaultConfig is ...
@@ -30,6 +36,10 @@ func DefaultConfig() *Config {
 	return &Config{
 		DevMode:  false,
 		HTTPAddr: "0.0.0.0:8088",
+		Admin: Admin{
+			Email:    "admin@mail.com",
+			Password: "Pass123",
+		},
 		Database: storage.Database{
 			Storage: storage.Sqlite,
 			Sqlite: sqlite.Config{
@@ -38,7 +48,7 @@ func DefaultConfig() *Config {
 			Postgres: postgres.Config{
 				User:            "user",
 				Password:        "password",
-				Host:            "localhost:5430",
+				Host:            "localhost:5432",
 				Database:        "lime",
 				MaxConn:         50,
 				MaxIdleConn:     10,

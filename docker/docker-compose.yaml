@@ -27,13 +27,13 @@ x-resources: &default-resources
 
 services:
   postgres:
-    image: postgres:15-alpine
+    image: postgres:16-alpine
     restart: always
     ports:
       - 5430:5432
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-user}
       POSTGRES_DB: ${POSTGRES_DB:-lime}
+      POSTGRES_USER: ${POSTGRES_USER:-user}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
     volumes:
       - /etc/localtime:/etc/localtime:ro
@@ -47,3 +47,9 @@ services:
     networks:
       - private
     logging: *default-logging
+
+  mailhog:
+    image: jcalonso/mailhog
+    restart: always
+    networks:
+      - private
