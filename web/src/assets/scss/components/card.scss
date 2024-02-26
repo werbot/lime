@@ -2,7 +2,7 @@
   @apply place-content-center rounded-md bg-white p-7 shadow-lg;
 
   .title {
-    @apply grid gap-2 text-2xl font-black;
+    @apply grid gap-2 text-2xl font-black pb-4;
   }
 
   .message {

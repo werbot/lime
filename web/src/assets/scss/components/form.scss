@@ -2,7 +2,7 @@ form {
   @apply w-full;
 
   .label {
-    @apply flex select-none items-center justify-between pb-2 pt-4;
+    @apply flex select-none items-center justify-between pb-2 /*pt-4*/;
 
     .error {
       @apply text-right text-red-500;

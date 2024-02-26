@@ -1,6 +1,6 @@
 import { createApp } from "vue";
 
-import App from "@/app.vue";
+import App from "@/App.vue";
 import Router from "@/router";
 import Notifications from "notiwind";
 import Store from "@/store";

@@ -8,17 +8,13 @@ import (
 // User is a ...
 type User struct {
 	Core
-	Login    string `json:"login"`
-	Email    string `json:"email"`
-	Password string `json:"password"`
-	Status   bool   `json:"status"`
-	Role     string `json:"role"`
+	Email  string `json:"email"`
+	Status bool   `json:"status"`
 }
 
 // Validate is ...
 func (v User) Validate() error {
 	return validation.ValidateStruct(&v,
-		validation.Field(&v.Login, validation.Length(3, 50)),
 		validation.Field(&v.Email, validation.Required, is.Email),
 	)
 }
