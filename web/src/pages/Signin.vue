@@ -15,7 +15,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
+import { useRouter, useRoute } from "vue-router";
 import { apiPost } from "@/utils/api";
 import { FormInput } from "@/components";
 import { Form } from "vee-validate";
@@ -24,9 +25,24 @@ const loadingStatus = ref<boolean>(false);
 const data = ref({ email: "" });
 const sendMessage = ref<boolean>(false);
 
+onMounted(() => {
+  const token = useRoute().query.token;
+  const router = useRouter();
+  if (token) {
+    apiPost(`/api/sign/in?token=${token}`, data.value).then(res => {
+      if (res.code === 200) {
+        router.push({ name: 'manager' })
+      } else {
+        //showMessage(res.result, "connextError");
+        console.log("connextError")
+      }
+    });
+  }
+});
+
+
 const onSubmit = async () => {
   loadingStatus.value = true;
-
   apiPost(`/api/sign/in`, data.value).then(res => {
     if (res.code === 200) {
       sendMessage.value = true;
@@ -35,7 +51,6 @@ const onSubmit = async () => {
       console.log("connextError")
     }
   });
-
   loadingStatus.value = false;
 };
 

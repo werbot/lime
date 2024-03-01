@@ -19,25 +19,29 @@ func GenConfigFile() error {
 
 // GenJWTKeys is ...
 func GenJWTKeys() error {
+	cfg := config.Data()
+
 	jwtKey, err := crypto.GenerateRSA()
 	if err != nil {
 		return err
 	}
 
-	pubKeyPath := filepath.Join(config.KeyDir, config.JWTPubKeyFile)
-	privKeyPath := filepath.Join(config.KeyDir, config.JWTPrivKeyFile)
+	pubKeyPath := filepath.Join(cfg.Keys.KeyDir, cfg.Keys.JWT.PublicKey)
+	privKeyPath := filepath.Join(cfg.Keys.KeyDir, cfg.Keys.JWT.PrivateKey)
 	return generateAndSaveKeys(pubKeyPath, privKeyPath, jwtKey)
 }
 
 // GenLicenseKeys is ...
 func GenLicenseKeys() error {
+	cfg := config.Data()
+
 	licKey, err := crypto.GenerateEd25519()
 	if err != nil {
 		return err
 	}
 
-	pubKeyPath := filepath.Join(config.KeyDir, config.LicensePubKeyFile)
-	privKeyPath := filepath.Join(config.KeyDir, config.LicensePrivKeyFile)
+	pubKeyPath := filepath.Join(cfg.Keys.KeyDir, cfg.Keys.License.PublicKey)
+	privKeyPath := filepath.Join(cfg.Keys.KeyDir, cfg.Keys.License.PrivateKey)
 	return generateAndSaveKeys(pubKeyPath, privKeyPath, licKey)
 }
 

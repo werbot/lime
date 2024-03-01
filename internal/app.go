@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"os/signal"
+	"path/filepath"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/rs/zerolog/log"
@@ -14,30 +15,45 @@ import (
 	"github.com/werbot/lime/internal/routes"
 	"github.com/werbot/lime/migrations"
 	"github.com/werbot/lime/pkg/fsutil"
+	"github.com/werbot/lime/pkg/jwtutil"
 	"github.com/werbot/lime/pkg/logging"
 )
 
 // NewApp is ...
 func NewApp() error {
-	log := logging.Log()
-	cfg, err := config.LoadConfig()
-	if err != nil {
+	fmt.Print("🍋 Lime - lite license server\n")
+
+	log := logging.New()
+
+	if err := config.LoadConfig(); err != nil {
 		log.Err(err).Send()
 		return err
 	}
+	cfg := config.Data()
 
 	// generate keys if need
-	if !fsutil.IsDir(config.KeyDir) {
-		if err := fsutil.MkDirs(0o775, config.KeyDir); err != nil {
+	if !fsutil.IsDir(cfg.Keys.KeyDir) {
+		if err := fsutil.MkDirs(0o775, cfg.Keys.KeyDir); err != nil {
 			return err
 		}
 	}
 
-	if !fsutil.IsFile(config.JWTPrivKeyFile) || !fsutil.IsFile(config.JWTPubKeyFile) {
+	jwtPubKeyFile := filepath.Join(cfg.Keys.KeyDir, cfg.Keys.JWT.PublicKey)
+	jwtPrivKeyFile := filepath.Join(cfg.Keys.KeyDir, cfg.Keys.JWT.PrivateKey)
+	if !fsutil.IsFile(jwtPrivKeyFile) || !fsutil.IsFile(jwtPubKeyFile) {
+		fmt.Print("├─[🔑] A new JWT key pair has been created.\n")
 		GenJWTKeys()
 	}
 
-	if !fsutil.IsFile(config.LicensePrivKeyFile) || !fsutil.IsFile(config.LicensePubKeyFile) {
+	if err := jwtutil.LoadKeys(jwtPubKeyFile, jwtPrivKeyFile); err != nil {
+		log.Err(err).Send()
+		return err
+	}
+
+	licensePubKeyFile := filepath.Join(cfg.Keys.KeyDir, cfg.Keys.License.PublicKey)
+	licensePrivKeyFile := filepath.Join(cfg.Keys.KeyDir, cfg.Keys.License.PrivateKey)
+	if !fsutil.IsFile(licensePrivKeyFile) || !fsutil.IsFile(licensePubKeyFile) {
+		fmt.Print("├─[🔑] A new License key pair has been created.\n")
 		GenLicenseKeys()
 	}
 
@@ -46,27 +62,29 @@ func NewApp() error {
 		return err
 	}
 
-	//var id string
-	//db := queries.DB()
-	//if err := db.QueryRowContext(context.TODO(), `SELECT id FROM setting`).Scan(&id); err != nil {
-	//	fmt.Print(err)
-	//}
-	//fmt.Print(id)
+	/*
+		var installed bool
+		db := queries.DB()
+		if err := db.QueryRowContext(context.TODO(), `SELECT value FROM setting WHERE key = 'installed'`).Scan(&installed); err != nil {
+			fmt.Print(err)
+		}
+		fmt.Print(installed)
+	*/
 
 	app := fiber.New(fiber.Config{
 		DisableStartupMessage: true,
 	})
 
-	middleware.FiberMiddleware(app, log)
+	middleware.FiberMiddleware(app)
 
-	routes.AdminRoutes(app)
+	routes.UIRoutes(app)
 	routes.ApiPrivateRoutes(app)
 	routes.ApiPublicRoutes(app)
 	routes.NotFoundRoute(app)
 
-	fmt.Print("🍋 Lime - lite license server\n")
-	fmt.Printf("├─ Public API: http://%s/api/\n", cfg.HTTPAddr)
-	fmt.Printf("└─ Admin UI: http://%s/_/\n", cfg.HTTPAddr)
+	fmt.Printf("├─[🚀] Admin UI: http://%s/_/\n", cfg.HTTPAddr)
+	fmt.Printf("├─[🚀] Public UI: http://%s/\n", cfg.HTTPAddr)
+	fmt.Printf("└─[🚀] Public API: http://%s/api/\n", cfg.HTTPAddr)
 
 	if cfg.DevMode {
 		StartServer(cfg.HTTPAddr, app)

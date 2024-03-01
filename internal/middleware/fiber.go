@@ -6,11 +6,11 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/compress"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/etag"
-	"github.com/rs/zerolog"
+	"github.com/werbot/lime/pkg/logging"
 )
 
 // FiberMiddleware is ...
-func FiberMiddleware(a *fiber.App, log zerolog.Logger) {
+func FiberMiddleware(a *fiber.App) {
 	a.Use(
 		cors.New(cors.Config{
 			AllowOrigins:  "*",
@@ -24,7 +24,9 @@ func FiberMiddleware(a *fiber.App, log zerolog.Logger) {
 	a.Use(compress.New(compress.Config{
 		Level: compress.LevelBestSpeed,
 	}))
+
+	log := logging.New()
 	a.Use(fiberzerolog.New(fiberzerolog.Config{
-		Logger: &log,
+		Logger: log.Logger,
 	}))
 }

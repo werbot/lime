@@ -13,6 +13,7 @@ var (
 	version   = "v0.0.1"
 	gitCommit = "00000000"
 	buildDate = "24.05.2020"
+	// configPath = "./lime.toml"
 )
 
 var rootCmd = &cobra.Command{

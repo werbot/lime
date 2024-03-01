@@ -1,7 +1,4 @@
-import {
-  createRouter,
-  createWebHistory,
-} from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
 import { getCookie } from "@/utils";
 import * as NProgress from "nprogress";
 
@@ -22,7 +19,7 @@ const router = createRouter({
     },
     {
       path: "/_",
-      name: "admin",
+      name: "adminLicense",
       meta: { layout: "Blank" },
       children: [
         {
@@ -52,36 +49,36 @@ const router = createRouter({
   ],
 });
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, from) => {
   NProgress.start();
 
   loadLayoutMiddleware(to);
 
   let isAuthenticated = false;
-  let token = getCookie("token");
-  if (token) {
+  if (getCookie("token")) {
     isAuthenticated = true;
   }
 
+  let isAdmin = false;
+  if (getCookie("admin")) {
+    isAdmin = true;
+  }
+
   if (to.path.startsWith("/_")) {
-    if (to.name == "adminInstall") {
-      next();
+    if (!isAdmin && to.name !== "adminSignin") {
+      return { name: "adminSignin" };
     }
-    if (!isAuthenticated && to.name !== "adminSignin") {
-      next({ name: "adminSignin" });
+    if (isAdmin && to.name === "adminSignin") {
+      return { name: "adminLicense" };
     }
-    if (isAuthenticated) {
-      next({ name: "adminLicense" });
+  } else {
+    if (!isAuthenticated && to.name !== "signin") {
+      return { name: "signin" };
     }
-  }else{
-    if(!isAuthenticated && to.name !== "signin"){
-      next({ name: "signin" });
-    }
-    if (isAuthenticated){
-      next({ name: "manager" })
+    if (isAuthenticated && to.name === "signin") {
+      return { name: "manager" };
     }
   }
-  next();
 });
 
 router.afterEach(() => {

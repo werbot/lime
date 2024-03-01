@@ -51,6 +51,7 @@ node_modules
 rest.http
 
 web/dist
+web/pkg
 cmd/__debug_bin*
 cmd/main
 cmd/lime_*/

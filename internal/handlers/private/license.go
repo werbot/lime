@@ -19,6 +19,8 @@ import (
 // @Success 200 {string} string "{"status":"200", "msg":""}"
 // @Router /_/api/license [post]
 func NewLicense(c *fiber.Ctx) error {
+	cfg := config.Data()
+
 	month := time.Hour * 24 * 31
 
 	licenseInfo := &license.License{
@@ -41,7 +43,7 @@ func NewLicense(c *fiber.Ctx) error {
 		IssuedAt:  time.Now().UTC(),
 	}
 
-	privKey := fsutil.MustReadFile(filepath.Join(config.KeyDir, config.LicensePrivKeyFile))
+	privKey := fsutil.MustReadFile(filepath.Join(cfg.Keys.KeyDir, cfg.Keys.License.PrivateKey))
 	licenseKey := license.DecodePrivateKey(privKey)
 
 	encoded, err := licenseInfo.Encode(licenseKey)

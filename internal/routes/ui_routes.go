@@ -9,9 +9,9 @@ import (
 	"github.com/werbot/lime/web"
 )
 
-// AdminRoutes is ...
-func ManagerRoutes(c *fiber.App) {
-	embedAdmin, _ := fs.Sub(web.EmbedAdmin(), "dist")
+// UIRoutes is ...
+func UIRoutes(c *fiber.App) {
+	embedAdmin, _ := fs.Sub(web.EmbedUI(), "dist")
 	c.Use("/", filesystem.New(filesystem.Config{
 		Root:         http.FS(embedAdmin),
 		Index:        "index.html",

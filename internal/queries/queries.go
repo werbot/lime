@@ -11,6 +11,7 @@ var db *Base
 
 // Base is ...
 type Base struct {
+	SettingQueries
 	AuthQueries
 }
 
@@ -23,7 +24,8 @@ func Init(cfg storage.Database, embed embed.FS) error {
 	}
 
 	db = &Base{
-		AuthQueries: AuthQueries{DB: database},
+		SettingQueries: SettingQueries{DB: database},
+		AuthQueries:    AuthQueries{DB: database},
 	}
 
 	return nil

@@ -35,7 +35,7 @@ func UseStorage(database Database, migrations embed.FS) (*sql.DB, error) {
 		}
 
 		if !fsutil.IsFile(database.Sqlite.DBPath) {
-			if _, err := fsutil.OpenFile(database.Sqlite.DBPath, fsutil.FsCWFlags, 0666); err != nil {
+			if _, err := fsutil.OpenFile(database.Sqlite.DBPath, fsutil.FsCWFlags, 0o666); err != nil {
 				return nil, err
 			}
 
@@ -48,7 +48,6 @@ func UseStorage(database Database, migrations embed.FS) (*sql.DB, error) {
 				return nil, err
 			}
 		}
-
 		return db, nil
 	case Postgres:
 		db, err := postgres.New(context.Background(), &database.Postgres)
@@ -66,9 +65,8 @@ func UseStorage(database Database, migrations embed.FS) (*sql.DB, error) {
 				return nil, err
 			}
 		}
-
 		return db, nil
 	}
 
-	return nil, errors.New("Invalid storage")
+	return nil, errors.New("invalid storage")
 }

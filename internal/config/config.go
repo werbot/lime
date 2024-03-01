@@ -11,24 +11,44 @@ import (
 )
 
 const (
-	ConfigFile         = "./lime.toml"
-	KeyDir             = "./lime_keys"
-	JWTPubKeyFile      = "jwt_public.key"
-	JWTPrivKeyFile     = "jwt_private.key"
-	LicensePubKeyFile  = "license_public.key"
-	LicensePrivKeyFile = "license_private.key"
+	ConfigFile = "./lime.toml"
 )
 
+var cfg *Config
+
+// Config is ...
 type Config struct {
 	HTTPAddr string           `toml:"http-addr" comment:"Ports <= 1024 are privileged ports. You can't use them unless you're root or have the explicit\npermission to use them. See this answer for an explanation or wikipedia or something you trust more.\nsudo setcap 'cap_net_bind_service=+ep' /opt/yourGoBinary"`
 	DevMode  bool             `toml:"dev-mode" comment:"Active develop mode"`
 	Admin    Admin            `toml:"admin" comment:"Admin section"`
-	Database storage.Database `toml:"database"`
+	Keys     Keys             `toml:"keys" comment:"Keys section"`
+	Database storage.Database `toml:"database" comment:"Database section"`
 }
 
+// Admin is ...
 type Admin struct {
 	Email    string `toml:"email"`
 	Password string `toml:"password"`
+}
+
+// Keys is ...
+type Keys struct {
+	KeyDir  string  `toml:"key-dir"`
+	JWT     JWT     `toml:"jwt"`
+	License License `toml:"license"`
+}
+
+// JWT is ...
+type JWT struct {
+	PublicKey  string `toml:"public-key"`
+	PrivateKey string `toml:"private-key"`
+	Expire     string `toml:"expire"`
+}
+
+// License is ...
+type License struct {
+	PublicKey  string `toml:"public-key"`
+	PrivateKey string `toml:"private-key"`
 }
 
 // DefaultConfig is ...
@@ -39,6 +59,18 @@ func DefaultConfig() *Config {
 		Admin: Admin{
 			Email:    "admin@mail.com",
 			Password: "Pass123",
+		},
+		Keys: Keys{
+			KeyDir: "./lime_keys",
+			JWT: JWT{
+				PublicKey:  "jwt_public.key",
+				PrivateKey: "jwt_private.key",
+				Expire:     "10m",
+			},
+			License: License{
+				PublicKey:  "license_public.key",
+				PrivateKey: "license_private.key",
+			},
 		},
 		Database: storage.Database{
 			Storage: storage.Sqlite,
@@ -59,21 +91,22 @@ func DefaultConfig() *Config {
 }
 
 // LoadConfig is ...
-func LoadConfig() (*Config, error) {
+func LoadConfig() error {
 	config := DefaultConfig()
 
 	if fsutil.IsFile(ConfigFile) {
 		file, err := os.ReadFile(ConfigFile)
 		if err != nil {
-			return nil, err
+			return err
 		}
 
 		if err := toml.Unmarshal(file, &config); err != nil {
-			return nil, err
+			return err
 		}
 	}
 
-	return config, nil
+	cfg = config
+	return nil
 }
 
 // SaveConfig is ...
@@ -87,4 +120,12 @@ func SaveConfig(config *Config) error {
 	}
 
 	return nil
+}
+
+// Data is ...
+func Data() *Config {
+	if cfg == nil {
+		cfg = &Config{}
+	}
+	return cfg
 }

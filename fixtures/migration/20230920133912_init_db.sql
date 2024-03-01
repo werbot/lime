@@ -1,15 +1,19 @@
 -- +goose Up
 -- +goose StatementBegin
+UPDATE "setting" SET value = 'https://site.com' WHERE key = 'site_domain';
+UPDATE "setting" SET value = 'Lime license' WHERE key = 'site_name';
+UPDATE "setting" SET value = 'Lime Team' WHERE key = 'site_signature';
+UPDATE "setting" SET value = 'support@site.com' WHERE key = 'site_email_support';
 UPDATE "setting" SET value = 'localhost' WHERE key = 'smtp_host';
 UPDATE "setting" SET value = '1025' WHERE key = 'smtp_port';
 UPDATE "setting" SET value = 'username' WHERE key = 'smtp_username';
 UPDATE "setting" SET value = 'password' WHERE key = 'smtp_password';
 UPDATE "setting" SET value = 'None' WHERE key = 'smtp_encryption';
 UPDATE "setting" SET value = 'User Name from site' WHERE key = 'mail_sender_name';
-UPDATE "setting" SET value = 'user@mail.com' WHERE key = 'mail_sender_email';
+UPDATE "setting" SET value = 'admin@mail.com' WHERE key = 'mail_sender_email';
 
 INSERT INTO "customer" ("id", "email", "status") VALUES 
-('7v38n58hXHVsNxS', 'admin@mail.com', 't');
+('7v38n58hXHVsNxS', 'user@mail.com', 't');
 
 INSERT INTO "template" ("id", "name", "limit", "price", "term", "hide", "status", "check") VALUES 
 ('4dDADaT1t0m71Md', 'template 1', '{"servers":5,"companies":5,"users":5}', 500, 'd', 'f', 't', '{"ip":1,"mac":1,"country":1}'),
@@ -33,4 +37,8 @@ UPDATE "setting" SET value = '' WHERE key = 'smtp_password';
 UPDATE "setting" SET value = '' WHERE key = 'smtp_encryption';
 UPDATE "setting" SET value = '' WHERE key = 'mail_sender_email';
 UPDATE "setting" SET value = '' WHERE key = 'mail_sender_name';
+UPDATE "setting" SET value = '' WHERE key = 'site_domain';
+UPDATE "setting" SET value = '' WHERE key = 'site_name';
+UPDATE "setting" SET value = '' WHERE key = 'site_signature';
+UPDATE "setting" SET value = '' WHERE key = 'site_email_support';
 -- +goose StatementEnd

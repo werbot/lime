@@ -5,6 +5,39 @@ import (
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 )
 
+// SettingName is ...
+type SettingName struct {
+	ID    string `json:"id,omitempty"`
+	Key   string `json:"key"`
+	Value any    `json:"value,omitempty"`
+}
+
+// Validate is ...
+func (v SettingName) Validate() error {
+	return validation.ValidateStruct(&v,
+		validation.Field(&v.ID, validation.Length(15, 15)),
+		validation.Field(&v.Key, validation.Required),
+	)
+}
+
+// Site is ...
+type Site struct {
+	Domain       string `json:"domain,omitempty"`
+	Name         string `json:"name,omitempty"`
+	Signature    string `json:"signature,omitempty"`
+	EmailSupport string `json:"email_support,omitempty"`
+}
+
+// Validate is ...
+func (v Site) Validate() error {
+	return validation.ValidateStruct(&v,
+		validation.Field(&v.Domain, is.Host),
+		validation.Field(&v.Name, validation.Length(5, 128)),
+		validation.Field(&v.Signature, validation.Length(5, 128)),
+		validation.Field(&v.EmailSupport, is.Email),
+	)
+}
+
 // SMTP is ...
 type SMTP struct {
 	Host       string `json:"host,omitempty"`

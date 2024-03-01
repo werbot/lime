@@ -5,17 +5,17 @@ import (
 )
 
 //go:embed all:dist
-var embedAdmin embed.FS
+var embedUI embed.FS
 
 //go:embed dist/index.html
-var embedAdminIndex embed.FS
+var embedUIIndex embed.FS
 
 // EmbedAdmin is ...
-func EmbedAdmin() embed.FS {
-	return embedAdmin
+func EmbedUI() embed.FS {
+	return embedUI
 }
 
 // EmbedAdminIndex is ...
-func EmbedAdminIndex() embed.FS {
-	return embedAdminIndex
+func EmbedUIIndex() embed.FS {
+	return embedUIIndex
 }
