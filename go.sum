@@ -245,6 +245,8 @@ modernc.org/gc/v3 v3.0.0-20240304020402-f0dba7c97c2b h1:BnN1t+pb1cy61zbvSUV7SeI0
 modernc.org/gc/v3 v3.0.0-20240304020402-f0dba7c97c2b/go.mod h1:Qz0X07sNOR1jWYCrJMEnbW/X55x206Q7Vt4mz6/wHp4=
 modernc.org/libc v1.42.1 h1:W2T7qUhyCmEaFxqNec9x0T6ohiffM/jvifCSwKC9Gj8=
 modernc.org/libc v1.42.1/go.mod h1:UbS9Tjnye2q6hLYa7gw/q73fXB9lyn/fXLBGzgser8g=
+modernc.org/libc v1.44.0 h1:71bbnKgb0mCg7GOOI/PHlzz7Bv6obELGNKnIEeowX8c=
+modernc.org/libc v1.44.0/go.mod h1:RRqfGVjvILF5AdNP3RPCiihj7+Dn2pIBrdlU60lA9vs=
 modernc.org/mathutil v1.6.0 h1:fRe9+AmYlaej+64JsEEhoWuAYBkOtQiMEU7n/XgfYi4=
 modernc.org/mathutil v1.6.0/go.mod h1:Ui5Q9q1TR2gFm0AQRqQUaBWFLAhQpCwNcuhBOSedWPo=
 modernc.org/memory v1.7.2 h1:Klh90S215mmH8c9gO98QxQFsY+W451E8AnzjoE2ee1E=

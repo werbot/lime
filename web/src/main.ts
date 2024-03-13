@@ -8,7 +8,8 @@ import Store from "@/store";
 import { defineRule } from "vee-validate";
 import * as rules from "@vee-validate/rules";
 
-import "@/assets/app.css";
+import "virtual:svg-icons-register";
+import "@/assets/app.scss";
 
 // validate rules
 Object.keys(rules).forEach((rule) => {

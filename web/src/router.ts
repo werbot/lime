@@ -19,7 +19,7 @@ const router = createRouter({
     },
     {
       path: "/_",
-      name: "adminLicense",
+      name: "admin",
       meta: { layout: "Blank" },
       children: [
         {
@@ -36,7 +36,26 @@ const router = createRouter({
         {
           path: "license",
           name: "adminLicense",
+          meta: { layout: "Admin" },
           component: () => import("@/pages/admin/License.vue"),
+        },
+        {
+          path: "customer",
+          name: "adminCustomer",
+          meta: { layout: "Admin" },
+          component: () => import("@/pages/admin/Customer.vue"),
+        },
+        {
+          path: "payment",
+          name: "adminPayment",
+          meta: { layout: "Admin" },
+          component: () => import("@/pages/admin/Payment.vue"),
+        },
+        {
+          path: "setting",
+          name: "adminSetting",
+          meta: { layout: "Admin" },
+          component: () => import("@/pages/admin/Setting.vue"),
         },
       ],
     },

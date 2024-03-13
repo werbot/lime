@@ -12,9 +12,14 @@ export function getCookie(cname: string): string {
   return "";
 }
 
-export function setCookie(cname: string, cvalue: string, days: number): void {
+export function setCookie(cName: string, cValue: string, days: number): void {
   const date = new Date();
   date.setDate(date.getDate() + days);
-  const value = `${cvalue}${days === null ? "" : "; expires=" + date.toUTCString()}`;
-  document.cookie = `${cname}=${value}`;
+  const value = `${cValue}${days === null ? "" : "; expires=" + date.toUTCString()}`;
+  document.cookie = `${cName}=${value}`;
+}
+
+
+export function delCookie(cName: string): void {
+  document.cookie = `${cName}=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
 }

@@ -20,7 +20,7 @@ Linux*)
   GO_RELEASE=$(get_latest_go_version)
   GO_PATH="$HOME/go"
 
-  #rm -rf $GO_PATH
+  #sudo rm -rf $GO_PATH
   #mkdir -p $GO_PATH
   #echo -e "export GOROOT=\"\$HOME/go\"" >>~/.bashrc
   #echo -e "export GOPATH=\"\$HOME/go/packages\"" >>~/.bashrc

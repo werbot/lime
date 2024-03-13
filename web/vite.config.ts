@@ -3,7 +3,7 @@ import path from "path";
 
 import vue from "@vitejs/plugin-vue";
 import VueDevTools from "vite-plugin-vue-devtools";
-import vitePluginVueSvgIcons from "vite-plugin-vue-svg-icons";
+import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
 
 export default defineConfig({
   base: "/",
@@ -17,7 +17,14 @@ export default defineConfig({
       },
     },
   },
-  plugins: [VueDevTools(), vue(), vitePluginVueSvgIcons()],
+  plugins: [
+    VueDevTools(),
+    vue(),
+    createSvgIconsPlugin({
+      iconDirs: [path.resolve(process.cwd(), "./src/assets/icons")],
+      symbolId: "icon-[dir]-[name]",
+    }),
+  ],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),

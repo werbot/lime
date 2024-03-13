@@ -1,7 +1,7 @@
 <template>
   <div class="artboard">
     <header>
-      <h1>Licenses</h1>
+      <h1>Settings</h1>
     </header>
     <div class="desc">Description</div>
 

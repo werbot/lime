@@ -42,7 +42,7 @@ func main() {
 func cmdServe() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "serve [flags]",
-		Short: "Starts the web server (default to 0.0.0.0:8088 and use sqlite database)",
+		Short: "Starts the web server (default to 0.0.0.0:8088)",
 		Run: func(serveCmd *cobra.Command, args []string) {
 			if err := app.NewApp(); err != nil {
 				os.Exit(1)
