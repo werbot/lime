@@ -38,7 +38,7 @@ func SignIn(c *fiber.Ctx) error {
 		expires := time.Unix(int64(sec), int64(dec*(1e9)))
 
 		c.Cookie(&fiber.Cookie{
-			Name:     "token",
+			Name:     "manager",
 			Value:    tokenReq,
 			Expires:  expires,
 			SameSite: "lax",

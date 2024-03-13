@@ -19,7 +19,6 @@ export function setCookie(cName: string, cValue: string, days: number): void {
   document.cookie = `${cName}=${value}`;
 }
 
-
 export function delCookie(cName: string): void {
   document.cookie = `${cName}=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
 }

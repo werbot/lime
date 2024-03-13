@@ -13,15 +13,21 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { delCookie } from "@/utils/";
 import { SvgIcon } from "@/components";
 
+const route = useRoute();
 const router = useRouter();
 
 const signOut = async () => {
-  delCookie("admin");
-  router.push({ name: "adminSignin" });
+  const sectionName = (route.path as string).startsWith('/_') ? "admin" : "manager";
+  delCookie(sectionName);
+  if (sectionName === "admin") {
+    router.push({ name: "admin-signin" });
+  }else{
+    router.push({ name: "signin" });
+  }
 };
 </script>
 

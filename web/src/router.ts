@@ -8,8 +8,27 @@ const router = createRouter({
     {
       path: "/",
       name: "manager",
-      meta: { layout: "Blank" },
-      component: () => import("@/pages/Manager.vue"),
+      redirect: { name: "manager-license" },
+      children: [
+        {
+          path: "licenses",
+          name: "manager-license",
+          meta: { name: "Licenses", icon: "ticket", layout: "Private" },
+          component: () => import("@/pages/manager/License.vue"),
+        },
+        {
+          path: "payment",
+          name: "manager-payment",
+          meta: { name: "Payments", icon: "banknotes", layout: "Private" },
+          component: () => import("@/pages/manager/Payment.vue"),
+        },
+        {
+          path: "setting",
+          name: "manager-setting",
+          meta: { name: "Settings", icon: "tooth", layout: "Private" },
+          component: () => import("@/pages/manager/Setting.vue"),
+        },
+      ],
     },
     {
       path: "/signin",
@@ -20,42 +39,77 @@ const router = createRouter({
     {
       path: "/_",
       name: "admin",
-      meta: { layout: "Blank" },
+      redirect: { name: "admin-license" },
       children: [
         {
           path: "install",
-          name: "adminInstall",
+          name: "admin-install",
+          meta: { layout: "Blank" },
           component: () => import("@/pages/admin/Install.vue"),
         },
         {
           path: "signin",
-          name: "adminSignin",
+          name: "admin-signin",
           meta: { layout: "Signin" },
           component: () => import("@/pages/admin/Signin.vue"),
         },
         {
           path: "license",
-          name: "adminLicense",
-          meta: { layout: "Admin" },
-          component: () => import("@/pages/admin/License.vue"),
+          name: "admin-license",
+          meta: { name: "Licenses", icon: "ticket", layout: "Private" },
+          redirect: { name: "admin-license-all" },
+          children: [
+            {
+              path: "all",
+              name: "admin-license-all",
+              meta: { name: "All" },
+              component: () => import("@/pages/admin/License/All.vue"),
+            },
+            {
+              path: "all",
+              name: "admin-license-template",
+              meta: { name: "Template" },
+              component: () => import("@/pages/admin/License/Template.vue"),
+            },
+          ],
         },
         {
           path: "customer",
-          name: "adminCustomer",
-          meta: { layout: "Admin" },
+          name: "admin-customer",
+          meta: { name: "Customers", icon: "users", layout: "Private" },
           component: () => import("@/pages/admin/Customer.vue"),
         },
         {
           path: "payment",
-          name: "adminPayment",
-          meta: { layout: "Admin" },
+          name: "admin-payment",
+          meta: { name: "Payments", icon: "banknotes", layout: "Private" },
           component: () => import("@/pages/admin/Payment.vue"),
         },
         {
           path: "setting",
-          name: "adminSetting",
-          meta: { layout: "Admin" },
-          component: () => import("@/pages/admin/Setting.vue"),
+          name: "admin-setting",
+          meta: { name: "Settings", icon: "tooth", layout: "Private" },
+          redirect: { name: "admin-setting-site" },
+          children: [
+            {
+              path: "site",
+              name: "admin-setting-site",
+              meta: { name: "Site" },
+              component: () => import("@/pages/admin/Setting/Site.vue"),
+            },
+            {
+              path: "payment",
+              name: "admin-setting-payment",
+              meta: { name: "Payment" },
+              component: () => import("@/pages/admin/Setting/Payment.vue"),
+            },
+            {
+              path: "mail",
+              name: "admin-setting-mail",
+              meta: { name: "Mail" },
+              component: () => import("@/pages/admin/Setting/Mail.vue"),
+            },
+          ],
         },
       ],
     },
@@ -74,7 +128,7 @@ router.beforeEach((to, from) => {
   loadLayoutMiddleware(to);
 
   let isAuthenticated = false;
-  if (getCookie("token")) {
+  if (getCookie("manager")) {
     isAuthenticated = true;
   }
 
@@ -84,11 +138,11 @@ router.beforeEach((to, from) => {
   }
 
   if (to.path.startsWith("/_")) {
-    if (!isAdmin && to.name !== "adminSignin") {
-      return { name: "adminSignin" };
+    if (!isAdmin && to.name !== "admin-signin") {
+      return { name: "admin-signin" };
     }
-    if (isAdmin && to.name === "adminSignin") {
-      return { name: "adminLicense" };
+    if (isAdmin && to.name === "admin-signin") {
+      return { name: "admin-license-all" };
     }
   } else {
     if (!isAuthenticated && to.name !== "signin") {

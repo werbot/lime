@@ -30,7 +30,7 @@ const onSubmit = async () => {
 
   apiPost(`/_/api/sign/in`, data.value).then(res => {
     if (res.code === 200) {
-      router.push({ name: 'adminLicense' })
+      router.push({ name: 'admin-license' })
     } else {
       //showMessage(res.result, "connextError");
       console.log("connextError")

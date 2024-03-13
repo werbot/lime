@@ -17,7 +17,7 @@ func JWTProtected() func(*fiber.Ctx) error {
 		KeyFunc:      customKeyFunc(),
 		ContextKey:   "jwt",
 		ErrorHandler: jwtError,
-		TokenLookup:  "cookie:token",
+		TokenLookup:  "cookie:manager",
 	}
 
 	return jwtMiddleware.New(config)
@@ -41,9 +41,9 @@ func customKeyFunc() jwt.Keyfunc {
 			return nil, fmt.Errorf("Unexpected jwt signing method=%v", t.Header["alg"])
 		}
 
-		//db := queries.DB()
-		//settingJWT, _ := db.SettingJWT()
-		//return []byte(settingJWT.Secret), nil
+		// db := queries.DB()
+		// settingJWT, _ := db.SettingJWT()
+		// return []byte(settingJWT.Secret), nil
 		return nil, nil
 	}
 }

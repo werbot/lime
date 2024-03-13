@@ -1,7 +1,7 @@
 <template>
   <nav class="sidebar">
     <ul>
-      <li v-for="(item) in profileMenu">
+      <li v-for="(item) in mainMenu()">
         <router-link active-class="current" :to="item.link" :class="{ current: (route.name as string).startsWith(item.link.name) }">
           <SvgIcon :name="item.icon" />
           <span>{{ item.name }}</span>
@@ -13,37 +13,15 @@
 
 <script setup lang="ts">
 import { useRoute } from "vue-router";
+import { mainMenu } from "@/utils/menu";
 import { SvgIcon } from "@/components";
 
 const route = useRoute();
-
-const profileMenu = [
-  {
-    name: "Licenses",
-    link: { name: "adminLicense" },
-    icon: "ticket",
-  },
-  {
-    name: "Customers",
-    link: { name: "adminCustomer" },
-    icon: "users",
-  },
-  {
-    name: "Payments",
-    link: { name: "adminPayment" },
-    icon: "banknotes",
-  },
-  {
-    name: "Settings",
-    link: { name: "adminSetting" },
-    icon: "tooth",
-  },
-]
 </script>
 
 <style lang="scss">
 .sidebar {
-  @apply mb-6;
+  @apply mb-6 mt-1;
 
   li {
     @apply mb-4 w-3 sm:w-36;
