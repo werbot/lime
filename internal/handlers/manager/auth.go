@@ -20,7 +20,7 @@ import (
 // @Produce application/json
 // @Param
 // @Success 200 {string} string "{"status":"200", "msg":""}"
-// @Router /api/sign/in?token= [post]]
+// @Router /api/sign/in?token= [post]
 func SignIn(c *fiber.Ctx) error {
 	cfg := config.Data()
 	log := logging.New()
@@ -89,7 +89,7 @@ func SignIn(c *fiber.Ctx) error {
 // @Router /api/sign/out [post]
 func SignOut(c *fiber.Ctx) error {
 	c.Cookie(&fiber.Cookie{
-		Name:    "member",
+		Name:    "manager",
 		Expires: time.Now().Add(-(time.Hour * 2)),
 		// HTTPOnly: true,
 		SameSite: "lax",

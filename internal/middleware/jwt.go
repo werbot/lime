@@ -13,9 +13,10 @@ import (
 // JWTProtected is ...
 func JWTProtected(section string) func(*fiber.Ctx) error {
 	return jwtMiddleware.New(jwtMiddleware.Config{
-		ErrorHandler: jwtError,
-		ContextKey:   "jwt",
-		TokenLookup:  "cookie:" + section,
+		SuccessHandler: jwtSuccess,
+		ErrorHandler:   jwtError,
+		ContextKey:     "jwt",
+		TokenLookup:    "cookie:" + section,
 		SigningKey: jwtMiddleware.SigningKey{
 			JWTAlg: jwtMiddleware.RS256,
 			Key:    jwtutil.PrivateKey().Public(),
@@ -32,4 +33,19 @@ func jwtError(c *fiber.Ctx, err error) error {
 	}
 
 	return webutil.Response(c, fiber.StatusUnauthorized, "Unauthorized", err.Error())
+}
+
+func jwtSuccess(c *fiber.Ctx) error {
+	if strings.HasPrefix(c.Path(), "/_/api") {
+		meta, err := jwtutil.ExtractMetadataFiber(c)
+		if err != nil {
+			return webutil.Response(c, fiber.StatusBadRequest, "Bad request", err.Error())
+		}
+
+		if meta.ID != "admin" {
+			return webutil.Response(c, fiber.StatusBadRequest, "Bad request", "Token has been revoked")
+		}
+	}
+
+	return c.Next()
 }
