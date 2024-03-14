@@ -77,9 +77,9 @@ func NewApp() error {
 
 	middleware.FiberMiddleware(app)
 
-	routes.UIRoutes(app)
 	routes.ApiPrivateRoutes(app)
 	routes.ApiPublicRoutes(app)
+	routes.UIRoutes(app)
 	routes.NotFoundRoute(app)
 
 	fmt.Printf("├─[🚀] Admin UI: http://%s/_/\n", cfg.HTTPAddr)

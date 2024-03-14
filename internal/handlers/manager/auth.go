@@ -88,5 +88,12 @@ func SignIn(c *fiber.Ctx) error {
 // @Success 200 {string} string "{"status":"200", "msg":""}"
 // @Router /api/sign/out [post]
 func SignOut(c *fiber.Ctx) error {
-	return webutil.StatusOK(c, "SignOut", nil)
+	c.Cookie(&fiber.Cookie{
+		Name:    "member",
+		Expires: time.Now().Add(-(time.Hour * 2)),
+		// HTTPOnly: true,
+		SameSite: "lax",
+	})
+
+	return c.SendStatus(fiber.StatusNoContent)
 }

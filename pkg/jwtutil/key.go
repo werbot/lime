@@ -34,3 +34,11 @@ func LoadKeys(pubKeyPath, privKeyPath string) error {
 
 	return nil
 }
+
+func PublicKey() *rsa.PublicKey {
+	return publicKey
+}
+
+func PrivateKey() *rsa.PrivateKey {
+	return privateKey
+}

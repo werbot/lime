@@ -8,7 +8,7 @@
           leave-from="opacity-100" leave-to="opacity-0" move="transition duration-500" move-delay="delay-300">
           <div v-for="notification in notifications" :key="notification.id" class="notification" :class="notificationClasses(notification.type)">
             <div class="ico" :class="iconBgColor(notification.type)">
-              <SvgIcon :name="notification.type" class="text-white" />
+              <SvgIcon :name="notification.type as string" class="text-white" />
             </div>
             <div class="message">
               <div class="mx-3">
@@ -59,7 +59,6 @@ handleNotification("connextSuccess", "success");
 handleNotification("connextWarning", "warning");
 handleNotification("connextInfo", "info");
 </script>
-
 
 <style lang="scss">
 .alert {

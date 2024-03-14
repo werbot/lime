@@ -31,7 +31,7 @@ onMounted(() => {
   if (token) {
     apiPost(`/api/sign/in?token=${token}`, data.value).then(res => {
       if (res.code === 200) {
-        router.push({ name: 'manager' })
+        router.push({ name: 'manager-license' })
       } else {
         //showMessage(res.result, "connextError");
         console.log("connextError")
@@ -39,7 +39,6 @@ onMounted(() => {
     });
   }
 });
-
 
 const onSubmit = async () => {
   loadingStatus.value = true;

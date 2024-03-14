@@ -163,8 +163,8 @@ async function loadLayoutMiddleware(route: any): Promise<void> {
   try {
     layoutComponent = await import(`@/layouts/${route.meta.layout}.vue`);
   } catch (e) {
-    console.error("Error occurred in processing of layout: ", e);
-    console.log("Mounted default layout `Blank`");
+    //console.error("Error occurred in processing of layout: ", e);
+    //console.log("Mounted default layout `Blank`");
     layoutComponent = await import(`@/layouts/Blank.vue`);
   }
 
