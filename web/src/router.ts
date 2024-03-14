@@ -86,6 +86,12 @@ const router = createRouter({
           component: () => import("@/pages/admin/Payment.vue"),
         },
         {
+          path: "log",
+          name: "admin-log",
+          meta: { name: "Logs", icon: "document", layout: "Private" },
+          component: () => import("@/pages/admin/Log.vue"),
+        },
+        {
           path: "setting",
           name: "admin-setting",
           meta: { name: "Settings", icon: "tooth", layout: "Private" },
