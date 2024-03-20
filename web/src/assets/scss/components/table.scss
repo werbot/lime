@@ -1,0 +1,47 @@
+table {
+  @apply min-w-full;
+
+  th {
+    @apply bg-gray-200 py-4 text-left text-gray-700 first:pl-6 last:pr-6;
+  }
+
+  tr {
+    @apply border-b border-gray-100 last:border-b-0;
+
+    &.cursor {
+      &:hover,
+      &:active {
+        @apply bg-gray-100 cursor-pointer;
+      }
+    }
+  }
+
+  td {
+    @apply whitespace-nowrap py-4 first:pl-6 last:pr-6;
+  }
+
+  .adaptive-sm {
+    @apply hidden sm:table-cell;
+  }
+
+  .adaptive-md {
+    @apply hidden md:table-cell;
+  }
+
+  .adaptive-lg {
+    @apply hidden lg:table-cell;
+  }
+
+  &.mini {
+    @apply  scroll-my-0;
+
+    tr {
+      @apply border-b border-gray-300 bg-transparent last:border-b-0;
+    }
+
+    td {
+      @apply py-4 first:pl-4 first:pr-2 last:pl-2 last:pr-4;
+      @apply whitespace-normal break-all first:font-bold;
+    }
+  }
+}

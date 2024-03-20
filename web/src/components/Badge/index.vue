@@ -1,10 +1,12 @@
 <template>
-  <span class="badge" :class="classBadge">
+  <span :class="badgeClasses">
     {{ name }}
   </span>
 </template>
 
 <script lang="ts" setup>
+import { computed } from 'vue';
+
 const props = defineProps({
   name: {
     type: String,
@@ -16,15 +18,18 @@ const props = defineProps({
   },
   class: {
     type: String,
+    default: '',
   },
 });
 
-const classBadge = "badge-" + props.color + " " + props.class;
+const badgeClasses = computed(() => {
+  return ['badge', `badge-${props.color}`, props.class];
+});
 </script>
 
 <style lang="scss">
 .badge {
-  @apply mr-2 rounded px-2.5 py-0.5 text-sm font-medium;
+  @apply mr-2 rounded px-2.5 py-0.5 font-medium;
 
   &-gray {
     @apply bg-gray-200 text-gray-700;
