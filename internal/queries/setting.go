@@ -27,7 +27,6 @@ func (q *SettingQueries) GroupFieldMap(settings any) map[string]any {
 			"site_signature":     &s.Signature,
 			"site_email_support": &s.EmailSupport,
 		}
-
 	case *models.Mail:
 		return map[string]any{
 			"mail_sender_name":  &s.SenderName,

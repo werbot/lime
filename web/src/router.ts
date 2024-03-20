@@ -57,19 +57,25 @@ const router = createRouter({
           path: "license",
           name: "admin-license",
           meta: { name: "Licenses", icon: "ticket", layout: "Private" },
-          redirect: { name: "admin-license-all" },
+          component: () => import("@/pages/admin/License.vue"),
           children: [
             {
-              path: "all",
-              name: "admin-license-all",
-              meta: { name: "All" },
-              component: () => import("@/pages/admin/License/All.vue"),
+              path: ':license_slug',
+              name: 'admin-license-description',
+              component: () => import('@/pages/admin/License.vue')
             },
+          ],
+        },
+        {
+          path: "pattern",
+          name: "admin-pattern",
+          meta: { name: "Patterns", icon: "pattern", layout: "Private" },
+          component: () => import("@/pages/admin/Pattern.vue"),
+          children: [
             {
-              path: "all",
-              name: "admin-license-template",
-              meta: { name: "Template" },
-              component: () => import("@/pages/admin/License/Template.vue"),
+              path: ':pattern_slug',
+              name: 'admin-pattern-description',
+              component: () => import('@/pages/admin/Pattern.vue')
             },
           ],
         },
@@ -78,18 +84,39 @@ const router = createRouter({
           name: "admin-customer",
           meta: { name: "Customers", icon: "users", layout: "Private" },
           component: () => import("@/pages/admin/Customer.vue"),
+          children: [
+            {
+              path: ':customer_slug',
+              name: 'admin-customer-description',
+              component: () => import('@/pages/admin/Customer.vue')
+            },
+          ],
         },
         {
           path: "payment",
           name: "admin-payment",
           meta: { name: "Payments", icon: "banknotes", layout: "Private" },
           component: () => import("@/pages/admin/Payment.vue"),
+          children: [
+            {
+              path: ':payment_slug',
+              name: 'admin-payment-description',
+              component: () => import('@/pages/admin/Payment.vue')
+            },
+          ],
         },
         {
-          path: "log",
-          name: "admin-log",
-          meta: { name: "Logs", icon: "document", layout: "Private" },
-          component: () => import("@/pages/admin/Log.vue"),
+          path: "audit",
+          name: "admin-audit",
+          meta: { name: "Audit", icon: "document", layout: "Private" },
+          component: () => import("@/pages/admin/Audit.vue"),
+          children: [
+            {
+              path: ':audit_slug',
+              name: 'admin-audit-description',
+              component: () => import('@/pages/admin/Audit.vue')
+            },
+          ],
         },
         {
           path: "setting",
@@ -148,7 +175,7 @@ router.beforeEach((to, from) => {
       return { name: "admin-signin" };
     }
     if (isAdmin && to.name === "admin-signin") {
-      return { name: "admin-license-all" };
+      return { name: "admin-license" };
     }
   } else {
     if (!isAuthenticated && to.name !== "signin") {

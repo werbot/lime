@@ -22,13 +22,16 @@ import { FormInput } from "@/components";
 import { Form } from "vee-validate";
 
 const loadingStatus = ref(false);
-const data = ref({ email: "", password: "" });
+const data = ref({ 
+  email: null, 
+  password: null,
+ });
 const router = useRouter();
 
 const onSubmit = async () => {
   loadingStatus.value = true;
 
-  apiPost(`/_/api/sign/in`, data.value).then(res => {
+  apiPost(`/_/api/sign/in`, {}, data.value).then(res => {
     if (res.code === 200) {
       router.push({ name: 'admin-license' })
     } else {

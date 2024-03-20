@@ -6,7 +6,7 @@
     "module": "esnext",
     "moduleResolution": "node",
     "paths": {
-      "@/*": ["./src/*"],
+      "@/*": ["./src/*"]
     }
   },
   "include": [
@@ -16,7 +16,7 @@
     "src/**/*.d.ts",
     "src/app.vue",
     "src/router.ts",
-    "src/main.ts",
+    "src/main.ts"
   ],
-  "exclude": ["node_modules","dist","public"]
+  "exclude": ["node_modules", "dist", "public"]
 }

@@ -29,7 +29,7 @@ onMounted(() => {
   const token = useRoute().query.token;
   const router = useRouter();
   if (token) {
-    apiPost(`/api/sign/in?token=${token}`, data.value).then(res => {
+    apiPost(`/api/sign/in`, {"token": token}, data.value).then(res => {
       if (res.code === 200) {
         router.push({ name: 'manager-license' })
       } else {
@@ -42,7 +42,7 @@ onMounted(() => {
 
 const onSubmit = async () => {
   loadingStatus.value = true;
-  apiPost(`/api/sign/in`, data.value).then(res => {
+  apiPost(`/api/sign/in`, {}, data.value).then(res => {
     if (res.code === 200) {
       sendMessage.value = true;
     } else {

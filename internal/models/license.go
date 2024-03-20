@@ -2,25 +2,27 @@ package models
 
 import (
 	validation "github.com/go-ozzo/ozzo-validation/v4"
-	"github.com/go-ozzo/ozzo-validation/v4/is"
 )
+
+// Licenses is ...
+type Licenses struct {
+	Total    int       `json:"total"`
+	Licenses []License `json:"licenses"`
+}
 
 // License is a ...
 type License struct {
 	Core
-	SubscriptionID string       `json:"subscription_id"`
-	Mac            string       `json:"mac"`
-	License        []byte       `json:"license"`
-	Hash           string       `json:"hash"`
-	Status         bool         `json:"status"`
-	Subscription   Subscription `json:"subscription"`
+	Customer *Customer `json:"customer,omitempty"`
+	Pattern  *Pattern  `json:"pattern,omitempty"`
+	License  []byte    `json:"license"`
+	Hash     string    `json:"hash,omitempty"`
+	Status   bool      `json:"status"`
 }
 
 // Validate is ...
 func (v License) Validate() error {
 	return validation.ValidateStruct(&v,
-		validation.Field(&v.SubscriptionID, validation.Length(21, 21)),
-		validation.Field(&v.Mac, is.MAC),
-		validation.Field(&v.Subscription),
+		validation.Field(&v.Pattern),
 	)
 }

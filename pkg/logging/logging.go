@@ -22,20 +22,28 @@ func Log() zerolog.Logger {
 }
 */
 
-type Log struct {
+// Logger is ...
+type Logger struct {
 	*zerolog.Logger
 }
 
-func New() *Log {
+// New is ...
+func New() *Logger {
 	zerolog.TimeFieldFormat = zerolog.TimeFormatUnix
 	zerolog.ErrorStackMarshaler = pkgerrors.MarshalStack
 
 	log := zerolog.New(os.Stderr).With().Timestamp().Logger()
-	return &Log{
+	return &Logger{
 		&log,
 	}
 }
 
-func (l *Log) ErrorStack(err error) {
+// ErrorStack is ...
+func (l *Logger) ErrorStack(err error) {
 	l.Error().Caller(1).Stack().Err(err).Send()
 }
+
+// Log is ...
+//func Log() Logger {
+//	return log
+//}

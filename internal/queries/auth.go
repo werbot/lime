@@ -31,7 +31,7 @@ func (q *AuthQueries) CustomerIDByEmail(ctx context.Context, email string) (stri
 }
 
 // AccessLinkLetter
-func (q *AuthQueries) AccessLinkLetter(ctx context.Context, email, token, expires string) (*models.MessageMail, error) {
+func (q *AuthQueries) AccessLinkLetter(ctx context.Context, email, token, expires string) (*models.MailMessage, error) {
 	siteSetting, err := GetSettingByGroup[models.Site](ctx)
 	if err != nil {
 		return nil, err
@@ -46,7 +46,7 @@ func (q *AuthQueries) AccessLinkLetter(ctx context.Context, email, token, expire
 		return nil, err
 	}
 
-	mail := &models.MessageMail{
+	mail := &models.MailMessage{
 		To:     email,
 		Letter: letterTemplate,
 		Data: map[string]string{

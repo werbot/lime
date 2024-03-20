@@ -1,7 +1,7 @@
 <template>
   <div class="artboard">
     <header>
-      <h1>Customers</h1>
+      <h1>Pattern</h1>
       <label class="plus" @click="openDrawerAdd()">
         <SvgIcon name="plus_square" />
         add new
@@ -12,19 +12,23 @@
       <thead>
         <tr>
           <th class="w-12"></th>
-          <th>Email</th>
-          <th class="w-48">Created</th>
+          <th>Name</th>
+          <th class="w-16">Term</th>
+          <th class="w-24">Price</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(item, index) in data.customers" :key="index" class="cursor" :class="{ 'bg-red-50': !item.status }" @click="openDrawerDesc(item.id)">
+        <tr v-for="(item, index) in data.patterns" :key="index" :class="{ 'opacity-30': item.private }" class="cursor" @click="openDrawerDesc(item.id)">
           <td>
             <div class="flex items-center">
               <span class="dot" :class="item.status ? 'bg-green-500' : 'bg-red-500'"></span>
             </div>
           </td>
-          <td :class="{ 'text-red-500': !item.status }">{{ item.email }}</td>
-          <td>{{ formatDate(item.created) }}</td>
+          <td>{{ item.name }}</td>
+          <td>
+            <Badge :name="termFormat[item.term].name" :color="termFormat[item.term].color" />
+          </td>
+          <td>{{ priceFormat(item.price) }} {{ currency[item.currency] }}</td>
         </tr>
       </tbody>
     </table>
@@ -46,8 +50,10 @@
           </td>
         </tr>
         <tr>
-          <td class="w-32">Email</td>
-          <td>{{ dataFull.email }}</td>
+          <td>Name</td>
+          <td>
+            {{ dataFull.name }}
+          </td>
         </tr>
         <tr>
           <td>Created</td>
@@ -56,6 +62,41 @@
         <tr v-if="dataFull.updated">
           <td>Updated</td>
           <td>{{ formatDate(dataFull.updated) }}</td>
+        </tr>
+        <tr>
+          <td>Limits</td>
+          <td class="!p-0">
+            <table class="mini">
+              <tr v-for="(value, key, index) in dataFull.limit" :key="index">
+                <td>{{ key }}</td>
+                <td>{{ value }}</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td>Price</td>
+          <td>{{ priceFormat(dataFull.price) }} {{ currency[dataFull.currency] }}</td>
+        </tr>
+        <tr>
+          <td>Term</td>
+          <td>
+            <Badge :name="termFormat[Object(dataFull).term].name" :color="termFormat[Object(dataFull).term].color" />
+          </td>
+        </tr>
+        <tr>
+          <td>Check</td>
+          <td class="!p-0">
+            <table class="mini">
+              <tr v-for="(value, key, index) in dataFull.check" :key="index">
+                <td>{{ key }}</td>
+                <td>
+                  <SvgIcon name="check" class="text-green-500" v-if="value === 1" />
+                  <SvgIcon name="x-mark" class="text-red-500" v-else />
+                </td>
+              </tr>
+            </table>
+          </td>
         </tr>
       </table>
     </div>
@@ -69,8 +110,8 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
-import { SvgIcon, Pagination, Drawer } from "@/components";
-import { formatDate } from "@/utils";
+import { SvgIcon, Badge, Pagination, Drawer } from "@/components";
+import { termFormat, priceFormat, currency, formatDate } from "@/utils";
 import { apiGet } from "@/utils/api";
 
 const isDrawer = ref({
@@ -83,25 +124,25 @@ const route = useRoute();
 
 onMounted(() => {
   getData(route.query);
-  if (route.params.customer_slug) {
-    openDrawerDesc(<string>route.params.customer_slug)
+  if (route.params.pattern_slug) {
+    openDrawerDesc(<string>route.params.pattern_slug)
   }
 });
 
 const getData = async (routeQuery: any) => {
-  apiGet(`/_/api/customer`, routeQuery).then(res => {
+  apiGet(`/_/api/pattern`, routeQuery).then(res => {
     if (res.code === 200) {
       data.value = res.result;
     }
-  });
+  })
 };
 
 const onSelectPage = (e: any) => {
-  getData(e)
+  getData(e);
 };
 
 const openDrawerDesc = async (id: string) => {
-  apiGet(`/_/api/customer/${id}`, {}).then(res => {
+  apiGet(`/_/api/pattern/${id}`, {}).then(res => {
     if (res.code === 200) {
       dataFull.value = res.result;
       isDrawer.value.open = true;

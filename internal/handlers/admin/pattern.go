@@ -9,61 +9,61 @@ import (
 	"github.com/werbot/lime/pkg/webutil"
 )
 
-// Customers is a ...
+// Patterns is a ...
 // @Accept application/json
 // @Produce application/json
 // @Param
 // @Success 200 {string} string "{"status":"200", "msg":""}"
-// @Router /_/api/customer [get]]
-func Customers(c *fiber.Ctx) error {
+// @Router /_/api/pattern [get]
+func Patterns(c *fiber.Ctx) error {
 	log := logging.New()
 
 	pagination := webutil.GetPaginationFromCtx(c)
-	customers, err := queries.DB().Customers(c.Context(), pagination)
+	patterns, err := queries.DB().Patterns(c.Context(), pagination)
 	if err != nil {
 		log.ErrorStack(err)
 		return webutil.StatusInternalServerError(c, nil)
 	}
 
-	return webutil.StatusOK(c, "Customers", customers)
+	return webutil.StatusOK(c, "Patterns", patterns)
 }
 
-// Customer is a ...
+// Pattern is a ...
 // @Accept application/json
 // @Produce application/json
 // @Param
 // @Success 200 {string} string "{"status":"200", "msg":""}"
-// @Router /_/api/customer/:id [get]
-func Customer(c *fiber.Ctx) error {
+// @Router /_/api/pattern/:id [get]
+func Pattern(c *fiber.Ctx) error {
 	log := logging.New()
 
-	customer, err := queries.DB().Customer(c.Context(), c.Params("id"))
+	pattern, err := queries.DB().Pattern(c.Context(), c.Params("id"))
 	if err != nil {
-		if err == errors.ErrCustomerNotFound {
-			return webutil.StatusNotFound(c, errors.MsgCustomerNotFound)
+		if err == errors.ErrPatternNotFound {
+			return webutil.StatusNotFound(c, errors.MsgPatternNotFound)
 		}
 		log.ErrorStack(err)
 		return webutil.StatusInternalServerError(c, nil)
 	}
-	return webutil.StatusOK(c, "Customer info", customer)
+	return webutil.StatusOK(c, "Customer info", pattern)
 }
 
-// NewCustomer is a ...
+// NewPattern is a ...
 // @Accept application/json
 // @Produce application/json
 // @Param
 // @Success 200 {string} string "{"status":"200", "msg":""}"
-// @Router /_/api/customer [post]
-func NewCustomer(c *fiber.Ctx) error {
-	return webutil.StatusOK(c, "Create customer", nil)
+// @Router /_/api/pattern [post]
+func NewPattern(c *fiber.Ctx) error {
+	return webutil.StatusOK(c, "Create pattern", nil)
 }
 
-// UpdateCustomer is a ...
+// UpdatePattern is a ...
 // @accept application/json
 // @Produce application/json
 // @Param
 // @Success 200 {string} string "{"status":"200", "msg":""}"
-// @Router /_/api/customer/:id [patch]
-func UpdateCustomer(c *fiber.Ctx) error {
-	return webutil.StatusOK(c, "Update customer", nil)
+// @Router /_/api/pattern/:id [patch]
+func UpdatePattern(c *fiber.Ctx) error {
+	return webutil.StatusOK(c, "Update pattern", nil)
 }

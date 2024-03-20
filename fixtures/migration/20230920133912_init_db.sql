@@ -13,22 +13,97 @@ UPDATE "setting" SET value = 'User Name from site' WHERE key = 'mail_sender_name
 UPDATE "setting" SET value = 'admin@mail.com' WHERE key = 'mail_sender_email';
 
 INSERT INTO "customer" ("id", "email", "status") VALUES 
-('7v38n58hXHVsNxS', 'user@mail.com', 't');
+('7v38n58hXHVsNxS', 'user@mail.com', 't'),
+('8Rz96VZEeHrv1h2', 'user1@mail.com', 't'),
+('bkS4BCcQqK01s67', 'user2@mail.com', 't'),
+('8Uul6gGZ49P2pzL', 'user3@mail.com', 'f'),
+('Y1ycF9Cj0J32fdD', 'user4@mail.com', 't'),
+('u5O57U8r6nNRXxo', 'user5@mail.com', 't'),
+('m1MeQvVE63q84jJ', 'user6@mail.com', 't'),
+('674wsKSt8DdTWk1', 'user7@mail.com', 't'),
+('4lLLn3N5jUu74lJ', 'user8@mail.com', 'f'),
+('E7sOofi13S2I5eF', 'user9@mail.com', 't'),
+('2WwO5T58nNto7gG', 'user10@mail.com', 't');
 
-INSERT INTO "template" ("id", "name", "limit", "price", "term", "hide", "status", "check") VALUES 
-('4dDADaT1t0m71Md', 'template 1', '{"servers":5,"companies":5,"users":5}', 500, 'd', 'f', 't', '{"ip":1,"mac":1,"country":1}'),
-('t7Kl9LT44Xki3Ix', 'template 2', '{"servers":10,"companies":10,"users":10}', 1000, 'w', 'f', 't', '{"ip":1,"mac":1,"country":1}'),
-('0BDbBZ10d3Jb9jz', 'template 3', '{"servers":15,"companies":15,"users":15}', 1500, 'm', 'f', 't', '{"ip":1,"mac":1,"country":1}'),
-('AFQG1faC02qc2g6', 'template 4', '{"servers":20,"companies":20,"users":20}', 2000, 'y', 't', 't', '{"ip":1,"mac":1,"country":1}');
+INSERT INTO "pattern" ("id", "name", "limit", "price", "currency", "term", "private", "status", "check") VALUES 
+('4dDADaT1t0m71Md', 'pattern 1', '{"servers":5,"companies":5,"users":5}', 500, 2, 2, 'f', 't', '{"ip":1,"mac":0,"country":1}'),
+('t7Kl9LT44Xki3Ix', 'pattern 2', '{"servers":10,"companies":10,"users":10}', 1000, 2,3, 'f', 't', '{"ip":1,"mac":1,"country":1}'),
+('0BDbBZ10d3Jb9jz', 'pattern 3', '{"servers":15,"companies":15,"users":15}', 1500, 2, 4, 'f', 't', '{"ip":1,"mac":1,"country":1}'),
+('AFQG1faC02qc2g6', 'pattern promo', '{"servers":20,"companies":20,"users":20}', 2000, 2,5, 't', 't', '{"ip":1,"mac":1,"country":1}'),
+('cX1ACDa81do05xO', 'pattern 4', '{"servers":99,"companies":99,"users":99}', 2000, 2, 5, 'f', 't', '{"ip":1,"mac":1,"country":1}'),
+('u5O57U8r6nNRXxo', 'pattern 5', '{"servers":99,"companies":1000,"users":20}', 2010, 2,5, 't', 't', '{"ip":0,"mac":1,"country":1}'),
+('m1MeQvVE63q84jJ', 'pattern 6', '{"servers":20,"companies":99,"users":20}', 2020, 2, 5, 't', 'f', '{"ip":1,"mac":1,"country":1}'),
+('674wsKSt8DdTWk1', 'pattern 7', '{"servers":20,"companies":20,"users":99}', 2030, 2, 5, 't', 'f', '{"ip":1,"mac":0,"country":1}'),
+('E7sOofi13S2I5eF', 'pattern 8', '{"servers":20,"companies":99,"users":1000}', 3000, 2, 5, 'f', 't', '{"ip":1,"mac":1,"country":1}'),
+('4lLLn3N5jUu74lJ', 'pattern 9', '{"servers":99,"companies":20,"users":20}', 99000, 2, 5, 't', 'f', '{"ip":0,"mac":1,"country":1}'),
+('2WwO5T58nNto7gG', 'pattern 10', '{"servers":1000,"companies":99,"users":20}', 12010, 2, 5, 'f', 't', '{"ip":1,"mac":1,"country":0}');
 
-INSERT INTO "license" ("id", "template_id", "customer_id", "payment", "type", "status") VALUES 
-('jG2Jg83WLw4Dd1l', '4dDADaT1t0m71Md', '7v38n58hXHVsNxS', '{"stripe_id":"cus_APBaLDeqQoVy8m"}', 'test', 't');
+INSERT INTO "payment" ("id", "pattern_id", "customer_id", "provider", "status", "metadata") VALUES 
+('A0sB9XpSx0P65ab', '4dDADaT1t0m71Md', '7v38n58hXHVsNxS', 'stripe', 1, '{"stripe_id":"cus_APBaLDeqQoVy8m"}'),
+('qa4AAQmaMn00N65', 't7Kl9LT44Xki3Ix', '8Rz96VZEeHrv1h2', 'stripe', 1, '{"stripe_id":"cus_APBaLDeqQoVy7m"}'),
+('5OkK93H3I2Yyhio', '0BDbBZ10d3Jb9jz', 'bkS4BCcQqK01s67', 'stripe', 1, '{"stripe_id":"cus_APBaLDeqQoVy6m"}'),
+('E1gG8gw26rR2eGW', 'AFQG1faC02qc2g6', '8Uul6gGZ49P2pzL', 'stripe', 2, '{"stripe_id":"cus_APBaLDeqQoVy5m"}'),
+('Nv8851QD6dnWVwq', 'cX1ACDa81do05xO', 'Y1ycF9Cj0J32fdD', 'stripe', 1, '{"stripe_id":"cus_APBaLDeqQoVy4m"}'),
+('4AkwFd0KD12aW8f', '4dDADaT1t0m71Md', 'u5O57U8r6nNRXxo', 'stripe', 1, '{"stripe_id":"cus_APBaLDeqQoVy3m"}'),
+('Hve8AaEo5O0hV21', 't7Kl9LT44Xki3Ix', 'm1MeQvVE63q84jJ', 'stripe', 1, '{"stripe_id":"cus_APBaLDeqQoVy2m"}'),
+('4klLY5O489xyKXo', 't7Kl9LT44Xki3Ix', '674wsKSt8DdTWk1', 'stripe', 1, '{"stripe_id":"cus_APBaLDeqQoVy1m"}'),
+('l63siQ4LI9Xx7Sq', 't7Kl9LT44Xki3Ix', '4lLLn3N5jUu74lJ', 'stripe', 2, '{"stripe_id":"cus_APBaLDeqQoVy0m"}'),
+('B066SsSRuUrs76b', '4dDADaT1t0m71Md', 'E7sOofi13S2I5eF', 'stripe', 1, '{"stripe_id":"cus_APBaLDeqQoVy9m"}'),
+('FofOoO52oO5H1h5', '4dDADaT1t0m71Md', '2WwO5T58nNto7gG', 'stripe', 1, '{"stripe_id":"cus_APBaLDeqQoVy11"}'),
+('9576nYtyRuN8rUT', '4dDADaT1t0m71Md', '2WwO5T58nNto7gG', 'stripe', 4, '{}');
+
+INSERT INTO "license" ("id", "payment_id", "status", "hash") VALUES 
+('jG2Jg83WLw4Dd1l', 'A0sB9XpSx0P65ab', 't', '81dc9bdb52d04dc20036dbd8313ed055'),
+('4kMV8O54Km7vTto', 'qa4AAQmaMn00N65', 'f', 'c4ca4238a0b923820dcc509a6f75849b'),
+('7OU1SGsc2o7g5uC', '5OkK93H3I2Yyhio', 't', 'c20ad4d76fe97759aa27a0c99bff6710'),
+('aN5As7SnhHN350n', 'E1gG8gw26rR2eGW', 't', '5455f4c3847d506a0be7afb78eb0e618'),
+('45l98Z7LTzpwWPt', 'Nv8851QD6dnWVwq', 't', 'de121459f979a1dafd43ebe02785f0e0'),
+('a7tA9nyY3T0JN5j', '4AkwFd0KD12aW8f', 't', 'a3026b0a6849f749c489cd798654a809'),
+('ju7J9423mgUxXGM', 'Hve8AaEo5O0hV21', 't', 'a7653fad4df83288ed8888663f8ff585'),
+('B36w8WrZzbI9i0R', '4klLY5O489xyKXo', 't', '15de21c670ae7c3f6f3f1f37029303c9'),
+('z2kgL9lGZNK454n', 'l63siQ4LI9Xx7Sq', 't', '386854131f58a556343e056f03626e00'),
+('qeCEmC00c1MQ4c6', 'B066SsSRuUrs76b', 't', '84adae6beecaa29029addfc1371b29f9'),
+('77imoSIM5s3OSs4', '9576nYtyRuN8rUT', 'f', '0a4441b52449ea8b49697438a26be13e');
+
+INSERT INTO "audit" ("id", "section", "section_id", "action", "metadata") VALUES 
+('bE0oH0nM5L9hY9l', 1, 'aAW8wL4Dd01Lll4', 2, '[]'),
+('j8VmU4u8u73JMUv', 1, 'Aj1WWd0JDw3w88a', 2, '[]'),
+('2gGnD2W5wg1GN8d', 1, '7ooOSOO5os5N55n', 2, '[]'),
+('14lBDd0y9Ub7uYL', 1, 'jJA0UuTIa337i7t', 2, '[]'),
+('wk0Cm4mMKW4c3M8', 1, 'BCc8A0whWaH3b00', 2, '[]'),
+('j2BJE1bxF3ef9X0', 1, 'zOZ71doNtD5Tn95', 2, '[]'),
+('ilY2ch9ICyL14H3', 1, '9kkA0aK3KXx3Yy9', 2, '[]'),
+('Bl4yipPYb360LI9', 1, 'Sq51dDsQoO61D6d', 2, '[]'),
+('887T7vSVXP5xpts', 1, 'VfI89zlF3vLiZ42', 2, '[]'),
+('3FgjJ2wfjJ2W38G', 1, '7v38n58hXHVsNxS', 2, '[]'),
+('1x3U6EsXjSJue87', 1, '6kK99i33PZXzpxI', 2, '[]'),
+('7s15sDOzSZoSd97', 2, '7v38n58hXHVsNxS', 1, '[]'),
+('PrP5SE65peR1sp7', 2, '8Rz96VZEeHrv1h2', 1, '[]'),
+('U3qS58QNI6uis7n', 2, 'bkS4BCcQqK01s67', 1, '[]'),
+('ADG1aYF0g9yf2d2', 2, '8Uul6gGZ49P2pzL', 1, '[]'),
+('ZXg9Gz2G2h9Hgx3', 2, 'Y1ycF9Cj0J32fdD', 1, '[]'),
+('po4QR6mqrP565OM', 2, 'u5O57U8r6nNRXxo', 1, '[]'),
+('6rlhLR523o4jOJH', 2, 'm1MeQvVE63q84jJ', 1, '[]'),
+('D172hdUZqz69QHu', 2, '674wsKSt8DdTWk1', 1, '[]'),
+('L3r4z6l9ihHZ3IR', 2, '4lLLn3N5jUu74lJ', 1, '[]'),
+('14Icm3VziMC89Zv', 2, 'E7sOofi13S2I5eF', 1, '[]'),
+('LAlM47Ug24Gma0u', 2, '2WwO5T58nNto7gG', 1, '[]'),
+
+
+;
+
+
+
+
+
 -- +goose StatementEnd
 
 -- +goose Down
 -- +goose StatementBegin
+DELETE FROM "audit";
 DELETE FROM "license";
-DELETE FROM "template";
+DELETE FROM "payment";
+DELETE FROM "pattern";
 DELETE FROM "customer";
 UPDATE "setting" SET value = '' WHERE key = 'smtp_host';
 UPDATE "setting" SET value = '' WHERE key = 'smtp_port';

@@ -7,6 +7,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 
 	"github.com/werbot/lime/internal/config"
+	"github.com/werbot/lime/internal/errors"
 	"github.com/werbot/lime/internal/models"
 	"github.com/werbot/lime/pkg/jwtutil"
 	"github.com/werbot/lime/pkg/logging"
@@ -34,7 +35,7 @@ func SignIn(c *fiber.Ctx) error {
 	}
 
 	if request.Email != cfg.Admin.Email || request.Password != cfg.Admin.Password {
-		return webutil.StatusUnauthorized(c, "Incorrect login or password")
+		return webutil.StatusUnauthorized(c, errors.MsgWrongPassword)
 	}
 
 	token, err := jwtutil.NewToken("admin", cfg.Keys.JWT.Expire, nil)

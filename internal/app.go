@@ -7,7 +7,6 @@ import (
 	"path/filepath"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/rs/zerolog/log"
 
 	"github.com/werbot/lime/internal/config"
 	"github.com/werbot/lime/internal/middleware"
@@ -19,11 +18,13 @@ import (
 	"github.com/werbot/lime/pkg/logging"
 )
 
+var log *logging.Logger
+
 // NewApp is ...
 func NewApp() error {
 	fmt.Print("🍋 Lime - lite license server\n")
 
-	log := logging.New()
+	log = logging.New()
 
 	if err := config.LoadConfig(); err != nil {
 		log.Err(err).Send()
@@ -79,8 +80,8 @@ func NewApp() error {
 
 	routes.ApiPrivateRoutes(app)
 	routes.ApiPublicRoutes(app)
-	routes.UIRoutes(app)
 	routes.NotFoundRoute(app)
+	routes.UIRoutes(app)
 
 	fmt.Printf("├─[🚀] Admin UI: http://%s/_/\n", cfg.HTTPAddr)
 	fmt.Printf("├─[🚀] Public UI: http://%s/\n", cfg.HTTPAddr)

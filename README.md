@@ -2,7 +2,7 @@
 
 <img src="https://raw.githubusercontent.com/werbot/lime/v2/.github/assets/lime.png" height="70" />
 
-## 🍋&nbsp;&nbsp;What is lime?
+## 🍋‍🟩&nbsp;&nbsp;What is lime?
 
 Light license-key server in 1 file
 

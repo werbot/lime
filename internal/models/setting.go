@@ -87,15 +87,15 @@ func (v Letter) Validate() error {
 	)
 }
 
-// MessageMail ...
-type MessageMail struct {
+// MailMessage ...
+type MailMessage struct {
 	To     string            `json:"to"`
 	Letter Letter            `json:"letter"`
 	Data   map[string]string `json:"data"`
 }
 
 // Validate is ...
-func (v MessageMail) Validate() error {
+func (v MailMessage) Validate() error {
 	return validation.ValidateStruct(&v,
 		validation.Field(&v.To, is.Email),
 	)

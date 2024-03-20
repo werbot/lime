@@ -1,5 +1,15 @@
 -- +goose Up
 -- +goose StatementBegin
+CREATE TABLE "audit" (
+  "id" varchar(15) PRIMARY KEY NOT NULL,
+  "section" varchar(1) NOT NULL,
+  "section_id" varchar(15) NOT NULL,
+  "action" varchar(2) NOT NULL,
+  "metadata" json DEFAULT '[]' NOT NULL,
+  "created_at" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+CREATE INDEX idx_audit_id ON "audit" ("id");
+
 CREATE TABLE "setting" (
 	"id"     TEXT PRIMARY KEY NOT NULL,
 	"key"    TEXT UNIQUE NOT NULL,
@@ -30,42 +40,57 @@ CREATE TABLE "customer" (
 CREATE INDEX idx_customer_id ON "customer" ("id");
 CREATE INDEX idx_customer_email ON "customer" ("email");
 
-CREATE TABLE "template" (
+CREATE TABLE "pattern" (
   "id" varchar(15) PRIMARY KEY NOT NULL,
   "name" varchar(255) UNIQUE NOT NULL,
   "limit" json DEFAULT '{}' NOT NULL,
-  "term"  varchar(1) NOT NULL CHECK ("term" = 'd' OR "term" = 'w' OR "term" = 'm' OR "term" = 'y'),
+  "term"  varchar(1) NOT NULL,
   "price" varchar(10) NOT NULL,
+  "currency" varchar(1) NOT NULL,
   "check" json DEFAULT '{}' NOT NULL,
-  "hide" bool NOT NULL DEFAULT false,
+  "private" bool NOT NULL DEFAULT false,
   "status" bool NOT NULL DEFAULT true,
   "updated_at" timestamp DEFAULT NULL,
   "created_at" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
-CREATE INDEX idx_template_id ON "template" ("id");
+CREATE INDEX idx_pattern_id ON "pattern" ("id");
+
+CREATE TABLE "payment" (
+  "id" varchar(15) PRIMARY KEY NOT NULL,
+  "pattern_id" varchar(15) NOT NULL,
+  "customer_id" varchar(15) NOT NULL,
+  "provider" varchar(15) NOT NULL,
+  "status" varchar(1) NOT NULL,
+  "metadata" json DEFAULT '{}' NOT NULL,
+  "updated_at" timestamp DEFAULT NULL,
+  "created_at" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY ("pattern_id") REFERENCES "pattern"("id") ON UPDATE CASCADE ON DELETE CASCADE,
+  FOREIGN KEY ("customer_id") REFERENCES "customer"("id") ON UPDATE CASCADE ON DELETE CASCADE
+);
+CREATE INDEX idx_payment_id ON "payment" ("id");
+CREATE INDEX idx_payment_pattern_id ON "payment" ("pattern_id");
+CREATE INDEX idx_payment_customer_id ON "payment" ("customer_id");
 
 CREATE TABLE "license" (
   "id" varchar(15) PRIMARY KEY NOT NULL,
-  "template_id" varchar(15) NOT NULL,
-  "customer_id" varchar(15) NOT NULL,
-  "payment" json DEFAULT '{}' NOT NULL,
-  "type" varchar(15) NOT NULL,
+  "payment_id" varchar(15) NOT NULL,
+  "hash" varchar(32) NOT NULL,
   "status" bool NOT NULL DEFAULT true,
   "metadata" json DEFAULT '{}' NOT NULL,
   "updated_at" timestamp DEFAULT NULL,
   "created_at" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY ("template_id") REFERENCES "template"("id") ON UPDATE CASCADE ON DELETE CASCADE,
-  FOREIGN KEY ("customer_id") REFERENCES "customer"("id") ON UPDATE CASCADE ON DELETE CASCADE
+  FOREIGN KEY ("payment_id") REFERENCES "payment"("id") ON UPDATE CASCADE ON DELETE CASCADE
 );
 CREATE INDEX idx_license_id ON "license" ("id");
-CREATE INDEX idx_license_template_id ON "license" ("template_id");
-CREATE INDEX idx_license_customer_id ON "license" ("customer_id");
+CREATE INDEX idx_license_payment_id ON "license" ("payment_id");
 -- +goose StatementEnd
 
 -- +goose Down
 -- +goose StatementBegin
 DROP TABLE IF EXISTS "license";
-DROP TABLE IF EXISTS "template";
+DROP TABLE IF EXISTS "payment";
+DROP TABLE IF EXISTS "pattern";
 DROP TABLE IF EXISTS "customer";
 DROP TABLE IF EXISTS "setting";
+DROP TABLE IF EXISTS "audit";
 -- +goose StatementEnd
