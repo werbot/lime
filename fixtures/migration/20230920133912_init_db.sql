@@ -68,34 +68,8 @@ INSERT INTO "license" ("id", "payment_id", "status", "hash") VALUES
 INSERT INTO "audit" ("id", "section", "section_id", "action", "metadata") VALUES 
 ('bE0oH0nM5L9hY9l', 1, 'aAW8wL4Dd01Lll4', 2, '[]'),
 ('j8VmU4u8u73JMUv', 1, 'Aj1WWd0JDw3w88a', 2, '[]'),
-('2gGnD2W5wg1GN8d', 1, '7ooOSOO5os5N55n', 2, '[]'),
-('14lBDd0y9Ub7uYL', 1, 'jJA0UuTIa337i7t', 2, '[]'),
-('wk0Cm4mMKW4c3M8', 1, 'BCc8A0whWaH3b00', 2, '[]'),
-('j2BJE1bxF3ef9X0', 1, 'zOZ71doNtD5Tn95', 2, '[]'),
-('ilY2ch9ICyL14H3', 1, '9kkA0aK3KXx3Yy9', 2, '[]'),
-('Bl4yipPYb360LI9', 1, 'Sq51dDsQoO61D6d', 2, '[]'),
-('887T7vSVXP5xpts', 1, 'VfI89zlF3vLiZ42', 2, '[]'),
-('3FgjJ2wfjJ2W38G', 1, '7v38n58hXHVsNxS', 2, '[]'),
-('1x3U6EsXjSJue87', 1, '6kK99i33PZXzpxI', 2, '[]'),
-('7s15sDOzSZoSd97', 2, '7v38n58hXHVsNxS', 1, '[]'),
-('PrP5SE65peR1sp7', 2, '8Rz96VZEeHrv1h2', 1, '[]'),
-('U3qS58QNI6uis7n', 2, 'bkS4BCcQqK01s67', 1, '[]'),
-('ADG1aYF0g9yf2d2', 2, '8Uul6gGZ49P2pzL', 1, '[]'),
-('ZXg9Gz2G2h9Hgx3', 2, 'Y1ycF9Cj0J32fdD', 1, '[]'),
-('po4QR6mqrP565OM', 2, 'u5O57U8r6nNRXxo', 1, '[]'),
-('6rlhLR523o4jOJH', 2, 'm1MeQvVE63q84jJ', 1, '[]'),
-('D172hdUZqz69QHu', 2, '674wsKSt8DdTWk1', 1, '[]'),
-('L3r4z6l9ihHZ3IR', 2, '4lLLn3N5jUu74lJ', 1, '[]'),
 ('14Icm3VziMC89Zv', 2, 'E7sOofi13S2I5eF', 1, '[]'),
-('LAlM47Ug24Gma0u', 2, '2WwO5T58nNto7gG', 1, '[]'),
-
-
-;
-
-
-
-
-
+('LAlM47Ug24Gma0u', 2, '2WwO5T58nNto7gG', 1, '[]');
 -- +goose StatementEnd
 
 -- +goose Down
