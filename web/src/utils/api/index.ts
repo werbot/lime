@@ -1,61 +1,72 @@
 import { start, done } from "nprogress";
 
-export async function apiGet(url: string): Promise<any> {
-  return handleRequest(url, {
-    credentials: "include",
-    method: "GET",
-  });
+export async function apiGet(url: string, params: object): Promise<any> {
+  return handleRequest(url, params, createOptions("GET"));
 }
 
-export async function apiPost(url: string, body: any): Promise<any> {
-  const options = createOptions("POST", body);
-  return handleRequest(url, options);
+export async function apiPost(
+  url: string,
+  params: object,
+  body: any,
+): Promise<any> {
+  return handleRequest(url, params, createOptions("POST", body));
 }
 
-export async function apiUpdate(url: string, body: any): Promise<any> {
-  const options = createOptions("PATCH", body);
-  return handleRequest(url, options);
+export async function apiUpdate(
+  url: string,
+  params: object,
+  body: any,
+): Promise<any> {
+  return handleRequest(url, params, createOptions("PATCH", body));
 }
 
-export async function apiDelete(url: string): Promise<any> {
-  return handleRequest(url, {
-    credentials: "include",
-    method: "DELETE",
-  });
+export async function apiDelete(url: string, params: object): Promise<any> {
+  return handleRequest(url, params, createOptions("DELETE"));
 }
 
-async function handleRequest(url: string, options: object): Promise<any> {
+async function handleRequest(
+  url: string,
+  params: object,
+  options: RequestInit,
+): Promise<any> {
+  start();
+  const queryString = new URLSearchParams(
+    params as Record<string, string>,
+  ).toString();
+  const fullUrl = queryString ? `${url}?${queryString}` : url;
+
   try {
-    start();
-    const response = await fetch(url, options);
+    const response = await fetch(fullUrl, options);
+    if (response.status === 401) {
+      redirectToSignIn(url);
+    }
     return response.json();
-  } catch (error) {
-    console.error(error);
+//  } catch (error) {
+//    console.log(error);
   } finally {
     done();
   }
 }
 
-function createOptions(method: string, body: any) {
-  const options: {
-    credentials: string;
-    method: string;
-    body?: any;
-    headers?: { "Content-Type": string };
-  } = {
+function createOptions(method: string, body?: any): RequestInit {
+  const headers: HeadersInit = {};
+  let hasContent = false;
+
+  if (body && Object.keys(body).length > 0) {
+    headers["Content-Type"] = "application/json";
+    body = JSON.stringify(body);
+    hasContent = true;
+  }
+
+  return {
     credentials: "include",
     method,
+    ...(hasContent && { body }),
+    ...(Object.keys(headers).length > 0 && { headers }),
   };
+}
 
-  if (body) {
-    if (Object.keys(body).length > 0) {
-      options.body = JSON.stringify(body);
-      options.headers = {
-        "Content-Type": "application/json",
-      };
-    } else {
-      options.body = body;
-    }
-  }
-  return options;
+function redirectToSignIn(url: string): void {
+  const signinPath = url.startsWith("/_") ? "/_/signin" : "/signin";
+  document.location.href = signinPath;
 }
