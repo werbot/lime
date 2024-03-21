@@ -32,21 +32,22 @@ const (
 
 // Patterns is ...
 type Patterns struct {
-	Total    int       `json:"total"`
-	Patterns []Pattern `json:"patterns"`
+	Total    int        `json:"total"`
+	Patterns []*Pattern `json:"patterns,omitempty"`
 }
 
 // Pattern is a ...
 type Pattern struct {
 	Core
-	Name     string   `json:"name"`
-	Limit    Metadata `json:"limit,omitempty"`   // license restrictions
-	Term     Term     `json:"term"`              // license validity period
-	Price    int      `json:"price"`             // price in Stripe format
-	Currency Currency `json:"currency"`          // currency
-	Check    Metadata `json:"check,omitempty"`   // what will be checked for license verification?
-	Private  bool     `json:"private,omitempty"` // the pattern is available to the administrator only.
-	Status   bool     `json:"status,omitempty"`  // pattern activity
+	Name     string    `json:"name"`
+	Limit    Metadata  `json:"limit,omitempty"`    // license restrictions
+	Term     Term      `json:"term"`               // license validity period
+	Price    int       `json:"price"`              // price in Stripe format
+	Currency Currency  `json:"currency"`           // currency
+	Check    Metadata  `json:"check,omitempty"`    // what will be checked for license verification?
+	Private  bool      `json:"private,omitempty"`  // the pattern is available to the administrator only.
+	Status   bool      `json:"status,omitempty"`   // pattern activity
+	Licenses *Licenses `json:"licenses,omitempty"` // licenses
 }
 
 // Validate is ...

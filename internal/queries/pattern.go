@@ -25,7 +25,15 @@ func (q *PatternQueries) Patterns(ctx context.Context, pagination *webutil.Pagin
 			"price",
 			"currency",
 			"private",
-			"status"
+			"status",
+			(
+				SELECT
+					COUNT(*)
+				FROM
+					"payment"
+				WHERE
+					"pattern_id" = "pattern"."id"
+			) AS "total_licenses"
 		FROM
 			"pattern"
 	`
@@ -45,7 +53,8 @@ func (q *PatternQueries) Patterns(ctx context.Context, pagination *webutil.Pagin
 
 	response := &models.Patterns{}
 	for rows.Next() {
-		pattern := models.Pattern{}
+		pattern := &models.Pattern{}
+		licenses := &models.Licenses{}
 		err := rows.Scan(
 			&pattern.ID,
 			&pattern.Name,
@@ -54,11 +63,13 @@ func (q *PatternQueries) Patterns(ctx context.Context, pagination *webutil.Pagin
 			&pattern.Currency,
 			&pattern.Private,
 			&pattern.Status,
+			&licenses.Total,
 		)
 		if err != nil {
 			return nil, err
 		}
 
+		pattern.Licenses = licenses
 		response.Patterns = append(response.Patterns, pattern)
 	}
 
@@ -90,7 +101,15 @@ func (q *PatternQueries) Pattern(ctx context.Context, id string) (*models.Patter
 			"private",
 			"status",
 			"created_at",
-			"updated_at"
+			"updated_at",
+			(
+				SELECT
+					COUNT(*)
+				FROM
+					"payment"
+				WHERE
+					"pattern_id" = "pattern"."id"
+			) AS "total_licenses"
 		FROM
 			"pattern"
 		WHERE "id" = $1
@@ -99,6 +118,7 @@ func (q *PatternQueries) Pattern(ctx context.Context, id string) (*models.Patter
 	var updated sql.NullTime
 	var limit, check sql.NullString
 	pattern := &models.Pattern{}
+	licenses := &models.Licenses{}
 	err := q.DB.QueryRowContext(ctx, query, id).
 		Scan(
 			&pattern.ID,
@@ -112,6 +132,7 @@ func (q *PatternQueries) Pattern(ctx context.Context, id string) (*models.Patter
 			&pattern.Status,
 			&pattern.Created,
 			&updated,
+			&licenses.Total,
 		)
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -123,16 +144,20 @@ func (q *PatternQueries) Pattern(ctx context.Context, id string) (*models.Patter
 	if updated.Valid {
 		pattern.Updated = &updated.Time
 	}
+
 	if limit.Valid {
 		var meta map[string]any
 		json.Unmarshal([]byte(limit.String), &meta)
 		pattern.Limit = meta
 	}
+
 	if check.Valid {
 		var meta map[string]any
 		json.Unmarshal([]byte(check.String), &meta)
 		pattern.Check = meta
 	}
+
+	pattern.Licenses = licenses
 
 	return pattern, nil
 }

@@ -13,7 +13,8 @@
         <tr>
           <th class="w-12"></th>
           <th>Name</th>
-          <th class="w-16">Term</th>
+          <th class="w-24">Licenses</th>
+          <th class="w-24">Term</th>
           <th class="w-24">Price</th>
         </tr>
       </thead>
@@ -25,6 +26,7 @@
             </div>
           </td>
           <td>{{ item.name }}</td>
+          <td><Badge :name="item.licenses.total" /></td>
           <td>
             <Badge :name="termFormat[item.term].name" :color="termFormat[item.term].color" />
           </td>
@@ -77,6 +79,12 @@
         <tr>
           <td>Price</td>
           <td>{{ priceFormat(dataFull.price) }} {{ currency[dataFull.currency] }}</td>
+        </tr>
+        <tr>
+          <td>Licenses</td>
+          <td>
+            <Badge :name="Object(dataFull.licenses).total" />
+          </td>
         </tr>
         <tr>
           <td>Term</td>

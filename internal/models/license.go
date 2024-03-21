@@ -6,8 +6,8 @@ import (
 
 // Licenses is ...
 type Licenses struct {
-	Total    int       `json:"total"`
-	Licenses []License `json:"licenses"`
+	Total    int        `json:"total"`
+	Licenses []*License `json:"licenses,omitempty"`
 }
 
 // License is a ...

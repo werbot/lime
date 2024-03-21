@@ -88,7 +88,7 @@ func (q *LicenseQueries) Licenses(ctx context.Context, pagination *webutil.Pagin
 
 		license.Pattern = &pattern
 		license.Customer = &customer
-		response.Licenses = append(response.Licenses, license)
+		response.Licenses = append(response.Licenses, &license)
 	}
 
 	if err := rows.Err(); err != nil {
