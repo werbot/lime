@@ -6,7 +6,7 @@ import (
 )
 
 const (
-	DefaultIdLength   = 21
+	DefaultIdLength   = 15
 	DefaultIdAlphabet = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 )
 

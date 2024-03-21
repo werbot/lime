@@ -8,6 +8,7 @@
       <thead>
         <tr>
           <th>Section</th>
+          <th class="w-52">Customer</th>
           <th class="w-36">Action</th>
           <th class="w-48">Created</th>
         </tr>
@@ -15,6 +16,14 @@
       <tbody>
         <tr v-for="(item, index) in data.audits" :key="index" class="cursor" @click="openDrawerDesc(item.id)">
           <td>{{ sections[item.section] }}</td>
+          <td v-if="item.customer.email === 'admin'">
+            <Badge name="admin" color="indigo" />
+          </td>
+          <td :class="{ 'text-red-500': !item.customer.status }" v-else>
+            <router-link active-class="current" :to="{ name: 'admin-customer-description', params: { customer_slug: item.customer.id } }">
+              {{ item.customer.email }}
+            </router-link>
+          </td>
           <td>
             <Badge :name="actionFormat[item.action].name" :color="actionFormat[item.action].color" />
           </td>
@@ -37,6 +46,56 @@
           <td>
             {{ dataFull.id }}
           </td>
+        </tr>
+        <tr>
+          <td class="w-32">Section</td>
+          <td>
+            {{ sections[dataFull.section] }}
+          </td>
+        </tr>
+        <tr>
+          <td class="w-32">Customer</td>
+          <td v-if="dataFull.customer.email === 'admin'">
+            <Badge name="admin" color="indigo" />
+          </td>
+          <td :class="{ 'text-red-500': !dataFull.customer.status }" v-else>
+            <router-link active-class="current" :to="{ name: 'admin-customer-description', params: { customer_slug: dataFull.customer.id } }">
+              {{ dataFull.customer.email }}
+            </router-link>
+          </td>
+        </tr>
+        <tr>
+          <td class="w-32">Action</td>
+          <td>
+            <Badge :name="actionFormat[dataFull.action].name" :color="actionFormat[dataFull.action].color" />
+          </td>
+        </tr>
+        <tr>
+          <td class="w-32">User Agent</td>
+          <td>
+            {{ dataFull.metadata.request.user_agent }}
+          </td>
+        </tr>
+        <tr>
+          <td class="w-32">User IP</td>
+          <td>
+            {{ dataFull.metadata.request.user_ip }}
+          </td>
+        </tr>
+        <tr v-if="dataFull.metadata.data">
+          <td class="w-32">Data</td>
+          <td class="!p-0">
+            <table class="mini">
+              <tr v-for="(value, key, index) in dataFull.metadata.data" :key="index">
+                <td>{{ key }}</td>
+                <td>{{ value }}</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td>Created</td>
+          <td>{{ formatDate(dataFull.created) }}</td>
         </tr>
       </table>
     </div>

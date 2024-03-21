@@ -15,18 +15,19 @@
 <script setup lang="ts">
 import { useRouter, useRoute } from "vue-router";
 import { delCookie } from "@/utils/";
+import { apiPost } from "@/utils/api";
 import { SvgIcon } from "@/components";
 
 const route = useRoute();
 const router = useRouter();
 
 const signOut = async () => {
-  const sectionName = (route.path as string).startsWith('/_') ? "admin" : "manager";
-  delCookie(sectionName);
-  if (sectionName === "admin") {
-    router.push({ name: "admin-signin" });
-  }else{
-    router.push({ name: "signin" });
+  const isUnderScorePath = route.path.startsWith('/_');
+  try {
+    await apiPost(`/${isUnderScorePath ? '_' : ''}/api/sign/out`, {});
+  } catch (e) {
+    router.push({ name: (isUnderScorePath ? "admin-signin" : "signin") });
+    delCookie(isUnderScorePath ? "admin" : "manager");
   }
 };
 </script>

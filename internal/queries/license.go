@@ -49,7 +49,7 @@ func (q *LicenseQueries) Licenses(ctx context.Context, pagination *webutil.Pagin
 	query += DB().SQLPagination(webutil.PaginationQuery{
 		Limit:  pagination.Limit,
 		Offset: pagination.Offset,
-		SortBy: `"license"."created_at":ASC`,
+		SortBy: `"license"."created_at":DESC`,
 	})
 
 	rows, err := q.DB.QueryContext(ctx, query)

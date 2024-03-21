@@ -31,12 +31,12 @@ INSERT INTO "pattern" ("id", "name", "limit", "price", "currency", "term", "priv
 ('0BDbBZ10d3Jb9jz', 'pattern 3', '{"servers":15,"companies":15,"users":15}', 1500, 2, 4, 'f', 't', '{"ip":1,"mac":1,"country":1}'),
 ('AFQG1faC02qc2g6', 'pattern promo', '{"servers":20,"companies":20,"users":20}', 2000, 2,5, 't', 't', '{"ip":1,"mac":1,"country":1}'),
 ('cX1ACDa81do05xO', 'pattern 4', '{"servers":99,"companies":99,"users":99}', 2000, 2, 5, 'f', 't', '{"ip":1,"mac":1,"country":1}'),
-('u5O57U8r6nNRXxo', 'pattern 5', '{"servers":99,"companies":1000,"users":20}', 2010, 2,5, 't', 't', '{"ip":0,"mac":1,"country":1}'),
-('m1MeQvVE63q84jJ', 'pattern 6', '{"servers":20,"companies":99,"users":20}', 2020, 2, 5, 't', 'f', '{"ip":1,"mac":1,"country":1}'),
-('674wsKSt8DdTWk1', 'pattern 7', '{"servers":20,"companies":20,"users":99}', 2030, 2, 5, 't', 'f', '{"ip":1,"mac":0,"country":1}'),
-('E7sOofi13S2I5eF', 'pattern 8', '{"servers":20,"companies":99,"users":1000}', 3000, 2, 5, 'f', 't', '{"ip":1,"mac":1,"country":1}'),
-('4lLLn3N5jUu74lJ', 'pattern 9', '{"servers":99,"companies":20,"users":20}', 99000, 2, 5, 't', 'f', '{"ip":0,"mac":1,"country":1}'),
-('2WwO5T58nNto7gG', 'pattern 10', '{"servers":1000,"companies":99,"users":20}', 12010, 2, 5, 'f', 't', '{"ip":1,"mac":1,"country":0}');
+('A0P0Bwap5c8C0bW', 'pattern 5', '{"servers":99,"companies":1000,"users":20}', 2010, 2,5, 't', 't', '{"ip":0,"mac":1,"country":1}'),
+('eZB0E5F921zNfbn', 'pattern 6', '{"servers":20,"companies":99,"users":20}', 2020, 2, 5, 't', 'f', '{"ip":1,"mac":1,"country":1}'),
+('tT1lnD7mM44L5dN', 'pattern 7', '{"servers":20,"companies":20,"users":99}', 2030, 2, 5, 't', 'f', '{"ip":1,"mac":0,"country":1}'),
+('0X4lLKxC38kTt7c', 'pattern 8', '{"servers":20,"companies":99,"users":1000}', 3000, 2, 5, 'f', 't', '{"ip":1,"mac":1,"country":1}'),
+('4lLLn3F2Ggfc6Q4', 'pattern 9', '{"servers":99,"companies":20,"users":20}', 99000, 2, 5, 't', 'f', '{"ip":0,"mac":1,"country":1}'),
+('ReU41LFrf2El76u', 'pattern 10', '{"servers":1000,"companies":99,"users":20}', 12010, 2, 5, 'f', 't', '{"ip":1,"mac":1,"country":0}');
 
 INSERT INTO "payment" ("id", "pattern_id", "customer_id", "provider", "status", "metadata") VALUES 
 ('A0sB9XpSx0P65ab', '4dDADaT1t0m71Md', '7v38n58hXHVsNxS', 'stripe', 1, '{"stripe_id":"cus_APBaLDeqQoVy8m"}'),
@@ -65,11 +65,12 @@ INSERT INTO "license" ("id", "payment_id", "status", "hash") VALUES
 ('qeCEmC00c1MQ4c6', 'B066SsSRuUrs76b', 't', '84adae6beecaa29029addfc1371b29f9'),
 ('77imoSIM5s3OSs4', '9576nYtyRuN8rUT', 'f', '0a4441b52449ea8b49697438a26be13e');
 
-INSERT INTO "audit" ("id", "section", "section_id", "action", "metadata") VALUES 
-('bE0oH0nM5L9hY9l', 1, 'aAW8wL4Dd01Lll4', 2, '[]'),
-('j8VmU4u8u73JMUv', 1, 'Aj1WWd0JDw3w88a', 2, '[]'),
-('14Icm3VziMC89Zv', 2, 'E7sOofi13S2I5eF', 1, '[]'),
-('LAlM47Ug24Gma0u', 2, '2WwO5T58nNto7gG', 1, '[]');
+INSERT INTO "audit" ("id", "section", "customer_id", "action", "metadata") VALUES 
+('k3Kmm4R6GM4rMg2', 2, 'admin', 1, '{"request":{"user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Safari/605.1.15","user_ip":"127.0.0.1"},"data":null}'),
+('bE0oH0nM5L9hY9l', 1, 'admin', 4, '{"request":{"user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Safari/605.1.15","user_ip":"127.0.0.1"},"data":null}'),
+('14Icm3VziMC89Zv', 2, 'admin', 3, '{"request":{"user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Safari/605.1.15","user_ip":"127.0.0.1"},"data":null}'),
+('j8VmU4u8u73JMUv', 1, 'admin', 4, '{"request":{"user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Safari/605.1.15","user_ip":"127.0.0.1"},"data":null}'),
+('LAlM47Ug24Gma0u', 2, '2WwO5T58nNto7gG', 1, '{"request":{"user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Safari/605.1.15","user_ip":"127.0.0.1"},"data":{"id":"2WwO5T58nNto7gG"}}');
 -- +goose StatementEnd
 
 -- +goose Down

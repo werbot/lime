@@ -7,7 +7,7 @@ export async function apiGet(url: string, params: object): Promise<any> {
 export async function apiPost(
   url: string,
   params: object,
-  body: any,
+  body?: any,
 ): Promise<any> {
   return handleRequest(url, params, createOptions("POST", body));
 }
@@ -15,7 +15,7 @@ export async function apiPost(
 export async function apiUpdate(
   url: string,
   params: object,
-  body: any,
+  body?: any,
 ): Promise<any> {
   return handleRequest(url, params, createOptions("PATCH", body));
 }

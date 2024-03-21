@@ -12,10 +12,12 @@ const (
 	SectionLicense
 )
 
-type Action int
+type AuditAction int
 
 const (
-	_ Action = iota
+	_ AuditAction = iota
+	OnSignIn
+	OnSignOut
 	OnAdd
 	OnUpdate
 	OnDelete
@@ -29,10 +31,10 @@ type Audits struct {
 
 // Audit is ...
 type Audit struct {
-	ID        string    `json:"id"`
-	Section   Section   `json:"section"`
-	SectionID string    `json:"section_id"`
-	Action    Action    `json:"action"`
-	Metadata  Metadata  `json:"metadata"`
-	Created   time.Time `json:"created"`
+	ID       string      `json:"id"`
+	Section  Section     `json:"section"`
+	Customer Customer    `json:"customer"`
+	Action   AuditAction `json:"action"`
+	Metadata Metadata    `json:"metadata"`
+	Created  time.Time   `json:"created"`
 }

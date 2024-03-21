@@ -14,8 +14,8 @@ type Customers struct {
 // Customer is a ...
 type Customer struct {
 	Core
-	Email    string     `json:"email,omitempty"`
-	Status   bool       `json:"status,omitempty"`
+	Email    string     `json:"email"`
+	Status   bool       `json:"status"`
 	Payments *[]Payment `json:"payments,omitempty"`
 }
 

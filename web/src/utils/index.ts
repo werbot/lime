@@ -38,6 +38,8 @@ export const termFormat = [
 
 export const actionFormat = [
   { name: "", color: "" },
+  { name: "onSignIn", color: "gray" },
+  { name: "onSignOut", color: "gray" },
   { name: "onAdd", color: "green" },
   { name: "onUpdate", color: "yellow" },
   { name: "onDelete", color: "red" },

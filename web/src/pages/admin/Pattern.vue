@@ -26,7 +26,7 @@
             </div>
           </td>
           <td>{{ item.name }}</td>
-          <td><Badge :name="item.licenses.total" /></td>
+          <td><Badge :name="String(item.licenses.total)" /></td>
           <td>
             <Badge :name="termFormat[item.term].name" :color="termFormat[item.term].color" />
           </td>

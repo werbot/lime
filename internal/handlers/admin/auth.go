@@ -9,6 +9,7 @@ import (
 	"github.com/werbot/lime/internal/config"
 	"github.com/werbot/lime/internal/errors"
 	"github.com/werbot/lime/internal/models"
+	"github.com/werbot/lime/internal/queries"
 	"github.com/werbot/lime/pkg/jwtutil"
 	"github.com/werbot/lime/pkg/logging"
 	"github.com/werbot/lime/pkg/webutil"
@@ -53,6 +54,9 @@ func SignIn(c *fiber.Ctx) error {
 	sec, dec := math.Modf(metadata.ExpiresAt)
 	expires := time.Unix(int64(sec), int64(dec*(1e9)))
 
+	metaAudit := webutil.GetRequestInfo(c, nil)
+	queries.DB().AddAudit(c.Context(), models.SectionCustomer, "admin", models.OnSignIn, metaAudit)
+
 	c.Cookie(&fiber.Cookie{
 		Name:     "admin",
 		Value:    token,
@@ -70,6 +74,9 @@ func SignIn(c *fiber.Ctx) error {
 // @Success 200 {string} string "{"status":"200", "msg":""}"
 // @Router /_/api/sign/out [post]
 func SignOut(c *fiber.Ctx) error {
+	metaAudit := webutil.GetRequestInfo(c, nil)
+	queries.DB().AddAudit(c.Context(), models.SectionCustomer, "admin", models.OnSignOut, metaAudit)
+
 	c.Cookie(&fiber.Cookie{
 		Name:    "admin",
 		Expires: time.Now().Add(-(time.Hour * 2)),

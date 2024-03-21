@@ -40,7 +40,7 @@ func (q *PaymentsQueries) Payments(ctx context.Context, pagination *webutil.Pagi
 	query += DB().SQLPagination(webutil.PaginationQuery{
 		Limit:  pagination.Limit,
 		Offset: pagination.Offset,
-		SortBy: `"payment"."created_at":ASC`,
+		SortBy: `"payment"."created_at":DESC`,
 	})
 
 	rows, err := q.DB.QueryContext(ctx, query)

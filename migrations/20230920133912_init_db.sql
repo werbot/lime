@@ -3,9 +3,9 @@
 CREATE TABLE "audit" (
   "id" varchar(15) PRIMARY KEY NOT NULL,
   "section" varchar(1) NOT NULL,
-  "section_id" varchar(15) NOT NULL,
+  "customer_id" varchar(15) NOT NULL,
   "action" varchar(2) NOT NULL,
-  "metadata" json DEFAULT '[]' NOT NULL,
+  "metadata" json DEFAULT '{"request":{"user_agent":null,"user_ip":null},"data":null}' NOT NULL,
   "created_at" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 CREATE INDEX idx_audit_id ON "audit" ("id");

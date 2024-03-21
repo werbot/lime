@@ -4,9 +4,11 @@ import (
 	"context"
 	"database/sql"
 	"encoding/json"
+	"strconv"
 
 	"github.com/werbot/lime/internal/errors"
 	"github.com/werbot/lime/internal/models"
+	"github.com/werbot/lime/pkg/security"
 	"github.com/werbot/lime/pkg/webutil"
 )
 
@@ -19,20 +21,23 @@ type AuditQueries struct {
 func (q *AuditQueries) Audits(ctx context.Context, pagination *webutil.PaginationQuery) (*models.Audits, error) {
 	query := `
 		SELECT
-			"id",
-			"section",
-			"section_id",
-			"action",
-			"created_at"
+			"audit"."id",
+			"audit"."section",
+			"audit"."customer_id",
+			"customer"."email"    AS "customer_email",
+			"customer"."status"   AS "customer_status",
+			"audit"."action",
+			"audit"."created_at"
 		FROM
 			"audit"
+			LEFT JOIN "customer" ON "audit"."customer_id" = "customer"."id"
 	`
 
 	// paginator init
 	query += DB().SQLPagination(webutil.PaginationQuery{
 		Limit:  pagination.Limit,
 		Offset: pagination.Offset,
-		SortBy: `"created_at":ASC`,
+		SortBy: `"audit"."created_at":DESC`,
 	})
 
 	rows, err := q.DB.QueryContext(ctx, query)
@@ -43,11 +48,16 @@ func (q *AuditQueries) Audits(ctx context.Context, pagination *webutil.Paginatio
 
 	response := &models.Audits{}
 	for rows.Next() {
+		var email sql.NullString
+		var status sql.NullBool
 		audit := models.Audit{}
+		customer := models.Customer{}
 		err := rows.Scan(
 			&audit.ID,
 			&audit.Section,
-			&audit.SectionID,
+			&customer.ID,
+			&email,
+			&status,
 			&audit.Action,
 			&audit.Created,
 		)
@@ -55,6 +65,18 @@ func (q *AuditQueries) Audits(ctx context.Context, pagination *webutil.Paginatio
 			return nil, err
 		}
 
+		if email.Valid {
+			customer.Email = email.String
+		}
+
+		if customer.ID == "admin" {
+			customer.Status = true
+			customer.Email = "admin"
+		} else if status.Valid {
+			customer.Status = status.Bool
+		}
+
+		audit.Customer = customer
 		response.Audits = append(response.Audits, audit)
 	}
 
@@ -76,28 +98,35 @@ func (q *AuditQueries) Audits(ctx context.Context, pagination *webutil.Paginatio
 func (q *AuditQueries) Audit(ctx context.Context, id string) (*models.Audit, error) {
 	query := `
 		SELECT
-			"id",
-			"section",
-			"section_id",
-			"action",
-			"metadata",
-			"created_at"
+			"audit"."id",
+			"audit"."section",
+			"audit"."customer_id",
+			"customer"."email"    AS "customer_email",
+			"customer"."status"   AS "customer_status",
+			"audit"."action",
+			"audit"."metadata",
+			"audit"."created_at"
 		FROM
 			"audit"
-		WHERE 
-			"id" = $1
+			LEFT JOIN "customer" ON "audit"."customer_id" = "customer"."id"
+		WHERE
+			"audit"."id" = $1
 	`
-	var metadata sql.NullString
+
+	var status sql.NullBool
+	var email, metadata sql.NullString
 	audit := &models.Audit{}
+	customer := models.Customer{}
 	err := q.DB.QueryRowContext(ctx, query, id).
 		Scan(
 			&audit.ID,
 			&audit.Section,
-			&audit.SectionID,
+			&customer.ID,
+			&email,
+			&status,
 			&audit.Action,
 			&metadata,
 			&audit.Created,
-			&audit,
 		)
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -106,11 +135,45 @@ func (q *AuditQueries) Audit(ctx context.Context, id string) (*models.Audit, err
 		return nil, err
 	}
 
+	if email.Valid {
+		customer.Email = email.String
+	}
+
+	if customer.ID == "admin" {
+		customer.Status = true
+		customer.Email = "admin"
+	} else if status.Valid {
+		customer.Status = status.Bool
+	}
+
 	if metadata.Valid {
 		var meta map[string]any
 		json.Unmarshal([]byte(metadata.String), &meta)
 		audit.Metadata = meta
 	}
 
+	audit.Customer = customer
+
 	return audit, nil
+}
+
+// AddAudit is ...
+func (q *AuditQueries) AddAudit(ctx context.Context, section models.Section, customerID string, action models.AuditAction, metadata any) error {
+	id := security.NanoID()
+	sectionStr := strconv.Itoa(int(section))
+	actionStr := strconv.Itoa(int(action))
+	metadataJSON, err := json.Marshal(metadata)
+	if err != nil {
+		return err
+	}
+
+	_, err = q.DB.ExecContext(ctx, `INSERT INTO audit (id, section, customer_id, action, metadata) VALUES ($1, $2, $3, $4, $5)`,
+		id,
+		sectionStr,
+		customerID,
+		actionStr,
+		metadataJSON,
+	)
+
+	return err
 }

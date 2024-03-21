@@ -42,7 +42,7 @@ func (q *PatternQueries) Patterns(ctx context.Context, pagination *webutil.Pagin
 	query += DB().SQLPagination(webutil.PaginationQuery{
 		Limit:  pagination.Limit,
 		Offset: pagination.Offset,
-		SortBy: `"created_at":ASC`,
+		SortBy: `"created_at":DESC`,
 	})
 
 	rows, err := q.DB.QueryContext(ctx, query)
