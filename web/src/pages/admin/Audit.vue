@@ -87,7 +87,7 @@
           <td class="!p-0">
             <table class="mini">
               <tr v-for="(value, key, index) in dataFull.metadata.data" :key="index">
-                <td>{{ key }}</td>
+                <td class="min-w-20 max-w-32">{{ key }}</td>
                 <td>{{ value }}</td>
               </tr>
             </table>

@@ -47,30 +47,30 @@
         <tr>
           <td>Customer</td>
           <td>
-            <span class="dot mr-2" :class="Object(dataFull.customer).status ? 'bg-green-500' : 'bg-red-500'"></span>
-            {{ Object(dataFull.customer).email }}
+            <span class="dot mr-2" :class="dataFull.customer.status ? 'bg-green-500' : 'bg-red-500'"></span>
+            {{ dataFull.customer.email }}
           </td>
         </tr>
         <tr>
           <td>Pattern</td>
-          <td>{{ Object(dataFull.pattern).name }}</td>
+          <td>{{ dataFull.pattern.name }}</td>
         </tr>
         <tr>
           <td>Term</td>
-          <td><Badge :name="termFormat[Object(dataFull.pattern).term].name" :color="termFormat[Object(dataFull.pattern).term].color" /></td>
+          <td><Badge :name="termFormat[dataFull.pattern.term].name" :color="termFormat[dataFull.pattern.term].color" /></td>
         </tr>
         <tr>
           <td>Price</td>
-          <td>{{ priceFormat(Object(dataFull.pattern).price) }} {{ currency[Object(dataFull.pattern).currency] }}</td>
+          <td>{{ priceFormat(dataFull.pattern.price) }} {{ currency[dataFull.pattern.currency] }}</td>
         </tr>
         <tr>
           <td>Provider</td>
-          <td>{{ Object(dataFull.transaction).provider }}</td>
+          <td>{{ dataFull.transaction.provider }}</td>
         </tr>
         <tr>
           <td>Status</td>
           <td>
-            <Badge :name="paymentStatusFormat[Object(dataFull.transaction).status].name" :color="paymentStatusFormat[Object(dataFull.transaction).status].color" />
+            <Badge :name="paymentStatusFormat[dataFull.transaction.status].name" :color="paymentStatusFormat[dataFull.transaction.status].color" />
           </td>
         </tr>
         <tr>

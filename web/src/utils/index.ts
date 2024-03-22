@@ -37,7 +37,7 @@ export const termFormat = [
 ];
 
 export const actionFormat = [
-  { name: "", color: "" },
+  { name: "onSendMail", color: "purple" },
   { name: "onSignIn", color: "gray" },
   { name: "onSignOut", color: "gray" },
   { name: "onAdd", color: "green" },
@@ -54,7 +54,7 @@ export const paymentStatusFormat = [
   { name: "failed", color: "red" },
 ];
 
-export const sections = ["", "Setting", "Customer", "Pattern", "License"];
+export const sections = ["System", "Setting", "Customer", "Pattern", "License"];
 
 export const currency = [
   "",

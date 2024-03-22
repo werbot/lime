@@ -55,7 +55,7 @@ func SignIn(c *fiber.Ctx) error {
 	expires := time.Unix(int64(sec), int64(dec*(1e9)))
 
 	metaAudit := webutil.GetRequestInfo(c, nil)
-	queries.DB().AddAudit(c.Context(), models.SectionCustomer, "admin", models.OnSignIn, metaAudit)
+	queries.DB().AddAudit(c.Context(), models.SectionSystem, "admin", models.OnSignIn, metaAudit)
 
 	c.Cookie(&fiber.Cookie{
 		Name:     "admin",
@@ -75,7 +75,7 @@ func SignIn(c *fiber.Ctx) error {
 // @Router /_/api/sign/out [post]
 func SignOut(c *fiber.Ctx) error {
 	metaAudit := webutil.GetRequestInfo(c, nil)
-	queries.DB().AddAudit(c.Context(), models.SectionCustomer, "admin", models.OnSignOut, metaAudit)
+	queries.DB().AddAudit(c.Context(), models.SectionSystem, "admin", models.OnSignOut, metaAudit)
 
 	c.Cookie(&fiber.Cookie{
 		Name:    "admin",

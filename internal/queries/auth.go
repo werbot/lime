@@ -18,7 +18,7 @@ type AuthQueries struct {
 func (q *AuthQueries) CustomerIDByEmail(ctx context.Context, email string) (string, error) {
 	var id sql.NullString
 
-	query := `SELECT id FROM customer WHERE email = $1 AND status = true`
+	query := `SELECT "id" FROM "customer" WHERE "email" = $1 AND "status" = true`
 	err := q.DB.QueryRowContext(ctx, query, email).Scan(&id)
 	if err != nil {
 		if err == sql.ErrNoRows {

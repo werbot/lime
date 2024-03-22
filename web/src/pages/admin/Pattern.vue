@@ -83,13 +83,13 @@
         <tr>
           <td>Licenses</td>
           <td>
-            <Badge :name="Object(dataFull.licenses).total" />
+            <Badge :name="dataFull.licenses.total" />
           </td>
         </tr>
         <tr>
           <td>Term</td>
           <td>
-            <Badge :name="termFormat[Object(dataFull).term].name" :color="termFormat[Object(dataFull).term].color" />
+            <Badge :name="termFormat[dataFull.term].name" :color="termFormat[dataFull.term].color" />
           </td>
         </tr>
         <tr>

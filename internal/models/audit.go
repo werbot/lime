@@ -5,7 +5,7 @@ import "time"
 type Section int
 
 const (
-	_ Section = iota
+	SectionSystem Section = iota
 	SectionSetting
 	SectionCustomer
 	SectionPattern
@@ -15,7 +15,7 @@ const (
 type AuditAction int
 
 const (
-	_ AuditAction = iota
+	OnSendMail AuditAction = iota
 	OnSignIn
 	OnSignOut
 	OnAdd

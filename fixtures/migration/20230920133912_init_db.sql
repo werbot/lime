@@ -66,11 +66,11 @@ INSERT INTO "license" ("id", "payment_id", "status", "hash") VALUES
 ('77imoSIM5s3OSs4', '9576nYtyRuN8rUT', 'f', '0a4441b52449ea8b49697438a26be13e');
 
 INSERT INTO "audit" ("id", "section", "customer_id", "action", "metadata") VALUES 
-('k3Kmm4R6GM4rMg2', 2, 'admin', 1, '{"request":{"user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Safari/605.1.15","user_ip":"127.0.0.1"},"data":null}'),
+('k3Kmm4R6GM4rMg2', 0, 'admin', 1, '{"request":{"user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Safari/605.1.15","user_ip":"127.0.0.1"},"data":null}'),
 ('bE0oH0nM5L9hY9l', 1, 'admin', 4, '{"request":{"user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Safari/605.1.15","user_ip":"127.0.0.1"},"data":null}'),
 ('14Icm3VziMC89Zv', 2, 'admin', 3, '{"request":{"user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Safari/605.1.15","user_ip":"127.0.0.1"},"data":null}'),
 ('j8VmU4u8u73JMUv', 1, 'admin', 4, '{"request":{"user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Safari/605.1.15","user_ip":"127.0.0.1"},"data":null}'),
-('LAlM47Ug24Gma0u', 2, '2WwO5T58nNto7gG', 1, '{"request":{"user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Safari/605.1.15","user_ip":"127.0.0.1"},"data":{"id":"2WwO5T58nNto7gG"}}');
+('LAlM47Ug24Gma0u', 0, '2WwO5T58nNto7gG', 1, '{"request":{"user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Safari/605.1.15","user_ip":"127.0.0.1"},"data":{"id":"2WwO5T58nNto7gG"}}');
 -- +goose StatementEnd
 
 -- +goose Down

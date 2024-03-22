@@ -24,7 +24,7 @@ const router = useRouter();
 const signOut = async () => {
   const isUnderScorePath = route.path.startsWith('/_');
   try {
-    await apiPost(`/${isUnderScorePath ? '_' : ''}/api/sign/out`, {});
+    await apiPost(`${isUnderScorePath ? '/_/' : '/'}api/sign/out`, {});
   } catch (e) {
     router.push({ name: (isUnderScorePath ? "admin-signin" : "signin") });
     delCookie(isUnderScorePath ? "admin" : "manager");

@@ -64,17 +64,17 @@
         <tr>
           <td>Customer</td>
           <td>
-            <span class="dot mr-2" :class="Object(dataFull.customer).status ? 'bg-green-500' : 'bg-red-500'"></span>
-            <router-link active-class="current" :to="{ name: 'admin-customer-description', params: { customer_slug: Object(dataFull.customer).id } }">
-              {{ Object(dataFull.customer).email }}
+            <span class="dot mr-2" :class="dataFull.customer.status ? 'bg-green-500' : 'bg-red-500'"></span>
+            <router-link active-class="current" :to="{ name: 'admin-customer-description', params: { customer_slug: dataFull.customer.id } }">
+              {{ dataFull.customer.email }}
             </router-link>
           </td>
         </tr>
         <tr>
           <td>Pattern</td>
           <td>
-            <router-link active-class="current" :to="{ name: 'admin-pattern-description', params: { pattern_slug: Object(dataFull.pattern).id } }">
-            {{ Object(dataFull.pattern).name }}
+            <router-link active-class="current" :to="{ name: 'admin-pattern-description', params: { pattern_slug: dataFull.pattern.id } }">
+            {{ dataFull.pattern.name }}
             </router-link>
           </td>
         </tr>
@@ -82,7 +82,7 @@
           <td>Limits</td>
           <td class="!p-0">
             <table class="mini">
-              <tr v-for="(value, key, index) in Object(dataFull.pattern).limit" :key="index">
+              <tr v-for="(value, key, index) in dataFull.pattern.limit" :key="index">
                 <td>{{ key }}</td>
                 <td>{{ value }}</td>
               </tr>
@@ -91,12 +91,12 @@
         </tr>
         <tr>
           <td>Price</td>
-          <td>{{ priceFormat(Object(dataFull.pattern).price) }} {{ currency[Object(dataFull.pattern)] }}</td>
+          <td>{{ priceFormat(dataFull.pattern.price) }} {{ currency[dataFull.pattern.currency] }}</td>
         </tr>
         <tr>
           <td>Term</td>
           <td>
-            <Badge :name="termFormat[Object(dataFull.pattern).term].name" :color="termFormat[Object(dataFull.pattern).term].color" />
+            <Badge :name="termFormat[dataFull.pattern.term].name" :color="termFormat[dataFull.pattern.term].color" />
           </td>
         </tr>
         <tr>

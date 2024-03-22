@@ -20,6 +20,7 @@ import (
 // @Produce application/json
 // @Param
 // @Success 200 {string} string "{"status":"200", "msg":""}"
+// @Router /api/sign/in [post]
 // @Router /api/sign/in?token= [post]
 func SignIn(c *fiber.Ctx) error {
 	cfg := config.Data()
@@ -37,12 +38,19 @@ func SignIn(c *fiber.Ctx) error {
 		sec, dec := math.Modf(metadata.ExpiresAt)
 		expires := time.Unix(int64(sec), int64(dec*(1e9)))
 
+		metaData := map[string]string{
+			"invite": tokenReq,
+		}
+		metaAudit := webutil.GetRequestInfo(c, metaData)
+		queries.DB().AddAudit(c.Context(), models.SectionSystem, metadata.ID, models.OnSignIn, metaAudit)
+
 		c.Cookie(&fiber.Cookie{
 			Name:     "manager",
 			Value:    tokenReq,
 			Expires:  expires,
 			SameSite: "lax",
 		})
+
 		return webutil.StatusOK(c, "SignIn", metadata)
 	}
 
@@ -78,6 +86,12 @@ func SignIn(c *fiber.Ctx) error {
 		return webutil.StatusInternalServerError(c, nil)
 	}
 
+	metaData := map[string]string{
+		"invite": token,
+	}
+	metaAudit := webutil.GetRequestInfo(c, metaData)
+	queries.DB().AddAudit(c.Context(), models.SectionSystem, customerID, models.OnSendMail, metaAudit)
+
 	return webutil.StatusOK(c, "SignIn", "Message sent")
 }
 
@@ -88,6 +102,17 @@ func SignIn(c *fiber.Ctx) error {
 // @Success 200 {string} string "{"status":"200", "msg":""}"
 // @Router /api/sign/out [post]
 func SignOut(c *fiber.Ctx) error {
+	log := logging.New()
+
+	meta, err := jwtutil.ExtractMetadataFiber(c)
+	if err != nil {
+		log.ErrorStack(err)
+		return webutil.StatusInternalServerError(c, nil)
+	}
+
+	metaAudit := webutil.GetRequestInfo(c, nil)
+	queries.DB().AddAudit(c.Context(), models.SectionSystem, meta.ID, models.OnSignOut, metaAudit)
+
 	c.Cookie(&fiber.Cookie{
 		Name:    "manager",
 		Expires: time.Now().Add(-(time.Hour * 2)),
