@@ -26,7 +26,7 @@ func Licenses(c *fiber.Ctx) error {
 	log := logging.New()
 
 	pagination := webutil.GetPaginationFromCtx(c)
-	licenses, err := queries.DB().Licenses(c.Context(), pagination, true)
+	licenses, err := queries.DB().Licenses(c.Context(), pagination, "")
 	if err != nil {
 		log.ErrorStack(err)
 		return webutil.StatusInternalServerError(c, nil)
@@ -44,7 +44,7 @@ func Licenses(c *fiber.Ctx) error {
 func License(c *fiber.Ctx) error {
 	log := logging.New()
 
-	license, err := queries.DB().License(c.Context(), c.Params("id"), true)
+	license, err := queries.DB().License(c.Context(), c.Params("id"), "")
 	if err != nil {
 		if err == errors.ErrLicenseNotFound {
 			return webutil.StatusNotFound(c, errors.MsgLicenseNotFound)

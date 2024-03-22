@@ -17,7 +17,27 @@ type LicenseQueries struct {
 }
 
 // Licenses is ...
-func (q *LicenseQueries) Licenses(ctx context.Context, pagination *webutil.PaginationQuery, admin bool) (*models.Licenses, error) {
+func (q *LicenseQueries) Licenses(ctx context.Context, pagination *webutil.PaginationQuery, customerID string) (*models.Licenses, error) {
+	response := &models.Licenses{}
+
+	queryAddonCustomer := ""
+	if customerID != "" {
+		queryAddonCustomer = `WHERE "payment"."customer_id" = '7v38n58hXHVsNxS'`
+	}
+
+	// Count total records
+	queryTotal := `
+		SELECT 
+			COUNT(DISTINCT "license"."id") 
+		FROM 
+			"license"
+			LEFT JOIN "payment" ON "license"."payment_id" = "payment"."id"
+		` + queryAddonCustomer
+	err := q.DB.QueryRowContext(ctx, queryTotal).Scan(&response.Total)
+	if err != nil && err != sql.ErrNoRows {
+		return nil, err
+	}
+
 	query := `
 		SELECT
 			"license"."id",
@@ -37,13 +57,7 @@ func (q *LicenseQueries) Licenses(ctx context.Context, pagination *webutil.Pagin
 			LEFT JOIN "payment" ON "license"."payment_id" = "payment"."id"
 			LEFT JOIN "customer" ON "payment"."customer_id" = "customer"."id"
 			LEFT JOIN "pattern" ON "payment"."pattern_id" = "pattern"."id"
-	`
-
-	if admin {
-		query += ``
-	} else {
-		query += ``
-	}
+	` + queryAddonCustomer
 
 	// paginator init
 	query += DB().SQLPagination(webutil.PaginationQuery{
@@ -58,7 +72,6 @@ func (q *LicenseQueries) Licenses(ctx context.Context, pagination *webutil.Pagin
 	}
 	defer rows.Close()
 
-	response := &models.Licenses{}
 	for rows.Next() {
 		var updated sql.NullTime
 		license := models.License{}
@@ -95,18 +108,11 @@ func (q *LicenseQueries) Licenses(ctx context.Context, pagination *webutil.Pagin
 		return nil, err
 	}
 
-	// Count total records
-	query = `SELECT COUNT(DISTINCT license.id) FROM license`
-	err = q.DB.QueryRowContext(ctx, query).Scan(&response.Total)
-	if err != nil && err != sql.ErrNoRows {
-		return nil, err
-	}
-
 	return response, nil
 }
 
 // License is ...
-func (q *LicenseQueries) License(ctx context.Context, id string, admin bool) (*models.License, error) {
+func (q *LicenseQueries) License(ctx context.Context, id string, customerID string) (*models.License, error) {
 	request := strings.Split(id, "_")
 
 	query := `
@@ -133,9 +139,7 @@ func (q *LicenseQueries) License(ctx context.Context, id string, admin bool) (*m
 		WHERE "license"."id" = $1
 	`
 
-	if admin {
-		query += ``
-	} else {
+	if customerID != "" {
 		query += ``
 	}
 

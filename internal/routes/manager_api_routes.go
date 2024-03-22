@@ -13,6 +13,11 @@ func ApiPublicRoutes(c *fiber.App) {
 
 	api := c.Group("/api")
 
+	// public section
+	api.Get("/license/download/:id", handlers.DownloadLicense)
+	api.Post("/license/verify", handlers.LicenseVerify)
+
+	// manager section
 	sign := api.Group("/sign")
 	sign.Post("/in", handlers.SignIn)
 	sign.Post("/out", middleware.JWTProtected("manager"), handlers.SignOut)
@@ -21,6 +26,6 @@ func ApiPublicRoutes(c *fiber.App) {
 	manager.Post("/license", handlers.ManageLicense)
 
 	license := api.Group("/license", middleware.JWTProtected("manager"))
-	license.Get("/download/:id", handlers.DownloadLicense)
-	license.Post("/verify", handlers.LicenseVerify)
+	license.Get("/", handlers.Licenses)
+	license.Get(`/:id<regex((lic_)\w{15})>`, handlers.License)
 }
