@@ -79,3 +79,22 @@ func ExtName(fpath string) string {
 	}
 	return ""
 }
+
+// CopyFile copy a file to another file path.
+func CopyFile(srcPath, dstPath string) error {
+	srcFile, err := os.OpenFile(srcPath, FsRFlags, 0)
+	if err != nil {
+		return err
+	}
+	defer srcFile.Close()
+
+	// create and open file
+	dstFile, err := OpenFile(dstPath, FsCWTFlags, 0o665)
+	if err != nil {
+		return err
+	}
+	defer dstFile.Close()
+
+	_, err = io.Copy(dstFile, srcFile)
+	return err
+}
