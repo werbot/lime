@@ -5,6 +5,9 @@ import (
 
 	"github.com/pelletier/go-toml/v2"
 	"github.com/werbot/lime/pkg/fsutil"
+	"github.com/werbot/lime/pkg/geo"
+	"github.com/werbot/lime/pkg/geo/ipinfo"
+	"github.com/werbot/lime/pkg/geo/maxmind"
 	"github.com/werbot/lime/pkg/storage"
 	"github.com/werbot/lime/pkg/storage/postgres"
 	"github.com/werbot/lime/pkg/storage/sqlite"
@@ -18,11 +21,12 @@ var cfg *Config
 
 // Config is ...
 type Config struct {
-	HTTPAddr string           `toml:"http-addr" comment:"Ports <= 1024 are privileged ports. You can't use them unless you're root or have the explicit\npermission to use them. See this answer for an explanation or wikipedia or something you trust more.\nsudo setcap 'cap_net_bind_service=+ep' /opt/yourGoBinary"`
-	DevMode  bool             `toml:"dev-mode" comment:"Active develop mode"`
-	Admin    Admin            `toml:"admin" comment:"Admin section"`
-	Keys     Keys             `toml:"keys" comment:"Keys section"`
-	Database storage.Database `toml:"database" comment:"Database section"`
+	HTTPAddr    string           `toml:"http-addr" comment:"Ports <= 1024 are privileged ports. You can't use them unless you're root or have the explicit\npermission to use them. See this answer for an explanation or wikipedia or something you trust more.\nsudo setcap 'cap_net_bind_service=+ep' /opt/yourGoBinary"`
+	DevMode     bool             `toml:"dev-mode" comment:"Active develop mode"`
+	Admin       Admin            `toml:"admin" comment:"Admin section"`
+	Keys        Keys             `toml:"keys" comment:"Keys section"`
+	GeoDatabase geo.Database     `toml:"geo-database" comment:"Geo database section"`
+	Database    storage.Database `toml:"database" comment:"Database section"`
 }
 
 // Admin is ...
@@ -70,6 +74,19 @@ func DefaultConfig() *Config {
 			License: License{
 				PublicKey:  "license_public.key",
 				PrivateKey: "license_private.key",
+			},
+		},
+		GeoDatabase: geo.Database{
+			DBPath:  "./lime_geo",
+			Storage: geo.Maxmind,
+			Maxmind: maxmind.Config{
+				DBName:     "GeoLite2-Country.mmdb",
+				AccountID:  0,
+				LicenseKey: "",
+			},
+			Ipinfo: ipinfo.Config{
+				DBName: "IPinfo-Country.mmdb",
+				Token:  "",
 			},
 		},
 		Database: storage.Database{

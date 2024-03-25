@@ -43,7 +43,10 @@ func NewApp() error {
 	jwtPrivKeyFile := filepath.Join(cfg.Keys.KeyDir, cfg.Keys.JWT.PrivateKey)
 	if !fsutil.IsFile(jwtPrivKeyFile) || !fsutil.IsFile(jwtPubKeyFile) {
 		fmt.Print("├─[🔑] A new JWT key pair has been created.\n")
-		GenJWTKeys()
+		if err := GenJWTKeys(); err != nil {
+			log.Err(err).Send()
+			return err
+		}
 	}
 
 	if err := jwtutil.LoadKeys(jwtPubKeyFile, jwtPrivKeyFile); err != nil {
@@ -55,7 +58,23 @@ func NewApp() error {
 	licensePrivKeyFile := filepath.Join(cfg.Keys.KeyDir, cfg.Keys.License.PrivateKey)
 	if !fsutil.IsFile(licensePrivKeyFile) || !fsutil.IsFile(licensePubKeyFile) {
 		fmt.Print("├─[🔑] A new License key pair has been created.\n")
-		GenLicenseKeys()
+		if err := GenLicenseKeys(); err != nil {
+			log.Err(err).Send()
+			return err
+		}
+	}
+
+	if cfg.GeoDatabase.Check() {
+		fmt.Print("├─[🌏] Downloading the geo database for country identification.\n")
+		if err := fsutil.MkDirs(0o775, cfg.GeoDatabase.DBPath); err != nil {
+			log.Err(err).Send()
+			return err
+		}
+
+		if err := cfg.GeoDatabase.Download(); err != nil {
+			log.Err(err).Send()
+			return err
+		}
 	}
 
 	if err := queries.Init(cfg.Database, migrations.Embed()); err != nil {
