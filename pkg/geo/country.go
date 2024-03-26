@@ -1,10 +1,9 @@
 package geo
 
 import (
-	"log"
-	"net"
-
-	"github.com/oschwald/maxminddb-golang"
+	"github.com/werbot/lime/pkg/geo/geoopen"
+	"github.com/werbot/lime/pkg/geo/ipinfo"
+	"github.com/werbot/lime/pkg/geo/maxmind"
 )
 
 type Country struct {
@@ -13,53 +12,40 @@ type Country struct {
 
 // GetCountryCode is ...
 func (db *Database) GetCountryCode(ip string) (*Country, error) {
-	pathDB := db.MMDBPath()
-	mmdb, err := maxminddb.Open(pathDB)
+	var isoCode string
+	var err error
+
+	switch db.Storage {
+	case GeoOpen:
+		isoCode, err = geoopen.DB(db.DBPath, db.GeoOpen).GetCountryCode(ip)
+	case Maxmind:
+		isoCode, err = maxmind.DB(db.DBPath, db.Maxmind).GetCountryCode(ip)
+	case Ipinfo:
+		isoCode, err = ipinfo.DB(db.DBPath, db.Ipinfo).GetCountryCode(ip)
+	}
+
 	if err != nil {
 		return nil, err
 	}
-	defer mmdb.Close()
 
-	countryCode := &Country{}
-
-	switch db.Storage {
-	case Maxmind:
-		var record struct {
-			Country struct {
-				ISOCode string `maxminddb:"iso_code"`
-			} `maxminddb:"country"`
-		}
-		if err = mmdb.Lookup(net.ParseIP(ip), &record); err != nil {
-			log.Panic(err)
-		}
-
-		countryCode.ISOCode = record.Country.ISOCode
-	case Ipinfo:
-		var record struct {
-			Country string `maxminddb:"country"`
-		}
-		if err = mmdb.Lookup(net.ParseIP(ip), &record); err != nil {
-			log.Panic(err)
-		}
-		countryCode.ISOCode = record.Country
-	}
-
-	return countryCode, nil
+	return &Country{
+		ISOCode: isoCode,
+	}, nil
 }
 
 // FlagEmoji is ...
-func (c *Country) FlagEmoji() string {
-	return countriesFlags[c.ISOCode].Emoji
+func FlagEmoji(isoCode string) string {
+	return countriesFlags[isoCode].Emoji
 }
 
 // FlagUnicode is ...
-func (c *Country) FlagUnicode() string {
-	return countriesFlags[c.ISOCode].Unicode
+func FlagUnicode(isoCode string) string {
+	return countriesFlags[isoCode].Unicode
 }
 
 // FullName is ...
-func (c *Country) FullName() string {
-	return countriesMap[c.ISOCode]
+func FullName(isoCode string) string {
+	return countriesMap[isoCode]
 }
 
 type CountryFlag struct {

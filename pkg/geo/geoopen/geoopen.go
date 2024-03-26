@@ -1,7 +1,6 @@
-package ipinfo
+package geoopen
 
 import (
-	"fmt"
 	"path/filepath"
 
 	"github.com/werbot/lime/pkg/fsutil"
@@ -9,8 +8,7 @@ import (
 
 // Config is ...
 type Config struct {
-	DBName string `toml:"db-name,commented"`
-	Token  string `toml:"token,commented"`
+	DBName string `toml:"db-name"`
 
 	dbPath   string
 	mmdbPath string
@@ -24,13 +22,13 @@ func DB(dbPath string, cfg Config) *Config {
 }
 
 // Check is ...
-func (cfg *Config) Check() bool {
-	return !fsutil.IsFile(cfg.mmdbPath) && len(cfg.Token) > 10
+func (cfg Config) Check() bool {
+	return !fsutil.IsFile(cfg.mmdbPath)
 }
 
 // Download is ...
-func (cfg *Config) Download() error {
-	maxmindURL := fmt.Sprintf("https://ipinfo.io/data/free/country.mmdb?token=%s", cfg.Token)
+func (cfg Config) Download() error {
+	maxmindURL := "https://cra.circl.lu/opendata/geo-open/mmdb-country/latest.mmdb"
 
 	// Download the file.
 	if err := fsutil.Download(cfg.mmdbPath, maxmindURL); err != nil {

@@ -11,15 +11,30 @@ import (
 
 // Config is ...
 type Config struct {
-	DBName     string `toml:"db-name"`
-	AccountID  int    `toml:"account-id"`
-	LicenseKey string `toml:"license-key"`
+	DBName     string `toml:"db-name,commented"`
+	AccountID  int    `toml:"account-id,commented"`
+	LicenseKey string `toml:"license-key,commented"`
+
+	dbPath   string
+	mmdbPath string
+}
+
+// DB is ...
+func DB(dbPath string, cfg Config) *Config {
+	cfg.dbPath = dbPath
+	cfg.mmdbPath = filepath.Join(dbPath, cfg.DBName)
+	return &cfg
+}
+
+// Check is ...
+func (cfg *Config) Check() bool {
+	return !fsutil.IsFile(cfg.mmdbPath) && cfg.AccountID > 0 && len(cfg.LicenseKey) > 30
 }
 
 // Download is ...
-func (cfg Config) Download(dbPath string) error {
+func (cfg *Config) Download() error {
 	maxmindURL := fmt.Sprintf("https://%v:%s@download.maxmind.com/geoip/databases/GeoLite2-Country/download?suffix=tar.gz", cfg.AccountID, cfg.LicenseKey)
-	pathArch := filepath.Join(dbPath, "GeoLite2-Country.tar.gz")
+	pathArch := filepath.Join(cfg.dbPath, "GeoLite2-Country.tar.gz")
 
 	// Download the file.
 	if err := fsutil.Download(pathArch, maxmindURL); err != nil {
@@ -28,12 +43,12 @@ func (cfg Config) Download(dbPath string) error {
 	defer os.Remove(pathArch)
 
 	// Extract the archive.
-	if err := archive.ExtractTar(pathArch, dbPath); err != nil {
+	if err := archive.ExtractTar(pathArch, cfg.dbPath); err != nil {
 		return err
 	}
 
 	// Find the extracted database file.
-	pathDB, err := filepath.Glob(filepath.Join(dbPath, "*", cfg.DBName))
+	pathDB, err := filepath.Glob(filepath.Join(cfg.dbPath, "*", cfg.DBName))
 	if err != nil {
 		return err
 	}
@@ -42,8 +57,7 @@ func (cfg Config) Download(dbPath string) error {
 	}
 
 	// Copy the database file to the desired location.
-	mmdbPath := filepath.Join(dbPath, cfg.DBName)
-	if err := fsutil.CopyFile(pathDB[0], mmdbPath); err != nil {
+	if err := fsutil.CopyFile(pathDB[0], cfg.mmdbPath); err != nil {
 		return err
 	}
 
