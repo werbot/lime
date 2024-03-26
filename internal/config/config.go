@@ -6,6 +6,7 @@ import (
 	"github.com/pelletier/go-toml/v2"
 	"github.com/werbot/lime/pkg/fsutil"
 	"github.com/werbot/lime/pkg/geo"
+	"github.com/werbot/lime/pkg/geo/geoopen"
 	"github.com/werbot/lime/pkg/geo/ipinfo"
 	"github.com/werbot/lime/pkg/geo/maxmind"
 	"github.com/werbot/lime/pkg/storage"
@@ -78,7 +79,10 @@ func DefaultConfig() *Config {
 		},
 		GeoDatabase: geo.Database{
 			DBPath:  "./lime_geo",
-			Storage: geo.Maxmind,
+			Storage: geo.GeoOpen,
+			GeoOpen: geoopen.Config{
+				DBName: "GeoOpen-Country.mmdb",
+			},
 			Maxmind: maxmind.Config{
 				DBName:     "GeoLite2-Country.mmdb",
 				AccountID:  0,

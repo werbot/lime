@@ -11,10 +11,10 @@ import (
 
 // Config is ...
 type Config struct {
-	User            string `toml:"user"`
-	Password        string `toml:"password"`
-	Host            string `toml:"host"`
-	Database        string `toml:"database"`
+	User            string `toml:"user,commented"`
+	Password        string `toml:"password,commented"`
+	Host            string `toml:"host,commented"`
+	Database        string `toml:"database,commented"`
 	MaxConn         int    `toml:"max-conn,commented"`
 	MaxIdleConn     int    `toml:"max-idle-conn,commented"`
 	MaxLifetimeConn int    `toml:"max-lifetime-conn,commented"`

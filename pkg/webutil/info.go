@@ -32,7 +32,7 @@ func GetRequestInfo(c *fiber.Ctx, data any) *MetaInfo {
 			log.Err(err).Send()
 		}
 		if country.ISOCode != "" {
-			userCountry = country.FlagEmoji()
+			userCountry = country.ISOCode
 		}
 	}
 

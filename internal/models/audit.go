@@ -1,6 +1,10 @@
 package models
 
-import "time"
+import (
+	"time"
+
+	"github.com/werbot/lime/pkg/webutil"
+)
 
 type Section int
 
@@ -31,10 +35,10 @@ type Audits struct {
 
 // Audit is ...
 type Audit struct {
-	ID       string      `json:"id"`
-	Section  Section     `json:"section"`
-	Customer Customer    `json:"customer"`
-	Action   AuditAction `json:"action"`
-	Metadata Metadata    `json:"metadata"`
-	Created  time.Time   `json:"created"`
+	ID       string           `json:"id"`
+	Section  Section          `json:"section"`
+	Customer Customer         `json:"customer"`
+	Action   AuditAction      `json:"action"`
+	Metadata webutil.MetaInfo `json:"metadata"`
+	Created  time.Time        `json:"created"`
 }

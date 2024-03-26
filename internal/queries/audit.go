@@ -4,10 +4,12 @@ import (
 	"context"
 	"database/sql"
 	"encoding/json"
+	"fmt"
 	"strconv"
 
 	"github.com/werbot/lime/internal/errors"
 	"github.com/werbot/lime/internal/models"
+	"github.com/werbot/lime/pkg/geo"
 	"github.com/werbot/lime/pkg/security"
 	"github.com/werbot/lime/pkg/webutil"
 )
@@ -147,8 +149,11 @@ func (q *AuditQueries) Audit(ctx context.Context, id string) (*models.Audit, err
 	}
 
 	if metadata.Valid {
-		var meta map[string]any
+		// var meta map[string]any
+		var meta webutil.MetaInfo
 		json.Unmarshal([]byte(metadata.String), &meta)
+		isoCountry := meta.Request.UserCountry
+		meta.Request.UserCountry = fmt.Sprintf("%s %s", geo.FlagEmoji(isoCountry), geo.FullName(isoCountry))
 		audit.Metadata = meta
 	}
 

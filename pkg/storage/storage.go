@@ -23,7 +23,7 @@ const (
 type Database struct {
 	Storage  Storage         `toml:"storage"`
 	Sqlite   sqlite.Config   `toml:"sqlite"`
-	Postgres postgres.Config `toml:"postgres"`
+	Postgres postgres.Config `toml:"postgres,commented"`
 }
 
 func UseStorage(database Database, migrations embed.FS) (*sql.DB, error) {
