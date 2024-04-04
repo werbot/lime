@@ -34,7 +34,7 @@ CREATE TABLE "customer" (
   "id" varchar(15) PRIMARY KEY NOT NULL,
   "email" varchar(255) UNIQUE NOT NULL,
   "status" bool NOT NULL DEFAULT true,
-  "updated_at" timestamp DEFAULT NULL,
+  "updated_at" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   "created_at" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 CREATE INDEX idx_customer_id ON "customer" ("id");
@@ -50,7 +50,7 @@ CREATE TABLE "pattern" (
   "check" json DEFAULT '{}' NOT NULL,
   "private" bool NOT NULL DEFAULT false,
   "status" bool NOT NULL DEFAULT true,
-  "updated_at" timestamp DEFAULT NULL,
+  "updated_at" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   "created_at" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 CREATE INDEX idx_pattern_id ON "pattern" ("id");
@@ -62,7 +62,7 @@ CREATE TABLE "payment" (
   "provider" varchar(15) NOT NULL,
   "status" varchar(1) NOT NULL,
   "metadata" json DEFAULT '{}' NOT NULL,
-  "updated_at" timestamp DEFAULT NULL,
+  "updated_at" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   "created_at" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY ("pattern_id") REFERENCES "pattern"("id") ON UPDATE CASCADE ON DELETE CASCADE,
   FOREIGN KEY ("customer_id") REFERENCES "customer"("id") ON UPDATE CASCADE ON DELETE CASCADE
@@ -77,7 +77,7 @@ CREATE TABLE "license" (
   "hash" varchar(32) NOT NULL,
   "status" bool NOT NULL DEFAULT true,
   "metadata" json DEFAULT '{}' NOT NULL,
-  "updated_at" timestamp DEFAULT NULL,
+  "updated_at" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   "created_at" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY ("payment_id") REFERENCES "payment"("id") ON UPDATE CASCADE ON DELETE CASCADE
 );

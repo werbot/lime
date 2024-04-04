@@ -26,17 +26,17 @@ INSERT INTO "customer" ("id", "email", "status") VALUES
 ('2WwO5T58nNto7gG', 'user10@mail.com', 't');
 
 INSERT INTO "pattern" ("id", "name", "limit", "price", "currency", "term", "private", "status", "check") VALUES 
-('4dDADaT1t0m71Md', 'pattern 1', '{"servers":5,"companies":5,"users":5}', 500, 2, 2, 'f', 't', '{"ip":1,"mac":0,"country":1}'),
-('t7Kl9LT44Xki3Ix', 'pattern 2', '{"servers":10,"companies":10,"users":10}', 1000, 2,3, 'f', 't', '{"ip":1,"mac":1,"country":1}'),
-('0BDbBZ10d3Jb9jz', 'pattern 3', '{"servers":15,"companies":15,"users":15}', 1500, 2, 4, 'f', 't', '{"ip":1,"mac":1,"country":1}'),
-('AFQG1faC02qc2g6', 'pattern promo', '{"servers":20,"companies":20,"users":20}', 2000, 2,5, 't', 't', '{"ip":1,"mac":1,"country":1}'),
-('cX1ACDa81do05xO', 'pattern 4', '{"servers":99,"companies":99,"users":99}', 2000, 2, 5, 'f', 't', '{"ip":1,"mac":1,"country":1}'),
-('A0P0Bwap5c8C0bW', 'pattern 5', '{"servers":99,"companies":1000,"users":20}', 2010, 2,5, 't', 't', '{"ip":0,"mac":1,"country":1}'),
-('eZB0E5F921zNfbn', 'pattern 6', '{"servers":20,"companies":99,"users":20}', 2020, 2, 5, 't', 'f', '{"ip":1,"mac":1,"country":1}'),
-('tT1lnD7mM44L5dN', 'pattern 7', '{"servers":20,"companies":20,"users":99}', 2030, 2, 5, 't', 'f', '{"ip":1,"mac":0,"country":1}'),
-('0X4lLKxC38kTt7c', 'pattern 8', '{"servers":20,"companies":99,"users":1000}', 3000, 2, 5, 'f', 't', '{"ip":1,"mac":1,"country":1}'),
-('4lLLn3F2Ggfc6Q4', 'pattern 9', '{"servers":99,"companies":20,"users":20}', 99000, 2, 5, 't', 'f', '{"ip":0,"mac":1,"country":1}'),
-('ReU41LFrf2El76u', 'pattern 10', '{"servers":1000,"companies":99,"users":20}', 12010, 2, 5, 'f', 't', '{"ip":1,"mac":1,"country":0}');
+('4dDADaT1t0m71Md', 'pattern 1', '{"servers":5,"companies":5,"users":5}', 500, 2, 2, 'f', 't', '{"ip":true,"mac":false,"country":true}'),
+('t7Kl9LT44Xki3Ix', 'pattern 2', '{"servers":10,"companies":10,"users":10}', 1000, 2,3, 'f', 't', '{"ip":true,"mac":true,"country":true}'),
+('0BDbBZ10d3Jb9jz', 'pattern 3', '{"servers":15,"companies":15,"users":15}', 1500, 2, 4, 'f', 't', '{"ip":true,"mac":true,"country":true}'),
+('AFQG1faC02qc2g6', 'pattern promo', '{"servers":20,"companies":20,"users":20}', 2000, 2,5, 't', 't', '{"ip":true,"mac":true,"country":true}'),
+('cX1ACDa81do05xO', 'pattern 4', '{"servers":99,"companies":99,"users":99}', 2000, 2, 5, 'f', 't', '{"ip":true,"mac":true,"country":true}'),
+('A0P0Bwap5c8C0bW', 'pattern 5', '{"servers":99,"companies":1000,"users":20}', 2010, 2,5, 't', 't', '{"ip":false,"mac":true,"country":true}'),
+('eZB0E5F921zNfbn', 'pattern 6', '{"servers":20,"companies":99,"users":20}', 2020, 2, 5, 't', 'f', '{"ip":true,"mac":true,"country":true}'),
+('tT1lnD7mM44L5dN', 'pattern 7', '{"servers":20,"companies":20,"users":99}', 2030, 2, 5, 't', 'f', '{"ip":true,"mac":false,"country":true}'),
+('0X4lLKxC38kTt7c', 'pattern 8', '{"servers":20,"companies":99,"users":1000}', 3000, 2, 5, 'f', 't', '{"ip":true,"mac":true,"country":true}'),
+('4lLLn3F2Ggfc6Q4', 'pattern 9', '{"servers":99,"companies":20,"users":20}', 99000, 2, 5, 't', 'f', '{"ip":false,"mac":true,"country":true}'),
+('ReU41LFrf2El76u', 'pattern 10', '{"servers":1000,"companies":99,"users":20}', 12010, 2, 5, 'f', 't', '{"ip":true,"mac":true,"country":false}');
 
 INSERT INTO "payment" ("id", "pattern_id", "customer_id", "provider", "status", "metadata") VALUES 
 ('A0sB9XpSx0P65ab', '4dDADaT1t0m71Md', '7v38n58hXHVsNxS', 'stripe', 1, '{"stripe_id":"cus_APBaLDeqQoVy8m"}'),
