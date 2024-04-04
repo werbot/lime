@@ -37,6 +37,19 @@
     @apply bg-green-800;
   }
 
+  &-gray {
+    @apply bg-gray-600;
+  }
+
+  &-gray:hover,
+  &-gray:focus {
+    @apply bg-gray-700;
+  }
+
+  &-gray:active {
+    @apply bg-gray-800;
+  }
+
   &.disabled,
   &.disabled:hover,
   & .disabled,
