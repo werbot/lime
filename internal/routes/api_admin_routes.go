@@ -34,6 +34,7 @@ func ApiAdminRoutes(c *fiber.App) {
 	customer.Post("/", handlers.AddCustomer)
 	customer.Get(`/:id<regex(\w{15})>`, handlers.Customer)
 	customer.Patch(`/:id<regex(\w{15})>`, handlers.UpdateCustomer)
+	customer.Delete(`/:id<regex(\w{15})>`, handlers.DeleteCustomer)
 
 	payment := api.Group("/payment", middleware.JWTProtected("admin"))
 	payment.Get("/", handlers.Payments)

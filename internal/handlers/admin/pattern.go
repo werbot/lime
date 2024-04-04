@@ -149,10 +149,10 @@ func UpdatePattern(c *fiber.Ctx) error {
 	metaAudit := webutil.GetRequestInfo(c, request)
 	queries.DB().AddAudit(c.Context(), models.SectionPattern, "admin", models.OnUpdate, metaAudit)
 
-	return webutil.StatusOK(c, "Update pattern", nil)
+	return webutil.StatusOK(c, "Pattern updated", nil)
 }
 
-// DeletePattern is a ...
+// Delete is a ...
 // @accept application/json
 // @Produce application/json
 // @Param
@@ -177,5 +177,5 @@ func DeletePattern(c *fiber.Ctx) error {
 	metaAudit := webutil.GetRequestInfo(c, auditData)
 	queries.DB().AddAudit(c.Context(), models.SectionPattern, "admin", models.OnDelete, metaAudit)
 
-	return webutil.StatusOK(c, "Delete pattern", nil)
+	return webutil.StatusOK(c, "Pattern deleted", nil)
 }

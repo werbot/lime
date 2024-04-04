@@ -6,6 +6,7 @@ import (
 
 	"github.com/werbot/lime/internal/errors"
 	"github.com/werbot/lime/internal/models"
+	"github.com/werbot/lime/pkg/security"
 	"github.com/werbot/lime/pkg/webutil"
 )
 
@@ -22,7 +23,15 @@ func (q *CustomerQueries) Customers(ctx context.Context, pagination *webutil.Pag
 			"email",
 			"status",
 			"created_at",
-			"updated_at"
+			"updated_at",
+			(
+				SELECT
+					COUNT(*)
+				FROM
+					"payment"
+				WHERE
+					"customer_id" = "customer"."id"
+			) AS "total_payments"
 		FROM
 			"customer"
 	`
@@ -31,7 +40,7 @@ func (q *CustomerQueries) Customers(ctx context.Context, pagination *webutil.Pag
 	query += DB().SQLPagination(webutil.PaginationQuery{
 		Limit:  pagination.Limit,
 		Offset: pagination.Offset,
-		SortBy: `"created_at":DESC`,
+		SortBy: `"updated_at":DESC`,
 	})
 
 	rows, err := q.DB.QueryContext(ctx, query)
@@ -42,22 +51,21 @@ func (q *CustomerQueries) Customers(ctx context.Context, pagination *webutil.Pag
 
 	response := &models.Customers{}
 	for rows.Next() {
-		var updated sql.NullTime
-		customer := models.Customer{}
+		customer := &models.Customer{}
+		payments := &models.Payments{}
 		err := rows.Scan(
 			&customer.ID,
 			&customer.Email,
 			&customer.Status,
 			&customer.Created,
-			&updated,
+			&customer.Updated,
+			&payments.Total,
 		)
 		if err != nil {
 			return nil, err
 		}
 
-		if updated.Valid {
-			customer.Updated = &updated.Time
-		}
+		customer.Payments = payments
 
 		response.Customers = append(response.Customers, customer)
 	}
@@ -84,21 +92,31 @@ func (q *CustomerQueries) Customer(ctx context.Context, id string) (*models.Cust
 			"email",
 			"status",
 			"created_at",
-			"updated_at"
+			"updated_at",
+			(
+				SELECT
+					COUNT(*)
+				FROM
+					"payment"
+				WHERE
+					"customer_id" = "customer"."id"
+			) AS "total_payment"
 		FROM
 			"customer"
-		WHERE "id" = $1
+		WHERE
+			"id" = $1
 	`
 
-	var updated sql.NullTime
 	customer := &models.Customer{}
+	payments := &models.Payments{}
 	err := q.DB.QueryRowContext(ctx, query, id).
 		Scan(
 			&customer.ID,
 			&customer.Email,
 			&customer.Status,
 			&customer.Created,
-			&updated,
+			&customer.Updated,
+			&payments.Total,
 		)
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -107,9 +125,77 @@ func (q *CustomerQueries) Customer(ctx context.Context, id string) (*models.Cust
 		return nil, err
 	}
 
-	if updated.Valid {
-		customer.Updated = &updated.Time
-	}
+	customer.Payments = payments
 
 	return customer, nil
+}
+
+// AddCustomer is ...
+func (q *CustomerQueries) AddCustomer(ctx context.Context, customer *models.Customer) error {
+	query := `
+		INSERT INTO
+			"customer" (
+				"id",
+				"email",
+				"status"
+			)
+		VALUES
+			($1, $2, $3)
+	`
+
+	_, err := q.DB.ExecContext(ctx, query,
+		security.NanoID(),
+		customer.Email,
+		customer.Status,
+	)
+
+	return err
+}
+
+// UpdateCustomer is ...
+func (q *CustomerQueries) UpdateCustomer(ctx context.Context, customer *models.Customer) error {
+	query := `
+		UPDATE "customer"
+		SET
+			"email" = $2,
+			"status" = $3,
+			"updated_at" = CURRENT_TIMESTAMP
+		WHERE
+			"id" = $1
+`
+
+	_, err := q.DB.ExecContext(ctx, query,
+		customer.ID,
+		customer.Email,
+		customer.Status,
+	)
+
+	return err
+}
+
+// DeleteCustomer is ...
+func (q *CustomerQueries) DeleteCustomer(ctx context.Context, id string) error {
+	queryCount := `
+		SELECT
+			COUNT(*)
+		FROM
+			"payment"
+		WHERE
+			"customer_id" = $1
+	`
+
+	var count int
+	q.DB.QueryRowContext(ctx, queryCount, id).Scan(&count)
+	if count > 0 {
+		return errors.ErrCustomerNotDeleted
+	}
+
+	query := `
+		DELETE FROM "customer"
+		WHERE
+			"id" = $1
+	`
+
+	_, err := q.DB.ExecContext(ctx, query, id)
+	return err
 }

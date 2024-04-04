@@ -7,16 +7,16 @@ import (
 
 // Customers is ...
 type Customers struct {
-	Total     int        `json:"total"`
-	Customers []Customer `json:"customers"`
+	Total     int         `json:"total"`
+	Customers []*Customer `json:"customers,omitempty"`
 }
 
 // Customer is a ...
 type Customer struct {
 	Core
-	Email    string     `json:"email"`
-	Status   bool       `json:"status"`
-	Payments *[]Payment `json:"payments,omitempty"`
+	Email    string    `json:"email"`
+	Status   bool      `json:"status"`
+	Payments *Payments `json:"payments,omitempty"`
 }
 
 // Validate is ...

@@ -68,7 +68,7 @@
             <div v-if="loadingStatus.save">
               <span>Loading...</span>
             </div>
-            <span v-else>Save</span>
+            <span v-else>Create</span>
           </button>
           <div class="btn ml-5 cursor-pointer" @click="closeDrawer()">Close</div>
         </div>
@@ -93,7 +93,6 @@ const closeDrawer = inject("closeDrawer") as Function;
 
 const loadingStatus = ref({
   save: false,
-  delete: false,
 });
 
 const patternData = ref({

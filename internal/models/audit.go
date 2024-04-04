@@ -30,8 +30,8 @@ const (
 
 // Audits is ...
 type Audits struct {
-	Total  int     `json:"total"`
-	Audits []Audit `json:"audits"`
+	Total  int      `json:"total"`
+	Audits []*Audit `json:"audits"`
 }
 
 // Audit is ...

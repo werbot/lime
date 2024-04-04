@@ -63,7 +63,7 @@ func (q *LicenseQueries) Licenses(ctx context.Context, pagination *webutil.Pagin
 	query += DB().SQLPagination(webutil.PaginationQuery{
 		Limit:  pagination.Limit,
 		Offset: pagination.Offset,
-		SortBy: `"license"."created_at":DESC`,
+		SortBy: `"license"."updated_at":DESC`,
 	})
 
 	rows, err := q.DB.QueryContext(ctx, query)
@@ -73,7 +73,6 @@ func (q *LicenseQueries) Licenses(ctx context.Context, pagination *webutil.Pagin
 	defer rows.Close()
 
 	for rows.Next() {
-		var updated sql.NullTime
 		license := models.License{}
 		customer := models.Customer{}
 		pattern := models.Pattern{}
@@ -81,7 +80,7 @@ func (q *LicenseQueries) Licenses(ctx context.Context, pagination *webutil.Pagin
 			&license.ID,
 			&license.Status,
 			&license.Created,
-			&updated,
+			&license.Updated,
 			&customer.ID,
 			&customer.Email,
 			&customer.Status,
@@ -93,10 +92,6 @@ func (q *LicenseQueries) Licenses(ctx context.Context, pagination *webutil.Pagin
 		)
 		if err != nil {
 			return nil, err
-		}
-
-		if updated.Valid {
-			license.Updated = &updated.Time
 		}
 
 		license.Pattern = &pattern
@@ -143,7 +138,6 @@ func (q *LicenseQueries) License(ctx context.Context, id string, customerID stri
 		query += ``
 	}
 
-	var updated sql.NullTime
 	var limit sql.NullString
 	license := &models.License{}
 	customer := &models.Customer{}
@@ -153,7 +147,7 @@ func (q *LicenseQueries) License(ctx context.Context, id string, customerID stri
 			&license.ID,
 			&license.Status,
 			&license.Created,
-			&updated,
+			&license.Updated,
 			&customer.ID,
 			&customer.Status,
 			&customer.Email,
@@ -172,9 +166,6 @@ func (q *LicenseQueries) License(ctx context.Context, id string, customerID stri
 		return nil, err
 	}
 
-	if updated.Valid {
-		license.Updated = &updated.Time
-	}
 	if limit.Valid {
 		var meta models.Metadata
 		json.Unmarshal([]byte(limit.String), &meta)

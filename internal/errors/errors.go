@@ -13,14 +13,17 @@ const (
 	// MsgFailedToDialServer       = "failed to dial server"
 	// MsgTokenIsInvalid           = "token is invalid"
 
-	MsgSettingNotFound  = "setting record not found"
-	MsgCustomerNotFound = "customer not found"
-	MsgLicenseNotFound  = "license not found"
-	MsgPaymentNotFound  = "payment record not found"
-	MsgAuditNotFound    = "audit record not found"
+	MsgSettingNotFound = "setting record not found"
+
+	MsgLicenseNotFound = "license not found"
+	MsgPaymentNotFound = "payment record not found"
+	MsgAuditNotFound   = "audit record not found"
 
 	MsgPatternNotFound   = "pattern not found"
 	MsgPatternNotDeleted = "pattern cannot be deleted because there are associated licenses"
+
+	MsgCustomerNotFound   = "customer not found"
+	MsgCustomerNotDeleted = "customer cannot be deleted because there are associated payments"
 )
 
 var (
@@ -34,12 +37,14 @@ var (
 	// ErrFailedToDialServer       = errors.New(MsgFailedToDialServer)
 	// ErrTokenIsInvalid           = errors.New(MsgTokenIsInvalid)
 
-	ErrSettingNotFound  = errors.New(MsgSettingNotFound)
-	ErrCustomerNotFound = errors.New(MsgCustomerNotFound)
-	ErrLicenseNotFound  = errors.New(MsgLicenseNotFound)
-	ErrPaymentNotFound  = errors.New(MsgPaymentNotFound)
-	ErrAuditNotFound    = errors.New(MsgAuditNotFound)
+	ErrSettingNotFound = errors.New(MsgSettingNotFound)
+	ErrLicenseNotFound = errors.New(MsgLicenseNotFound)
+	ErrPaymentNotFound = errors.New(MsgPaymentNotFound)
+	ErrAuditNotFound   = errors.New(MsgAuditNotFound)
 
 	ErrPatternNotFound   = errors.New(MsgPatternNotFound)
 	ErrPatternNotDeleted = errors.New(MsgPatternNotDeleted)
+
+	ErrCustomerNotFound   = errors.New(MsgCustomerNotFound)
+	ErrCustomerNotDeleted = errors.New(MsgCustomerNotDeleted)
 )

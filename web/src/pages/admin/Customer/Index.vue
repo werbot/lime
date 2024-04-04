@@ -13,6 +13,7 @@
         <tr>
           <th class="w-12"></th>
           <th>Email</th>
+          <th class="w-24">Payments</th>
           <th class="w-48">Created</th>
           <th class="w-8"></th>
         </tr>
@@ -23,8 +24,11 @@
             <div class="flex items-center">
               <span class="dot" :class="item.status ? 'bg-green-500' : 'bg-red-500'"></span>
             </div>
-          </td @click="openDrawerView(item.id)">
+          </td>
           <td @click="openDrawerView(item.id)" :class="{ 'text-red-500': !item.status }">{{ item.email }}</td>
+          <td @click="openDrawerView(item.id)">
+            <Badge :name="String(item.payments.total)" />
+          </td>
           <td @click="openDrawerView(item.id)">{{ formatDate(item.created) }}</td>
           <td>
             <div class="flex">
@@ -54,7 +58,7 @@
 import { onMounted, ref, provide } from "vue";
 import { useRoute } from "vue-router";
 import { View, Edit, Add } from "./components";
-import { SvgIcon, Pagination, Drawer } from "@/components";
+import { SvgIcon, Pagination, Drawer, Badge } from "@/components";
 import { formatDate } from "@/utils";
 import { apiGet } from "@/utils/api";
 
@@ -124,5 +128,6 @@ const closeDrawer = async () => {
   isDrawer.value.action = null;
 };
 
+provide("getCustomers", getCustomers);
 provide('closeDrawer', closeDrawer);
 </script>

@@ -52,7 +52,7 @@ func (q *AuditQueries) Audits(ctx context.Context, pagination *webutil.Paginatio
 	for rows.Next() {
 		var email sql.NullString
 		var status sql.NullBool
-		audit := models.Audit{}
+		audit := &models.Audit{}
 		customer := models.Customer{}
 		err := rows.Scan(
 			&audit.ID,

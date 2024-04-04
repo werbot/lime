@@ -17,8 +17,8 @@ const (
 
 // Payments is ...
 type Payments struct {
-	Total    int       `json:"total"`
-	Payments []Payment `json:"payments"`
+	Total    int        `json:"total"`
+	Payments []*Payment `json:"payments,omitempty"`
 }
 
 // Payment is a ...

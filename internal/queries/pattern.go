@@ -118,7 +118,6 @@ func (q *PatternQueries) Pattern(ctx context.Context, id string) (*models.Patter
 		WHERE "id" = $1
 	`
 
-	var updated sql.NullTime
 	var limit, check sql.NullString
 	pattern := &models.Pattern{}
 	licenses := &models.Licenses{}
@@ -134,7 +133,7 @@ func (q *PatternQueries) Pattern(ctx context.Context, id string) (*models.Patter
 			&pattern.Private,
 			&pattern.Status,
 			&pattern.Created,
-			&updated,
+			&pattern.Updated,
 			&licenses.Total,
 		)
 	if err != nil {
@@ -142,10 +141,6 @@ func (q *PatternQueries) Pattern(ctx context.Context, id string) (*models.Patter
 			return nil, errors.ErrPatternNotFound
 		}
 		return nil, err
-	}
-
-	if updated.Valid {
-		pattern.Updated = &updated.Time
 	}
 
 	if limit.Valid {

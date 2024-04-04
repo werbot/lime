@@ -51,7 +51,7 @@ func (q *PaymentsQueries) Payments(ctx context.Context, pagination *webutil.Pagi
 
 	response := &models.Payments{}
 	for rows.Next() {
-		payment := models.Payment{}
+		payment := &models.Payment{}
 		pattern := &models.Pattern{}
 		customer := &models.Customer{}
 		transaction := &models.Transaction{}
@@ -119,7 +119,6 @@ func (q *PaymentsQueries) Payment(ctx context.Context, id string) (*models.Payme
 			"payment"."id" = $1
 	`
 
-	var updated sql.NullTime
 	var metadata sql.NullString
 	payment := &models.Payment{}
 	pattern := &models.Pattern{}
@@ -141,7 +140,7 @@ func (q *PaymentsQueries) Payment(ctx context.Context, id string) (*models.Payme
 			&transaction.Status,
 			&metadata,
 			&payment.Created,
-			&updated,
+			&payment.Updated,
 		)
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -152,10 +151,6 @@ func (q *PaymentsQueries) Payment(ctx context.Context, id string) (*models.Payme
 
 	payment.Pattern = pattern
 	payment.Customer = customer
-
-	if updated.Valid {
-		payment.Updated = &updated.Time
-	}
 
 	if metadata.Valid {
 		var meta models.Metadata
