@@ -22,7 +22,7 @@
           <td>
             <Badge :name="termFormat[item.pattern.term].name" :color="termFormat[item.pattern.term].color" />
           </td>
-          <td>{{ priceFormat(item.pattern.price) }} {{ currency[item.pattern.currency] }}</td>
+          <td>{{ priceFormat(item.pattern.price) }} {{ currency[item.pattern.currency-1] }}</td>
           <td>{{ item.transaction.provider }}</td>
           <td>
             <Badge :name="paymentStatusFormat[item.transaction.status].name" :color="paymentStatusFormat[item.transaction.status].color" />
@@ -38,6 +38,9 @@
   </div>
 
   <Drawer :is-open="isDrawer.open" @close="closeDrawer" maxWidth="600px">
+    <header>
+      <h1>Payment description</h1>
+    </header>
     <div class="rounded border border-solid border-gray-300">
       <table class="mini" v-if="dataFull.id">
         <tr>
@@ -57,11 +60,13 @@
         </tr>
         <tr>
           <td>Term</td>
-          <td><Badge :name="termFormat[dataFull.pattern.term].name" :color="termFormat[dataFull.pattern.term].color" /></td>
+          <td>
+            <Badge :name="termFormat[dataFull.pattern.term].name" :color="termFormat[dataFull.pattern.term].color" />
+          </td>
         </tr>
         <tr>
           <td>Price</td>
-          <td>{{ priceFormat(dataFull.pattern.price) }} {{ currency[dataFull.pattern.currency] }}</td>
+          <td>{{ priceFormat(dataFull.pattern.price) }} {{ currency[dataFull.pattern.currency-1] }}</td>
         </tr>
         <tr>
           <td>Provider</td>
@@ -82,6 +87,10 @@
           <td>{{ formatDate(dataFull.updated) }}</td>
         </tr>
       </table>
+    </div>
+
+    <div class="pt-4">
+      <button class="btn" @click="closeDrawer">Close</button>
     </div>
   </Drawer>
 </template>
@@ -108,11 +117,14 @@ onMounted(() => {
 });
 
 const getData = async (routeQuery: any) => {
-  apiGet(`/_/api/payment`, routeQuery).then(res => {
+  try {
+    const res = await apiGet(`/_/api/payment`, routeQuery);
     if (res.code === 200) {
       data.value = res.result;
     }
-  });
+  } catch (error) {
+    console.error('Error fetching payment data:', error);
+  }
 };
 
 const onSelectPage = (e: any) => {
@@ -120,12 +132,15 @@ const onSelectPage = (e: any) => {
 };
 
 const openDrawerDesc = async (id: string) => {
-  apiGet(`/_/api/payment/${id}`, {}).then(res => {
+  try {
+    const res = await apiGet(`/_/api/payment/${id}`, {});
     if (res.code === 200) {
       dataFull.value = res.result;
       isDrawer.value.open = true;
     }
-  });
+  } catch (error) {
+    console.error('Error fetching payment data:', error);
+  }
 };
 
 const closeDrawer = async () => {

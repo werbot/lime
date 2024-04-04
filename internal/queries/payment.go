@@ -158,7 +158,7 @@ func (q *PaymentsQueries) Payment(ctx context.Context, id string) (*models.Payme
 	}
 
 	if metadata.Valid {
-		var meta map[string]any
+		var meta models.Metadata
 		json.Unmarshal([]byte(metadata.String), &meta)
 		transaction.Meta = meta
 	}

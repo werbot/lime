@@ -16,9 +16,11 @@ const (
 	MsgSettingNotFound  = "setting record not found"
 	MsgCustomerNotFound = "customer not found"
 	MsgLicenseNotFound  = "license not found"
-	MsgPatternNotFound  = "pattern not found"
 	MsgPaymentNotFound  = "payment record not found"
 	MsgAuditNotFound    = "audit record not found"
+
+	MsgPatternNotFound   = "pattern not found"
+	MsgPatternNotDeleted = "pattern cannot be deleted because there are associated licenses"
 )
 
 var (
@@ -35,7 +37,9 @@ var (
 	ErrSettingNotFound  = errors.New(MsgSettingNotFound)
 	ErrCustomerNotFound = errors.New(MsgCustomerNotFound)
 	ErrLicenseNotFound  = errors.New(MsgLicenseNotFound)
-	ErrPatternNotFound  = errors.New(MsgPatternNotFound)
 	ErrPaymentNotFound  = errors.New(MsgPaymentNotFound)
 	ErrAuditNotFound    = errors.New(MsgAuditNotFound)
+
+	ErrPatternNotFound   = errors.New(MsgPatternNotFound)
+	ErrPatternNotDeleted = errors.New(MsgPatternNotDeleted)
 )

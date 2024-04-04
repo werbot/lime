@@ -149,11 +149,14 @@ func (q *AuditQueries) Audit(ctx context.Context, id string) (*models.Audit, err
 	}
 
 	if metadata.Valid {
-		// var meta map[string]any
 		var meta webutil.MetaInfo
 		json.Unmarshal([]byte(metadata.String), &meta)
 		isoCountry := meta.Request.UserCountry
-		meta.Request.UserCountry = fmt.Sprintf("%s %s", geo.FlagEmoji(isoCountry), geo.FullName(isoCountry))
+		if isoCountry != "-" {
+			meta.Request.UserCountry = fmt.Sprintf("%s %s", geo.FlagEmoji(isoCountry), geo.FullName(isoCountry))
+		} else {
+			meta.Request.UserCountry = isoCountry
+		}
 		audit.Metadata = meta
 	}
 
@@ -172,7 +175,12 @@ func (q *AuditQueries) AddAudit(ctx context.Context, section models.Section, cus
 		return err
 	}
 
-	_, err = q.DB.ExecContext(ctx, `INSERT INTO audit (id, section, customer_id, action, metadata) VALUES ($1, $2, $3, $4, $5)`,
+	query := `
+		INSERT INTO
+			"audit" ("id", "section", "customer_id", "action", "metadata")
+		VALUES
+			($1, $2, $3, $4, $5)	`
+	_, err = q.DB.ExecContext(ctx, query,
 		id,
 		sectionStr,
 		customerID,

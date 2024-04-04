@@ -7,15 +7,15 @@
     <table v-if="data.total > 0">
       <thead>
         <tr>
-          <th>Section</th>
           <th class="w-52">Customer</th>
+          <th class="w-36">Section</th>
           <th class="w-36">Action</th>
+          <th></th>
           <th class="w-48">Created</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="(item, index) in data.audits" :key="index" class="cursor" @click="openDrawerDesc(item.id)">
-          <td>{{ sections[item.section] }}</td>
           <td v-if="item.customer.email === 'admin'">
             <Badge name="admin" color="indigo" />
           </td>
@@ -24,9 +24,11 @@
               {{ item.customer.email }}
             </router-link>
           </td>
+          <td>{{ sections[item.section] }}</td>
           <td>
             <Badge :name="actionFormat[item.action].name" :color="actionFormat[item.action].color" />
           </td>
+          <td></td>
           <td>{{ formatDate(item.created) }}</td>
         </tr>
       </tbody>
@@ -39,19 +41,18 @@
   </div>
 
   <Drawer :is-open="isDrawer.open" @close="closeDrawer" maxWidth="600px">
+    <header>
+      <h1>Audit description</h1>
+    </header>
     <div class="rounded border border-solid border-gray-300">
       <table class="mini" v-if="dataFull.id">
         <tr>
           <td class="w-32">ID</td>
-          <td>
-            {{ dataFull.id }}
-          </td>
+          <td>{{ dataFull.id }}</td>
         </tr>
         <tr>
           <td class="w-32">Section</td>
-          <td>
-            {{ sections[dataFull.section] }}
-          </td>
+          <td>{{ sections[dataFull.section] }}</td>
         </tr>
         <tr>
           <td class="w-32">Customer</td>
@@ -72,23 +73,23 @@
         </tr>
         <tr>
           <td class="w-32">User Agent</td>
-          <td>
-            {{ dataFull.metadata.request.user_agent }}
-          </td>
+          <td>{{ dataFull.metadata.request.user_agent }}</td>
         </tr>
         <tr>
           <td class="w-32">User IP</td>
-          <td>
-            {{ dataFull.metadata.request.user_ip }}
-          </td>
+          <td>{{ dataFull.metadata.request.user_ip }}</td>
+        </tr>
+        <tr>
+          <td class="w-32">User Country</td>
+          <td>{{ dataFull.metadata.request.user_country }}</td>
         </tr>
         <tr v-if="dataFull.metadata.data">
           <td class="w-32">Data</td>
           <td class="!p-0">
             <table class="mini">
               <tr v-for="(value, key, index) in dataFull.metadata.data" :key="index">
-                <td class="min-w-20 max-w-32">{{ key }}</td>
-                <td>{{ value }}</td>
+                <td class="!break-normal !pl-2">{{ key }}</td>
+                <td>{{ value.value }}</td>
               </tr>
             </table>
           </td>
@@ -99,19 +100,23 @@
         </tr>
       </table>
     </div>
+
+    <div class="pt-4">
+      <button class="btn" @click="closeDrawer">Close</button>
+    </div>
   </Drawer>
 </template>
 
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
-import { SvgIcon, Badge, Pagination, Drawer } from "@/components";
+import { Badge, Pagination, Drawer } from "@/components";
 import { sections, actionFormat, formatDate } from "@/utils";
 import { apiGet } from "@/utils/api";
 
 const isDrawer = ref({
   open: false,
-})
+});
 const data: any = ref({});
 const dataFull: any = ref({});
 const route = useRoute();
@@ -119,33 +124,61 @@ const route = useRoute();
 onMounted(() => {
   getData(route.query);
   if (route.params.audit_slug) {
-    openDrawerDesc(<string>route.params.audit_slug)
+    openDrawerDesc(<string>route.params.audit_slug);
   }
 });
 
 const getData = async (routeQuery: any) => {
-  apiGet(`/_/api/audit`, routeQuery).then(res => {
+  try {
+    const res = await apiGet(`/_/api/audit`, routeQuery);
     if (res.code === 200) {
       data.value = res.result;
     }
-  });
+  } catch (error) {
+    console.error("Error fetching audit data:", error);
+  }
 };
 
 const onSelectPage = (e: any) => {
-  getData(e)
+  getData(e);
 };
 
 const openDrawerDesc = async (id: string) => {
-  apiGet(`/_/api/audit/${id}`, {}).then(res => {
+  try {
+    const res = await apiGet(`/_/api/audit/${id}`, {});
     if (res.code === 200) {
+      const { metadata } = res.result;
+      if (metadata.data) {
+        metadata.data = Object.entries(metadata.data).reduce(
+          (acc, [key, value]) => ({
+            ...acc,
+            [key]: {
+              value,
+              isLong: String(value).length > 32,
+            },
+          }),
+          {},
+        );
+      }
       dataFull.value = res.result;
-      isDrawer.value.open = true;
     }
-  });
+    isDrawer.value.open = true;
+  } catch (error) {
+    console.error("Error fetching audit data:", error);
+  }
 };
 
 const closeDrawer = async () => {
   dataFull.value = {};
   isDrawer.value.open = false;
 };
+
+/*
+const makeVisible = async (key) => {
+  const item = dataFull.value.metadata.data[key];
+  if (item) {
+    item.isLong = !item.isLong;
+  }
+};
+*/
 </script>

@@ -1,5 +1,5 @@
 <template>
-install
+  install
 </template>
 
 <script setup lang="ts"></script>

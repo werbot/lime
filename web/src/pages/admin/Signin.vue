@@ -22,23 +22,25 @@ import { FormInput } from "@/components";
 import { Form } from "vee-validate";
 
 const loadingStatus = ref(false);
-const data = ref({ 
-  email: null, 
+const data = ref({
+  email: null,
   password: null,
- });
+});
 const router = useRouter();
 
 const onSubmit = async () => {
   loadingStatus.value = true;
 
-  apiPost(`/_/api/sign/in`, {}, data.value).then(res => {
+  try {
+    const res = await apiPost(`/_/api/sign/in`, {}, data.value);
     if (res.code === 200) {
       router.push({ name: 'admin-license' })
-    } else {
-      //showMessage(res.result, "connextError");
-      console.log("connextError")
     }
-  });
+  } catch (error) {
+    console.error('Error fetching sign data:', error);
+    //showMessage(res.result, "connextError");
+    console.log("connextError")
+  }
 
   loadingStatus.value = false;
 };

@@ -64,7 +64,7 @@ func (db *Base) SQLPagination(params webutil.PaginationQuery) string {
 		params.Limit = 30
 	}
 
-	showSortBy := ""
+	var showSortBy string
 	if len(params.SortBy) > 0 {
 		showSortBy = "ORDER BY "
 
@@ -72,6 +72,9 @@ func (db *Base) SQLPagination(params webutil.PaginationQuery) string {
 		sorts := strings.Split(params.SortBy, ",")
 		for _, sort := range sorts {
 			parts := strings.SplitN(sort, ":", 2)
+			if len(parts) == 1 {
+				orderParts = append(orderParts, parts[0])
+			}
 			if len(parts) == 2 {
 				orderParts = append(orderParts, fmt.Sprintf("%s %s", parts[0], parts[1]))
 			}

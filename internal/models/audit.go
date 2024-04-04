@@ -25,6 +25,7 @@ const (
 	OnAdd
 	OnUpdate
 	OnDelete
+	OnClone
 )
 
 // Audits is ...

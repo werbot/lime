@@ -57,12 +57,12 @@ const router = createRouter({
           path: "license",
           name: "admin-license",
           meta: { name: "Licenses", icon: "ticket", layout: "Private" },
-          component: () => import("@/pages/admin/License.vue"),
+          component: () => import("@/pages/admin/License/Index.vue"),
           children: [
             {
               path: ':license_slug',
               name: 'admin-license-description',
-              component: () => import('@/pages/admin/License.vue')
+              component: () => import('@/pages/admin/License/Index.vue')
             },
           ],
         },
@@ -70,12 +70,12 @@ const router = createRouter({
           path: "pattern",
           name: "admin-pattern",
           meta: { name: "Patterns", icon: "pattern", layout: "Private" },
-          component: () => import("@/pages/admin/Pattern.vue"),
+          component: () => import("@/pages/admin/Pattern/Index.vue"),
           children: [
             {
               path: ':pattern_slug',
               name: 'admin-pattern-description',
-              component: () => import('@/pages/admin/Pattern.vue')
+              component: () => import('@/pages/admin/Pattern/Index.vue')
             },
           ],
         },
@@ -83,12 +83,12 @@ const router = createRouter({
           path: "customer",
           name: "admin-customer",
           meta: { name: "Customers", icon: "users", layout: "Private" },
-          component: () => import("@/pages/admin/Customer.vue"),
+          component: () => import("@/pages/admin/Customer/Index.vue"),
           children: [
             {
               path: ':customer_slug',
               name: 'admin-customer-description',
-              component: () => import('@/pages/admin/Customer.vue')
+              component: () => import('@/pages/admin/Customer/Index.vue')
             },
           ],
         },

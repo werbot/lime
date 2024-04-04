@@ -176,7 +176,7 @@ func (q *LicenseQueries) License(ctx context.Context, id string, customerID stri
 		license.Updated = &updated.Time
 	}
 	if limit.Valid {
-		var meta map[string]any
+		var meta models.Metadata
 		json.Unmarshal([]byte(limit.String), &meta)
 		pattern.Limit = meta
 	}

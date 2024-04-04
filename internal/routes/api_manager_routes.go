@@ -7,15 +7,9 @@ import (
 	"github.com/werbot/lime/internal/middleware"
 )
 
-// ApiPublicRoutes is ...
-func ApiPublicRoutes(c *fiber.App) {
-	c.Get("/ping", handlers.Ping)
-
+// ApiManagerRoutes is ...
+func ApiManagerRoutes(c *fiber.App) {
 	api := c.Group("/api")
-
-	// public section
-	api.Get("/license/download/:id", handlers.DownloadLicense)
-	api.Post("/license/verify", handlers.LicenseVerify)
 
 	// manager section
 	sign := api.Group("/sign")

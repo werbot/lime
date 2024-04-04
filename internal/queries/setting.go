@@ -18,17 +18,17 @@ type SettingQueries struct {
 }
 
 // GroupFieldMap generates a map of fields based on the type of settings.
-func (q *SettingQueries) GroupFieldMap(settings any) map[string]any {
+func (q *SettingQueries) GroupFieldMap(settings any) models.Metadata {
 	switch s := settings.(type) {
 	case *models.Site:
-		return map[string]any{
+		return models.Metadata{
 			"site_domain":        &s.Domain,
 			"site_name":          &s.Name,
 			"site_signature":     &s.Signature,
 			"site_email_support": &s.EmailSupport,
 		}
 	case *models.Mail:
-		return map[string]any{
+		return models.Metadata{
 			"mail_sender_name":  &s.SenderName,
 			"mail_sender_email": &s.SenderEmail,
 			"smtp_host":         &s.SMTP.Host,

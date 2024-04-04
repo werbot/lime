@@ -43,6 +43,7 @@ export const actionFormat = [
   { name: "onAdd", color: "green" },
   { name: "onUpdate", color: "yellow" },
   { name: "onDelete", color: "red" },
+  { name: "onClone", color: "green" },
 ];
 
 export const paymentStatusFormat = [
@@ -54,10 +55,11 @@ export const paymentStatusFormat = [
   { name: "failed", color: "red" },
 ];
 
+export const term = ["hour", "day", "week", "month", "year"];
+
 export const sections = ["System", "Setting", "Customer", "Pattern", "License"];
 
 export const currency = [
-  "",
   "EUR",
   "USD",
   "JPY",
@@ -93,4 +95,35 @@ export function formatDate(timestamp): string {
   return `${date.getDate()} ${
     monthNames[date.getMonth()]
   } ${date.getFullYear()}, ${date.toLocaleTimeString()}`;
+}
+
+export function randomString(length: number): string {
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let result = "";
+  const charactersLength = characters.length;
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
+}
+
+export interface DataItem {
+  key: string;
+  value: number;
+}
+
+export function firstLetter(sentence: string) {
+  if (sentence && typeof sentence === "string") {
+    return sentence.charAt(0).toUpperCase() + sentence.slice(1);
+  }
+  return sentence;
+}
+
+export function costFormat(cost) {
+  return Number(cost) ? (Number(cost) / 100).toFixed(2) : "0.00";
+}
+
+export function costStripe(cost) {
+  return Math.round(Number(cost) * 100);
 }

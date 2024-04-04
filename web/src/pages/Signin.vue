@@ -25,31 +25,40 @@ const loadingStatus = ref<boolean>(false);
 const data = ref({ email: "" });
 const sendMessage = ref<boolean>(false);
 
-onMounted(() => {
-  const token = useRoute().query.token;
+async function signIn(token = {}) {
+  try {
+    const response = await apiPost(`/api/sign/in`, token, data.value);
+    if (response.code === 200) {
+      return true;
+    } else {
+      console.error("Connection error:", response.result);
+      return false;
+    }
+  } catch (error) {
+    console.error("API call failed:", error);
+    return false;
+  }
+}
+
+onMounted(async () => {
+  const route = useRoute();
   const router = useRouter();
+  const token = route.query.token;
+
   if (token) {
-    apiPost(`/api/sign/in`, {"token": token}, data.value).then(res => {
-      if (res.code === 200) {
-        router.push({ name: 'manager-license' })
-      } else {
-        //showMessage(res.result, "connextError");
-        console.log("connextError")
-      }
-    });
+    const success = await signIn({ "token": token });
+    if (success) {
+      router.push({ name: 'manager-license' });
+    }
   }
 });
 
 const onSubmit = async () => {
   loadingStatus.value = true;
-  apiPost(`/api/sign/in`, {}, data.value).then(res => {
-    if (res.code === 200) {
-      sendMessage.value = true;
-    } else {
-      //showMessage(res.result, "connextError");
-      console.log("connextError")
-    }
-  });
+  const success = await signIn();
+  if (success) {
+    sendMessage.value = true;
+  }
   loadingStatus.value = false;
 };
 

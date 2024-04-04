@@ -48,13 +48,13 @@ func Customer(c *fiber.Ctx) error {
 	return webutil.StatusOK(c, "Customer info", customer)
 }
 
-// NewCustomer is a ...
+// AddCustomer is a ...
 // @Accept application/json
 // @Produce application/json
 // @Param
 // @Success 200 {string} string "{"status":"200", "msg":""}"
 // @Router /_/api/customer [post]
-func NewCustomer(c *fiber.Ctx) error {
+func AddCustomer(c *fiber.Ctx) error {
 	return webutil.StatusOK(c, "Create customer", nil)
 }
 

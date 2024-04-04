@@ -3,7 +3,7 @@
     <header>
       <h1>Licenses</h1>
       <label class="plus" @click="openDrawerAdd()">
-        <SvgIcon name="plus_square" />
+        <SvgIcon name="plus-square" />
         add new
       </label>
     </header>
@@ -76,7 +76,7 @@
         </tr>
         <tr>
           <td>Price</td>
-          <td>{{ priceFormat(dataFull.pattern.price) }} {{ currency[dataFull.pattern.currency] }}</td>
+          <td>{{ priceFormat(dataFull.pattern.price) }} {{ currency[dataFull.pattern.currency-1] }}</td>
         </tr>
         <tr>
           <td>Term</td>
@@ -120,11 +120,14 @@ onMounted(() => {
 });
 
 const getData = async (routeQuery: any) => {
-  apiGet(`/api/license`, routeQuery).then(res => {
+  try {
+    const res = await apiGet(`/api/license`, routeQuery);
     if (res.code === 200) {
       data.value = res.result;
     }
-  });
+  } catch (error) {
+    console.error('Error fetching license data:', error);
+  }
 };
 
 const onSelectPage = (e: any) => {
@@ -132,13 +135,16 @@ const onSelectPage = (e: any) => {
 };
 
 const openDrawerDesc = async (id: string) => {
-  apiGet(`/api/license/lic_${id}`, {}).then(res => {
+  try {
+    const res = await apiGet(`/api/license/lic_${id}`, {});
     if (res.code === 200) {
       dataFull.value = res.result;
       isDrawer.value.open = true;
       isDrawer.value.action = "desc";
     }
-  });
+  } catch (error) {
+    console.error('Error fetching license data:', error);
+  }
 };
 
 const openDrawerAdd = async () => {

@@ -97,7 +97,8 @@ func NewApp() error {
 
 	middleware.FiberMiddleware(app)
 
-	routes.ApiPrivateRoutes(app)
+	routes.ApiAdminRoutes(app)
+	routes.ApiManagerRoutes(app)
 	routes.ApiPublicRoutes(app)
 	routes.NotFoundRoute(app)
 	routes.UIRoutes(app)

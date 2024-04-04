@@ -7,8 +7,8 @@ import (
 	"github.com/werbot/lime/internal/middleware"
 )
 
-// ApiPrivateRoutes is ...
-func ApiPrivateRoutes(c *fiber.App) {
+// ApiAdminRoutes is ...
+func ApiAdminRoutes(c *fiber.App) {
 	api := c.Group("/_/api")
 
 	sign := api.Group("/sign")
@@ -19,19 +19,21 @@ func ApiPrivateRoutes(c *fiber.App) {
 	license.Get("/", handlers.Licenses)
 	license.Post("/", handlers.NewLicense)
 	license.Get(`/:id<regex((lic_|cst_)\w{15})>`, handlers.License)
-	license.Patch("/:id", handlers.UpdateLicense)
+	license.Patch(`/:id<regex(\w{15})>`, handlers.UpdateLicense)
 
 	pattern := api.Group("/pattern", middleware.JWTProtected("admin"))
 	pattern.Get("/", handlers.Patterns)
-	pattern.Post("/", handlers.NewPattern)
+	pattern.Post("/", handlers.AddPattern)
+	pattern.Post(`/:id<regex(\w{15})>`, handlers.ClonePattern)
 	pattern.Get(`/:id<regex(\w{15})>`, handlers.Pattern)
-	pattern.Patch("/:id", handlers.UpdatePattern)
+	pattern.Patch(`/:id<regex(\w{15})>`, handlers.UpdatePattern)
+	pattern.Delete(`/:id<regex(\w{15})>`, handlers.DeletePattern)
 
 	customer := api.Group("/customer", middleware.JWTProtected("admin"))
 	customer.Get("/", handlers.Customers)
-	customer.Post("/", handlers.NewCustomer)
+	customer.Post("/", handlers.AddCustomer)
 	customer.Get(`/:id<regex(\w{15})>`, handlers.Customer)
-	customer.Patch("/:id", handlers.UpdateCustomer)
+	customer.Patch(`/:id<regex(\w{15})>`, handlers.UpdateCustomer)
 
 	payment := api.Group("/payment", middleware.JWTProtected("admin"))
 	payment.Get("/", handlers.Payments)
