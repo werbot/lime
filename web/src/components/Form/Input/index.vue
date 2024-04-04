@@ -2,7 +2,7 @@
   <div class="form-control" :for="id" :class="class">
     <label class="label">
       <span v-if="name" class="text">{{ fullName }}</span>
-      <span v-if="error" class="error">{{ error }}</span>
+      <span v-if="error && name" class="error">{{ error }}</span>
     </label>
     <Field :type="type" :name="id" :rules="rules" :id="id" v-model="value" :class="error ? 'error' : ''" class="input" :disabled="disabled" :placeholder="placeholder"
       :autocomplete="autocomplete" />

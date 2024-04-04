@@ -8,11 +8,6 @@
       backgroundColor: backgroundColor,
     }">
         <slot />
-        <div class="pt-4">
-          <slot name="footer">
-            <button class="btn" @click="closeDrawer">Close</button>
-          </slot>
-        </div>
       </div>
     </div>
   </div>
@@ -87,7 +82,7 @@ watch(
 );
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .drawer {
   @apply invisible;
 
@@ -102,6 +97,10 @@ watch(
 
     .drawer__content {
       @apply translate-x-0;
+
+      header {
+        @apply flex items-center whitespace-nowrap pb-5;
+      }
     }
   }
 
