@@ -1,5 +1,5 @@
 <template>
-  <Skeleton class="text-gray-200" v-if="!drawer" />
+  <Skeleton class="text-gray-200" v-if="!drawer.data" />
   <div v-else>
     <header>
       <h1>Pattern description</h1>

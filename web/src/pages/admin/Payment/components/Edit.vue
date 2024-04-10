@@ -1,5 +1,5 @@
 <template>
-  <Skeleton class="text-gray-200" v-if="!drawer" />
+  <Skeleton class="text-gray-200" v-if="!drawer.data" />
   <div v-else>
     <header>
       <h1>Edit <span class="text-green-600">{{ drawer.data.id }}</span> payment</h1>

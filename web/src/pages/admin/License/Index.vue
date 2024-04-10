@@ -1,5 +1,5 @@
 <template>
-  <Skeleton class="text-gray-200" v-if="!data" />
+  <Skeleton class="text-gray-200" v-if="!data.total" />
   <div class="artboard" v-else>
     <header>
       <h1>Licenses</h1>
