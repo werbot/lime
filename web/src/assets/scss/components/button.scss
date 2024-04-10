@@ -37,6 +37,19 @@
     @apply bg-green-800;
   }
 
+  &-yellow {
+    @apply bg-yellow-600;
+  }
+
+  &-yellow:hover,
+  &-yellow:focus {
+    @apply bg-yellow-700;
+  }
+
+  &-yellow:active {
+    @apply bg-yellow-800;
+  }
+
   &-gray {
     @apply bg-gray-600;
   }

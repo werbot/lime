@@ -97,6 +97,7 @@ const onSelectPage = (e: any) => {
 };
 
 const getPayment = async (id: string, action: string) => {
+  closeDrawer();
   try {
     const res = await apiGet(`/_/api/payment/${id}`, {});
     if (res.code === 200) {
@@ -128,7 +129,7 @@ const closeDrawer = async () => {
   isDrawer.value.action = null;
 };
 
-
 provide("getPayments", getPayments);
+provide("openDrawerEdit", openDrawerEdit);
 provide('closeDrawer', closeDrawer);
 </script>

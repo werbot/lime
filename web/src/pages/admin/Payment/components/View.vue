@@ -13,12 +13,18 @@
         <td>Customer</td>
         <td>
           <span class="dot mr-2" :class="drawer.data.customer.status ? 'bg-green-500' : 'bg-red-500'"></span>
-          {{ drawer.data.customer.email }}
+          <router-link active-class="current" :to="{ name: 'admin-customer-description', params: { customer_slug: drawer.data.customer.id } }">
+            {{ drawer.data.customer.email }}
+          </router-link>
         </td>
       </tr>
       <tr>
         <td>Pattern</td>
-        <td>{{ drawer.data.pattern.name }}</td>
+        <td>
+          <router-link active-class="current" :to="{ name: 'admin-pattern-description', params: { pattern_slug: drawer.data.pattern.id } }">
+            {{ drawer.data.pattern.name }}
+          </router-link>
+        </td>
       </tr>
       <tr>
         <td>Term</td>
@@ -53,8 +59,16 @@
     </table>
   </div>
 
-  <div class="pt-4">
-    <button class="btn" @click="closeDrawer()">Close</button>
+  <div class="pt-8">
+    <div class="flex">
+      <div class="flex-none">
+        <div class="btn cursor-pointer" @click="closeDrawer()">Close</div>
+      </div>
+      <div class="grow"></div>
+      <div class="flex-none">
+        <div class="btn btn-green cursor-pointer" @click="openDrawerEdit(drawer.data.id)">Edit</div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -63,8 +77,10 @@ import { inject } from 'vue';
 import { termObj, currencyObj, paymentProvidersObj, formatDate, priceFormat, paymentStatusObj } from "@/utils";
 import { Badge } from "@/components";
 
+const openDrawerEdit = inject("openDrawerEdit") as Function;
 const closeDrawer = inject('closeDrawer') as Function;
-const props = defineProps({
+
+defineProps({
   drawer: {
     type: Object,
     required: true,

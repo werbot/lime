@@ -103,6 +103,7 @@ const onSelectPage = (e: any) => {
 };
 
 const getPattern = async (id: string, action: string) => {
+  closeDrawer();
   try {
     const res = await apiGet(`/_/api/pattern/${id}`, {});
     if (res.code === 200) {
@@ -116,23 +117,19 @@ const getPattern = async (id: string, action: string) => {
 };
 
 const openDrawerView = async (id: string) => {
-  closeDrawer();
   getPattern(id, "view");
 };
 
 const openDrawerEdit = async (id: string) => {
-  closeDrawer();
   getPattern(id, "edit");
 };
 
 const openDrawerAdd = async () => {
-  closeDrawer();
   isDrawer.value.open = true;
   isDrawer.value.action = "add";
 };
 
 const openDrawerClone = async (id: string, name: string) => {
-  closeDrawer();
   isDrawer.value.data = {
     id: id,
     name: name,

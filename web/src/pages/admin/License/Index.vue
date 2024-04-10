@@ -97,6 +97,7 @@ const onSelectPage = (e: any) => {
 };
 
 const getLicense = async (id: string, action: string) => {
+  closeDrawer();
   try {
     const res = await apiGet(`/_/api/license/lic_${id}`, {});
     if (res.code === 200) {
@@ -128,5 +129,6 @@ const closeDrawer = async () => {
   isDrawer.value.action = null;
 };
 
+provide("openDrawerEdit", openDrawerEdit);
 provide('closeDrawer', closeDrawer);
 </script>

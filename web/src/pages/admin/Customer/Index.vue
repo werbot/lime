@@ -93,6 +93,7 @@ const onSelectPage = (e: any) => {
 };
 
 const getCustomer = async (id: string, action: string) => {
+  closeDrawer();
   try {
     const res = await apiGet(`/_/api/customer/${id}`, {});
     if (res.code === 200) {
@@ -106,11 +107,11 @@ const getCustomer = async (id: string, action: string) => {
 };
 
 const openDrawerView = async (id: string) => {
-  getCustomer(id, "view")
+  getCustomer(id, "view");
 };
 
 const openDrawerEdit = async (id: string) => {
-  getCustomer(id, "edit")
+  getCustomer(id, "edit");
 };
 
 const openDrawerAdd = async () => {
@@ -125,5 +126,6 @@ const closeDrawer = async () => {
 };
 
 provide("getCustomers", getCustomers);
+provide("openDrawerEdit", openDrawerEdit);
 provide('closeDrawer', closeDrawer);
 </script>

@@ -28,6 +28,7 @@ import { ref, inject } from 'vue';
 import { FormInput } from "@/components";
 import { Form } from "vee-validate";
 
+const openDrawerEdit = inject("openDrawerEdit") as Function;
 const closeDrawer = inject('closeDrawer') as Function;
 
 const props = defineProps({

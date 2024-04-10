@@ -66,6 +66,7 @@ import { apiUpdate } from "@/utils/api";
 const route = useRoute();
 const getPayments = inject("getPayments") as Function;
 const closeDrawer = inject('closeDrawer') as Function;
+
 const props = defineProps({
   drawer: {
     type: Object,

@@ -20,15 +20,23 @@
         <td>Created</td>
         <td>{{ formatDate(drawer.data.created) }}</td>
       </tr>
-      <tr v-if="drawer.data.created!==drawer.data.updated">
+      <tr v-if="drawer.data.created !== drawer.data.updated">
         <td>Updated</td>
         <td>{{ formatDate(drawer.data.updated) }}</td>
       </tr>
     </table>
   </div>
 
-  <div class="pt-4">
-    <button class="btn" @click="closeDrawer()">Close</button>
+  <div class="pt-8">
+    <div class="flex">
+      <div class="flex-none">
+        <div class="btn cursor-pointer" @click="closeDrawer()">Close</div>
+      </div>
+      <div class="grow"></div>
+      <div class="flex-none">
+        <div class="btn btn-green cursor-pointer" @click="openDrawerEdit(drawer.data.id)">Edit</div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -36,8 +44,10 @@
 import { inject } from 'vue';
 import { formatDate } from "@/utils";
 
+const openDrawerEdit = inject("openDrawerEdit") as Function;
 const closeDrawer = inject('closeDrawer') as Function;
-const props = defineProps({
+
+defineProps({
   drawer: {
     type: Object,
     required: true,
