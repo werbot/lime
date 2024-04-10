@@ -1,5 +1,6 @@
 <template>
-  <div class="artboard">
+  <Skeleton class="text-gray-200" v-if="!data" />
+  <div class="artboard" v-else>
     <header>
       <h1>Audit</h1>
     </header>
@@ -49,7 +50,7 @@
 import { onMounted, ref, provide } from "vue";
 import { useRoute } from "vue-router";
 import { View } from "./components";
-import { Badge, Pagination, Drawer } from "@/components";
+import { Skeleton, Badge, Pagination, Drawer } from "@/components";
 import { sectionsObj, actionObj, formatDate } from "@/utils";
 import { apiGet } from "@/utils/api";
 

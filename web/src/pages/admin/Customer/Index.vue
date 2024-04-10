@@ -1,5 +1,6 @@
 <template>
-  <div class="artboard">
+  <Skeleton class="text-gray-200" v-if="!data" />
+  <div class="artboard" v-else>
     <header>
       <h1>Customers</h1>
       <label class="plus" @click="openDrawerAdd()">
@@ -58,7 +59,7 @@
 import { onMounted, ref, provide } from "vue";
 import { useRoute } from "vue-router";
 import { View, Edit, Add } from "./components";
-import { SvgIcon, Pagination, Drawer, Badge } from "@/components";
+import { Skeleton, SvgIcon, Pagination, Drawer, Badge } from "@/components";
 import { formatDate } from "@/utils";
 import { apiGet } from "@/utils/api";
 

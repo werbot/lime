@@ -1,5 +1,6 @@
 <template>
-  <div class="artboard">
+  <Skeleton class="text-gray-200" v-if="!data" />
+  <div class="artboard" v-else>
     <header>
       <h1>Licenses</h1>
       <label class="plus" @click="openDrawerAdd()">
@@ -62,7 +63,7 @@
 import { onMounted, ref, provide } from "vue";
 import { useRoute } from "vue-router";
 import { View, Edit, Add } from "./components";
-import { SvgIcon, Badge, Pagination, Drawer } from "@/components";
+import { Skeleton, SvgIcon, Badge, Pagination, Drawer } from "@/components";
 import { termObj, currencyObj, priceFormat, formatDate } from "@/utils";
 import { apiGet } from "@/utils/api";
 
