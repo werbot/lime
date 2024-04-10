@@ -32,7 +32,9 @@
       </tr>
       <tr>
         <td>Provider</td>
-        <td>{{ drawer.data.transaction.provider }}</td>
+        <td>
+          <Badge :name="paymentProvidersObj[drawer.data.transaction.provider - 1].name" :color="paymentProvidersObj[drawer.data.transaction.provider - 1].color" />
+        </td>
       </tr>
       <tr>
         <td>Status</td>
@@ -58,7 +60,7 @@
 
 <script setup lang="ts">
 import { inject } from 'vue';
-import { termObj, currencyObj, formatDate, priceFormat, paymentStatusObj } from "@/utils";
+import { termObj, currencyObj, paymentProvidersObj, formatDate, priceFormat, paymentStatusObj } from "@/utils";
 import { Badge } from "@/components";
 
 const closeDrawer = inject('closeDrawer') as Function;

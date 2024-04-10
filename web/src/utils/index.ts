@@ -67,9 +67,9 @@ export const paymentStatusObj = [
 ];
 
 export const paymentProvidersObj = [
-  /*{ name: "", ico: "" },*/
-  { name: "None", ico: "" },
-  { name: "Stripe", ico: "" },
+  /*{ name: "", color: "" },*/
+  { name: "None", color: "gray" },
+  { name: "Stripe", color: "purple" },
 ];
 
 export const currencyObj = [

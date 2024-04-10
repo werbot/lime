@@ -28,7 +28,9 @@
             <Badge :name="termObj[item.pattern.term - 1].name" :color="termObj[item.pattern.term - 1].color" />
           </td>
           <td @click="openDrawerView(item.id)">{{ priceFormat(item.pattern.price) }} {{ currencyObj[item.pattern.currency - 1].name }}</td>
-          <td @click="openDrawerView(item.id)">{{ item.transaction.provider }}</td>
+          <td @click="openDrawerView(item.id)">
+            <Badge :name="paymentProvidersObj[item.transaction.provider - 1].name" :color="paymentProvidersObj[item.transaction.provider - 1].color" />
+          </td>
           <td @click="openDrawerView(item.id)">
             <Badge :name="paymentStatusObj[item.transaction.status - 1].name" :color="paymentStatusObj[item.transaction.status - 1].color" />
           </td>
@@ -61,7 +63,7 @@ import { onMounted, ref, provide } from "vue";
 import { useRoute } from "vue-router";
 import { View, Edit, Add } from "./components";
 import { SvgIcon, Badge, Pagination, Drawer } from "@/components";
-import { termObj, paymentStatusObj, priceFormat, currencyObj } from "@/utils";
+import { termObj, paymentStatusObj, paymentProvidersObj, priceFormat, currencyObj } from "@/utils";
 import { apiGet } from "@/utils/api";
 
 const isDrawer = ref({
