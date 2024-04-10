@@ -31,10 +31,10 @@
             <Badge :name="String(item.licenses.total)" />
           </td>
           <td @click="openDrawerView(item.id)">
-            <Badge :name="termFormat[item.term].name" :color="termFormat[item.term].color" />
+            <Badge :name="termObj[item.term - 1].name" :color="termObj[item.term - 1].color" />
           </td>
           <td @click="openDrawerView(item.id)">
-            {{ priceFormat(item.price) }} {{ currency[item.currency-1] }}
+            {{ priceFormat(item.price) }} {{ currencyObj[item.currency - 1].name }}
           </td>
           <td>
             <div class="flex">
@@ -69,14 +69,10 @@ import { onMounted, ref, provide } from "vue";
 import { useRoute } from "vue-router";
 import { View, Edit, Add, Clone } from "./components";
 import { SvgIcon, Badge, Pagination, Drawer } from "@/components";
-import { termFormat, priceFormat, currency } from "@/utils";
+import { termObj, priceFormat, currencyObj } from "@/utils";
 import { apiGet } from "@/utils/api";
 
-const isDrawer = ref<{
-  data: Object;
-  open: boolean;
-  action: string;
-}>({
+const isDrawer = ref({
   data: {},
   open: false,
   action: null,

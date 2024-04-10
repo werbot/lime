@@ -27,9 +27,9 @@
           </td>
           <td>{{ item.pattern.name }}</td>
           <td>
-            <Badge :name="termFormat[item.pattern.term].name" :color="termFormat[item.pattern.term].color" />
+            <Badge :name="termObj[item.pattern.term - 1].name" :color="termObj[item.pattern.term - 1].color" />
           </td>
-          <td>{{ priceFormat(item.pattern.price) }} {{ currency[item.pattern.currency] }}</td>
+          <td>{{ priceFormat(item.pattern.price) }} {{ currencyObj[item.pattern.currency-1].name }}</td>
           <td>{{ formatDate(item.created) }}</td>
         </tr>
       </tbody>
@@ -76,12 +76,12 @@
         </tr>
         <tr>
           <td>Price</td>
-          <td>{{ priceFormat(dataFull.pattern.price) }} {{ currency[dataFull.pattern.currency-1] }}</td>
+          <td>{{ priceFormat(dataFull.pattern.price) }} {{ currencyObj[dataFull.pattern.currency - 1].name }}</td>
         </tr>
         <tr>
           <td>Term</td>
           <td>
-            <Badge :name="termFormat[dataFull.pattern.term].name" :color="termFormat[dataFull.pattern.term].color" />
+            <Badge :name="termObj[dataFull.pattern.term - 1].name" :color="termObj[dataFull.pattern.term - 1].color" />
           </td>
         </tr>
         <tr>
@@ -101,7 +101,7 @@
 import { onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
 import { SvgIcon, Badge, Pagination, Drawer } from "@/components";
-import { termFormat, priceFormat, currency, formatDate } from "@/utils";
+import { termObj, currencyObj, priceFormat, formatDate } from "@/utils";
 import { apiGet } from "@/utils/api";
 
 const isDrawer = ref({

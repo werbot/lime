@@ -13,6 +13,7 @@
 import { inject } from 'vue';
 
 const closeDrawer = inject('closeDrawer') as Function;
+
 const props = defineProps({
   drawer: {
     type: Object,

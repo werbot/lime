@@ -4,10 +4,10 @@
   </header>
 
   <Form @submit="onSubmit" v-slot="{ errors }" class="space-y-4">
-    <FormInput name="Email" v-model="drawer.data.email" :error="errors.email" id="email" type="email" rules="required|email" title="Email" />
+    <FormInput name="Email" v-model="data.email" :error="errors.email" id="email" type="email" rules="required|email" title="Email" />
 
     <div class="mt-5 flex flex-row">
-      <FormToggle name="Status" v-model="drawer.data.status" class="mr-5 flex-grow" id="status" />
+      <FormToggle name="Status" v-model="data.status" class="mr-5 flex-grow" id="status" />
     </div>
 
     <div class="pt-8">
@@ -37,12 +37,6 @@ import { apiPost } from "@/utils/api";
 const route = useRoute();
 const getCustomers = inject("getCustomers") as Function;
 const closeDrawer = inject('closeDrawer') as Function;
-const props = defineProps({
-  drawer: {
-    type: Object,
-    required: true,
-  },
-});
 
 const loadingStatus = ref({
   save: false,
@@ -50,13 +44,13 @@ const loadingStatus = ref({
 
 const data = ref({
   email: null,
-  password: null,
+  status: false,
 });
 
 const onSubmit = async () => {
   loadingStatus.value.save = true;
   try {
-    const res = await apiPost(`/_/api/customer`, {}, props.drawer.data);
+    const res = await apiPost(`/_/api/customer`, {}, data.value);
     if (res.code === 200) {
       getCustomers(route.query);
       closeDrawer();

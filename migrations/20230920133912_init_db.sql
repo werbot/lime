@@ -59,7 +59,7 @@ CREATE TABLE "payment" (
   "id" varchar(15) PRIMARY KEY NOT NULL,
   "pattern_id" varchar(15) NOT NULL,
   "customer_id" varchar(15) NOT NULL,
-  "provider" varchar(15) NOT NULL,
+  "provider" varchar(1) NOT NULL,
   "status" varchar(1) NOT NULL,
   "metadata" json DEFAULT '{}' NOT NULL,
   "updated_at" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,

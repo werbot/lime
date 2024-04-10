@@ -9,17 +9,20 @@ import (
 type Section int
 
 const (
-	SectionSystem Section = iota
+	_ Section = iota
+	SectionSystem
 	SectionSetting
 	SectionCustomer
 	SectionPattern
 	SectionLicense
+	SectionPayment
 )
 
 type AuditAction int
 
 const (
-	OnSendMail AuditAction = iota
+	_ AuditAction = iota
+	OnSendMail
 	OnSignIn
 	OnSignOut
 	OnAdd

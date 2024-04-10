@@ -96,12 +96,12 @@ const router = createRouter({
           path: "payment",
           name: "admin-payment",
           meta: { name: "Payments", icon: "banknotes", layout: "Private" },
-          component: () => import("@/pages/admin/Payment.vue"),
+          component: () => import("@/pages/admin/Payment/Index.vue"),
           children: [
             {
               path: ':payment_slug',
               name: 'admin-payment-description',
-              component: () => import('@/pages/admin/Payment.vue')
+              component: () => import('@/pages/admin/Payment/Index.vue')
             },
           ],
         },
@@ -109,12 +109,12 @@ const router = createRouter({
           path: "audit",
           name: "admin-audit",
           meta: { name: "Audit", icon: "document", layout: "Private" },
-          component: () => import("@/pages/admin/Audit.vue"),
+          component: () => import("@/pages/admin/Audit/Index.vue"),
           children: [
             {
               path: ':audit_slug',
               name: 'admin-audit-description',
-              component: () => import('@/pages/admin/Audit.vue')
+              component: () => import('@/pages/admin/Audit/Index.vue')
             },
           ],
         },

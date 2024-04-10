@@ -5,10 +5,7 @@
 
   {{ drawer.data }}
 
-  <Form @submit="onSubmit" v-slot="{ errors }" class="space-y-4">
-    <FormInput name="Email" v-model="data.email" :error="errors.email" id="email" type="email" rules="required|email" title="Email" />
-    <FormInput name="Password" v-model="data.password" :error="errors.password" id="password" type="password" rules="required" title="Password" />
-  </Form>
+
 
   <div class="pt-8">
     <div class="flex">
@@ -22,9 +19,6 @@
         <button class="btn ml-5" @click="closeDrawer()">Close</button>
       </div>
       <div class="grow"></div>
-      <div class="flex-none">
-        <button class="btn btn-red" @click="closeDrawer()">Delete pattern</button>
-      </div>
     </div>
   </div>
 </template>
@@ -35,6 +29,7 @@ import { FormInput } from "@/components";
 import { Form } from "vee-validate";
 
 const closeDrawer = inject('closeDrawer') as Function;
+
 const props = defineProps({
   drawer: {
     type: Object,
@@ -43,6 +38,7 @@ const props = defineProps({
 });
 
 const loadingStatus = ref(false);
+
 const data = ref({
   email: null,
   password: null,

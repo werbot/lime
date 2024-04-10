@@ -27,8 +27,8 @@ export function priceFormat(cost: string): string {
   return Number(cost) ? (Number(cost) / 100).toFixed(2) : "0.00";
 }
 
-export const termFormat = [
-  { name: "", color: "" },
+export const termObj = [
+  /*{ name: "", color: "" },*/
   { name: "hour", color: "gray" },
   { name: "day", color: "pink" },
   { name: "week", color: "indigo" },
@@ -36,7 +36,8 @@ export const termFormat = [
   { name: "year", color: "green" },
 ];
 
-export const actionFormat = [
+export const actionObj = [
+  /*{ name: "", color: "" },*/
   { name: "onSendMail", color: "purple" },
   { name: "onSignIn", color: "gray" },
   { name: "onSignOut", color: "gray" },
@@ -46,8 +47,18 @@ export const actionFormat = [
   { name: "onClone", color: "green" },
 ];
 
-export const paymentStatusFormat = [
-  { name: "", color: "" },
+export const sectionsObj = [
+  /*{ name:"", ico: "" },*/
+  { name: "System", ico: "tooth" },
+  { name: "Setting", ico: "tooth" },
+  { name: "Customer", ico: "users" },
+  { name: "Pattern", ico: "pattern" },
+  { name: "License", ico: "ticket" },
+  { name: "Payment", ico: "banknotes" },
+];
+
+export const paymentStatusObj = [
+  /*{ name: "", color: "" },*/
   { name: "paid", color: "green" },
   { name: "unpaid", color: "red" },
   { name: "processed", color: "yellow" },
@@ -55,36 +66,55 @@ export const paymentStatusFormat = [
   { name: "failed", color: "red" },
 ];
 
-export const term = ["hour", "day", "week", "month", "year"];
-
-export const sections = ["System", "Setting", "Customer", "Pattern", "License"];
-
-export const currency = [
-  "EUR",
-  "USD",
-  "JPY",
-  "GBP",
-  "AUD",
-  "CAD",
-  "CHF",
-  "CNY",
-  "SEK",
+export const paymentProvidersObj = [
+  /*{ name: "", ico: "" },*/
+  { name: "None", ico: "" },
+  { name: "Stripe", ico: "" },
 ];
 
-export const monthNames = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
+export const currencyObj = [
+  /*{ name: "", symbol: ""},*/
+  { name: "EUR", symbol: "€" },
+  { name: "USD", symbol: "＄" },
+  { name: "JPY", symbol: "JP¥" },
+  { name: "GBP", symbol: "£" },
+  { name: "AUD", symbol: "A＄" },
+  { name: "CAD", symbol: "CA＄" },
+  { name: "CHF", symbol: "₣" },
+  { name: "CNY", symbol: "¥" },
+  { name: "SEK", symbol: "kr" },
 ];
+
+export const monthNamesObj = [
+  /*{ short: "", large: ""},*/
+  { short: "Jan", large: "January" },
+  { short: "Feb", large: "February" },
+  { short: "Mar", large: "March" },
+  { short: "Apr", large: "April" },
+  { short: "May", large: "May" },
+  { short: "Jun", large: "June" },
+  { short: "Jul", large: "July" },
+  { short: "Aug", large: "August" },
+  { short: "Sep", large: "September" },
+  { short: "Oct", large: "October" },
+  { short: "Nov", large: "November" },
+  { short: "Dec", large: "December" },
+];
+
+export function arrayToObject(array, valueExtractor) {
+  return array.reduce((accumulator, item, index) => {
+    const key = index + 1; // Start keys from 1
+    accumulator[key] = valueExtractor(item);
+    return accumulator;
+  }, {});
+}
+
+export function reduceToObject(items, parseFunc) {
+  return items.reduce((obj, item) => {
+    obj[item.key] = parseFunc(item.value);
+    return obj;
+  }, {});
+}
 
 export function formatDate(timestamp): string {
   if (!isNaN(timestamp)) {
@@ -93,7 +123,7 @@ export function formatDate(timestamp): string {
 
   const date = new Date(timestamp);
   return `${date.getDate()} ${
-    monthNames[date.getMonth()]
+    monthNamesObj[date.getMonth()].short
   } ${date.getFullYear()}, ${date.toLocaleTimeString()}`;
 }
 

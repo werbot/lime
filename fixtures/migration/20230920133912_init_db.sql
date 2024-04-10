@@ -39,18 +39,18 @@ INSERT INTO "pattern" ("id", "name", "limit", "price", "currency", "term", "priv
 ('ReU41LFrf2El76u', 'pattern 10', '{"servers":1000,"companies":99,"users":20}', 12010, 2, 5, 'f', 't', '{"ip":true,"mac":true,"country":false}');
 
 INSERT INTO "payment" ("id", "pattern_id", "customer_id", "provider", "status", "metadata") VALUES 
-('A0sB9XpSx0P65ab', '4dDADaT1t0m71Md', '7v38n58hXHVsNxS', 'stripe', 1, '{"stripe_id":"cus_APBaLDeqQoVy8m"}'),
-('qa4AAQmaMn00N65', 't7Kl9LT44Xki3Ix', '8Rz96VZEeHrv1h2', 'stripe', 1, '{"stripe_id":"cus_APBaLDeqQoVy7m"}'),
-('5OkK93H3I2Yyhio', '0BDbBZ10d3Jb9jz', 'bkS4BCcQqK01s67', 'stripe', 1, '{"stripe_id":"cus_APBaLDeqQoVy6m"}'),
-('E1gG8gw26rR2eGW', 'AFQG1faC02qc2g6', '8Uul6gGZ49P2pzL', 'stripe', 2, '{"stripe_id":"cus_APBaLDeqQoVy5m"}'),
-('Nv8851QD6dnWVwq', 'cX1ACDa81do05xO', 'Y1ycF9Cj0J32fdD', 'stripe', 1, '{"stripe_id":"cus_APBaLDeqQoVy4m"}'),
-('4AkwFd0KD12aW8f', '4dDADaT1t0m71Md', 'u5O57U8r6nNRXxo', 'stripe', 1, '{"stripe_id":"cus_APBaLDeqQoVy3m"}'),
-('Hve8AaEo5O0hV21', 't7Kl9LT44Xki3Ix', 'm1MeQvVE63q84jJ', 'stripe', 1, '{"stripe_id":"cus_APBaLDeqQoVy2m"}'),
-('4klLY5O489xyKXo', 't7Kl9LT44Xki3Ix', '674wsKSt8DdTWk1', 'stripe', 1, '{"stripe_id":"cus_APBaLDeqQoVy1m"}'),
-('l63siQ4LI9Xx7Sq', 't7Kl9LT44Xki3Ix', '4lLLn3N5jUu74lJ', 'stripe', 2, '{"stripe_id":"cus_APBaLDeqQoVy0m"}'),
-('B066SsSRuUrs76b', '4dDADaT1t0m71Md', 'E7sOofi13S2I5eF', 'stripe', 1, '{"stripe_id":"cus_APBaLDeqQoVy9m"}'),
-('FofOoO52oO5H1h5', '4dDADaT1t0m71Md', '2WwO5T58nNto7gG', 'stripe', 1, '{"stripe_id":"cus_APBaLDeqQoVy11"}'),
-('9576nYtyRuN8rUT', '4dDADaT1t0m71Md', '2WwO5T58nNto7gG', 'stripe', 4, '{}');
+('A0sB9XpSx0P65ab', '4dDADaT1t0m71Md', '7v38n58hXHVsNxS', 2, 1, '{"stripe_id":"cus_APBaLDeqQoVy8m"}'),
+('qa4AAQmaMn00N65', 't7Kl9LT44Xki3Ix', '8Rz96VZEeHrv1h2', 2, 1, '{"stripe_id":"cus_APBaLDeqQoVy7m"}'),
+('5OkK93H3I2Yyhio', '0BDbBZ10d3Jb9jz', 'bkS4BCcQqK01s67', 2, 1, '{"stripe_id":"cus_APBaLDeqQoVy6m"}'),
+('E1gG8gw26rR2eGW', 'AFQG1faC02qc2g6', '8Uul6gGZ49P2pzL', 2, 2, '{"stripe_id":"cus_APBaLDeqQoVy5m"}'),
+('Nv8851QD6dnWVwq', 'cX1ACDa81do05xO', 'Y1ycF9Cj0J32fdD', 2, 1, '{"stripe_id":"cus_APBaLDeqQoVy4m"}'),
+('4AkwFd0KD12aW8f', '4dDADaT1t0m71Md', 'u5O57U8r6nNRXxo', 2, 1, '{"stripe_id":"cus_APBaLDeqQoVy3m"}'),
+('Hve8AaEo5O0hV21', 't7Kl9LT44Xki3Ix', 'm1MeQvVE63q84jJ', 2, 1, '{"stripe_id":"cus_APBaLDeqQoVy2m"}'),
+('4klLY5O489xyKXo', 't7Kl9LT44Xki3Ix', '674wsKSt8DdTWk1', 2, 1, '{"stripe_id":"cus_APBaLDeqQoVy1m"}'),
+('l63siQ4LI9Xx7Sq', 't7Kl9LT44Xki3Ix', '4lLLn3N5jUu74lJ', 2, 2, '{"stripe_id":"cus_APBaLDeqQoVy0m"}'),
+('B066SsSRuUrs76b', '4dDADaT1t0m71Md', 'E7sOofi13S2I5eF', 2, 1, '{"stripe_id":"cus_APBaLDeqQoVy9m"}'),
+('FofOoO52oO5H1h5', '4dDADaT1t0m71Md', '2WwO5T58nNto7gG', 2, 1, '{"stripe_id":"cus_APBaLDeqQoVy11"}'),
+('9576nYtyRuN8rUT', '4dDADaT1t0m71Md', '2WwO5T58nNto7gG', 2, 4, '{}');
 
 INSERT INTO "license" ("id", "payment_id", "status", "hash") VALUES 
 ('jG2Jg83WLw4Dd1l', 'A0sB9XpSx0P65ab', 't', '81dc9bdb52d04dc20036dbd8313ed055'),
@@ -66,11 +66,11 @@ INSERT INTO "license" ("id", "payment_id", "status", "hash") VALUES
 ('77imoSIM5s3OSs4', '9576nYtyRuN8rUT', 'f', '0a4441b52449ea8b49697438a26be13e');
 
 INSERT INTO "audit" ("id", "section", "customer_id", "action", "metadata") VALUES 
-('k3Kmm4R6GM4rMg2', 0, 'admin', 1, '{"request":{"user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Safari/605.1.15","user_ip":"127.0.0.1"},"data":null}'),
-('bE0oH0nM5L9hY9l', 1, 'admin', 4, '{"request":{"user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Safari/605.1.15","user_ip":"127.0.0.1"},"data":null}'),
-('14Icm3VziMC89Zv', 2, 'admin', 3, '{"request":{"user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Safari/605.1.15","user_ip":"127.0.0.1"},"data":null}'),
-('j8VmU4u8u73JMUv', 1, 'admin', 4, '{"request":{"user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Safari/605.1.15","user_ip":"127.0.0.1"},"data":null}'),
-('LAlM47Ug24Gma0u', 0, '2WwO5T58nNto7gG', 1, '{"request":{"user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Safari/605.1.15","user_ip":"127.0.0.1"},"data":{"id":"2WwO5T58nNto7gG"}}');
+('k3Kmm4R6GM4rMg2', 1, 'admin', 2, '{"request":{"user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Safari/605.1.15","user_ip":"127.0.0.1"},"data":null}'),
+('bE0oH0nM5L9hY9l', 2, 'admin', 5, '{"request":{"user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Safari/605.1.15","user_ip":"127.0.0.1"},"data":null}'),
+('14Icm3VziMC89Zv', 3, 'admin', 4, '{"request":{"user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Safari/605.1.15","user_ip":"127.0.0.1"},"data":null}'),
+('j8VmU4u8u73JMUv', 2, 'admin', 5, '{"request":{"user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Safari/605.1.15","user_ip":"127.0.0.1"},"data":null}'),
+('LAlM47Ug24Gma0u', 1, '2WwO5T58nNto7gG', 2, '{"request":{"user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Safari/605.1.15","user_ip":"127.0.0.1"},"data":{"id":"2WwO5T58nNto7gG"}}');
 -- +goose StatementEnd
 
 -- +goose Down

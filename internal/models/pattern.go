@@ -40,13 +40,13 @@ type Patterns struct {
 type Pattern struct {
 	Core
 	Name     string    `json:"name"`
-	Limit    Metadata  `json:"limit,omitempty"`    // license restrictions
-	Term     Term      `json:"term"`               // license validity period
-	Price    int       `json:"price"`              // price in Stripe format
-	Currency Currency  `json:"currency"`           // currency
-	Check    Metadata  `json:"check,omitempty"`    // what will be checked for license verification?
-	Private  bool      `json:"private,omitempty"`  // the pattern is available to the administrator only.
-	Status   bool      `json:"status,omitempty"`   // pattern activity
+	Limit    *Metadata `json:"limit,omitempty"`    // license restrictions
+	Term     *Term     `json:"term,omitempty"`     // license validity period
+	Price    *int      `json:"price,omitempty"`    // price in Stripe format
+	Currency *Currency `json:"currency,omitempty"` // currency
+	Check    *Metadata `json:"check,omitempty"`    // what will be checked for license verification?
+	Private  bool      `json:"private"`            // the pattern is available to the administrator only.
+	Status   bool      `json:"status"`             // pattern activity
 	Licenses *Licenses `json:"licenses,omitempty"` // licenses
 }
 
@@ -54,7 +54,6 @@ type Pattern struct {
 func (v Pattern) Validate() error {
 	return validation.ValidateStruct(&v,
 		validation.Field(&v.Name, validation.Length(5, 128)),
-		validation.Field(&v.Term, validation.In("d", "w", "m", "y")), // d-day, w-week, m-month, y-year
 		validation.Field(&v.Price, validation.Required, validation.Min(0)),
 	)
 }

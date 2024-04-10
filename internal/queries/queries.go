@@ -22,6 +22,7 @@ type Base struct {
 	PatternQueries
 	CustomerQueries
 	PaymentsQueries
+	ListQueries
 }
 
 // Init is ...
@@ -40,6 +41,7 @@ func Init(cfg storage.Database, embed embed.FS) error {
 		PatternQueries:  PatternQueries{DB: database},
 		CustomerQueries: CustomerQueries{DB: database},
 		PaymentsQueries: PaymentsQueries{DB: database},
+		ListQueries:     ListQueries{DB: database},
 	}
 
 	return nil

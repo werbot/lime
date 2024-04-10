@@ -20,7 +20,7 @@
         <td>Created</td>
         <td>{{ formatDate(drawer.data.created) }}</td>
       </tr>
-      <tr v-if="drawer.data.created!==drawer.data.updated">
+      <tr v-if="drawer.data.created !== drawer.data.updated">
         <td>Updated</td>
         <td>{{ formatDate(drawer.data.updated) }}</td>
       </tr>
@@ -41,7 +41,7 @@
         <td>Price</td>
         <td>
           {{ priceFormat(drawer.data.price) }}
-          {{ currency[drawer.data.currency-1] }}
+          {{ currencyObj[drawer.data.currency - 1].name }}
         </td>
       </tr>
       <tr>
@@ -53,7 +53,7 @@
       <tr>
         <td>Term</td>
         <td>
-          <Badge :name="termFormat[drawer.data.term].name" :color="termFormat[drawer.data.term].color" />
+          <Badge :name="termObj[drawer.data.term - 1].name" :color="termObj[drawer.data.term - 1].color" />
         </td>
       </tr>
       <tr>
@@ -81,7 +81,7 @@
 <script setup lang="ts">
 import { inject } from "vue";
 import { SvgIcon, Badge } from "@/components";
-import { termFormat, priceFormat, currency, formatDate } from "@/utils";
+import { termObj, currencyObj, priceFormat, formatDate } from "@/utils";
 
 const closeDrawer = inject("closeDrawer") as Function;
 const props = defineProps({

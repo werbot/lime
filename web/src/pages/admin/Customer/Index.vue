@@ -50,7 +50,7 @@
   <Drawer :is-open="isDrawer.open" @close="closeDrawer()" maxWidth="600px">
     <View :drawer="isDrawer" v-if="isDrawer.action === 'view'" />
     <Edit :drawer="isDrawer" v-if="isDrawer.action === 'edit'" />
-    <Add :drawer="isDrawer" v-if="isDrawer.action === 'add'" />
+    <Add v-if="isDrawer.action === 'add'" />
   </Drawer>
 </template>
 
@@ -62,11 +62,7 @@ import { SvgIcon, Pagination, Drawer, Badge } from "@/components";
 import { formatDate } from "@/utils";
 import { apiGet } from "@/utils/api";
 
-const isDrawer = ref<{
-  data: Object;
-  open: boolean;
-  action: string;
-}>({
+const isDrawer = ref({
   data: {},
   open: false,
   action: null,

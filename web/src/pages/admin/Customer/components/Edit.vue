@@ -46,6 +46,7 @@ import { apiUpdate, apiDelete } from "@/utils/api";
 const route = useRoute();
 const getCustomers = inject("getCustomers") as Function;
 const closeDrawer = inject('closeDrawer') as Function;
+
 const props = defineProps({
   drawer: {
     type: Object,
@@ -58,15 +59,12 @@ const loadingStatus = ref({
   delete: false,
 });
 
-const data = ref({
-  email: null,
-  password: null,
-});
-
 const onSubmit = async () => {
   loadingStatus.value.save = true;
   try {
-    const res = await apiUpdate(`/_/api/customer/${props.drawer.data.id}`, {}, props.drawer.data);
+    const updatedData = { ...props.drawer.data };
+
+    const res = await apiUpdate(`/_/api/customer/${updatedData.id}`, {}, updatedData);
     if (res.code === 200) {
       getCustomers(route.query);
     }

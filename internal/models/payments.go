@@ -4,6 +4,14 @@ import (
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 )
 
+type PaymentProvider int
+
+const (
+	_ PaymentProvider = iota
+	NONE
+	STRIPE
+)
+
 type PaymentStatus int
 
 const (
@@ -40,7 +48,7 @@ func (v Payment) Validate() error {
 
 // TransactionTransactionTransaction is ...
 type Transaction struct {
-	Provider string        `json:"provider"`
-	Status   PaymentStatus `json:"status"`
-	Meta     Metadata      `json:"meta,omitempty"`
+	Provider PaymentProvider `json:"provider"`
+	Status   PaymentStatus   `json:"status"`
+	Meta     Metadata        `json:"meta,omitempty"`
 }

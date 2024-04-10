@@ -144,13 +144,13 @@ func (q *PatternQueries) Pattern(ctx context.Context, id string) (*models.Patter
 	}
 
 	if limit.Valid {
-		var meta models.Metadata
+		var meta *models.Metadata
 		json.Unmarshal([]byte(limit.String), &meta)
 		pattern.Limit = meta
 	}
 
 	if check.Valid {
-		var meta models.Metadata
+		var meta *models.Metadata
 		json.Unmarshal([]byte(check.String), &meta)
 		pattern.Check = meta
 	}
@@ -183,9 +183,9 @@ func (q *PatternQueries) AddPattern(ctx context.Context, pattern *models.Pattern
 		security.NanoID(),
 		pattern.Name,
 		pattern.Limit,
-		strconv.Itoa(int(pattern.Term)),
-		strconv.Itoa(pattern.Price),
-		strconv.Itoa(int(pattern.Currency)),
+		strconv.Itoa(int(*pattern.Term)),
+		strconv.Itoa(*pattern.Price),
+		strconv.Itoa(int(*pattern.Currency)),
 		pattern.Check,
 		pattern.Private,
 		pattern.Status,
@@ -271,9 +271,9 @@ func (q *PatternQueries) UpdatePattern(ctx context.Context, pattern *models.Patt
 		pattern.Name,
 		limit,
 		check,
-		strconv.Itoa(int(pattern.Term)),
-		strconv.Itoa(pattern.Price),
-		strconv.Itoa(int(pattern.Currency)),
+		strconv.Itoa(int(*pattern.Term)),
+		strconv.Itoa(*pattern.Price),
+		strconv.Itoa(int(*pattern.Currency)),
 		pattern.Private,
 		pattern.Status,
 	)

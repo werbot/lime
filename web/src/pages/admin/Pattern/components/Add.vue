@@ -15,14 +15,14 @@
         <span class="grow">Name</span>
         <span class="grow -ml-5">Value</span>
       </div>
-      <div class="flex" v-for="(data, index) in limitData" :key="index">
+      <div class="flex" v-for="(limit, index) in data.limit" :key="index">
         <div class="grow pr-3">
-          <FormInput title="Key" v-model="data.key" :error="errors[`limit-key-${index}`]" :id="`limit-key-${index}`" rules="required|alpha_num" type="text" />
+          <FormInput title="Key" v-model="limit.key" :error="errors[`limit-key-${index}`]" :id="`limit-key-${index}`" rules="required|alpha_num" type="text" />
         </div>
         <div class="grow">
-          <FormInput title="Value" v-model="data.value" :error="errors[`limit-value-${index}`]" :id="`limit-value-${index}`" rules="required|numeric" type="text" />
+          <FormInput title="Value" v-model="limit.value" :error="errors[`limit-value-${index}`]" :id="`limit-value-${index}`" rules="required|numeric" type="text" />
         </div>
-        <div class="flex-none cursor-pointer pl-3 pt-4" @click="deleteLimitRecord(data.key)">
+        <div class="flex-none cursor-pointer pl-3 pt-4" @click="deleteLimitRecord(limit.key)">
           <SvgIcon name="trash" class="h-5 w-5 text-red-500" stroke="currentColor" />
         </div>
       </div>
@@ -38,10 +38,10 @@
 
     <hr />
     <div class="mt-5 flex flex-row">
-      <FormSelect name="Term" v-model="patternData.term" :options="termList" id="term" :error="errors.term" class="mr-5 w-10 flex-grow" />
+      <FormSelect name="Term" v-model="patternData.term" :options="data.lists.terms" id="term" :error="errors.term" class="mr-5 w-10 flex-grow" />
       <div class="grow"></div>
-      <FormInput name="Price" v-model="priceData" :error="errors.price" id="price" type="text" rules="required" title="Price" class="mr-5 w-10 flex-grow" />
-      <FormSelect name="Currency" v-model="patternData.currency" :options="currencyList" id="currency" :error="errors.currency" class="w-6 flex-grow" />
+      <FormInput name="Price" v-model="data.price" :error="errors.price" id="price" type="text" rules="required" title="Price" class="mr-5 w-10 flex-grow" />
+      <FormSelect name="Currency" v-model="patternData.currency" :options="data.lists.currency" id="currency" :error="errors.currency" class="w-6 flex-grow" />
     </div>
 
     <hr />
@@ -50,8 +50,8 @@
         <span>Check strategies</span>
       </label>
 
-      <div class="space-y-4" v-for="(data, index) in checkData" :key="index">
-        <FormToggle :name="`Check the client's ${data.key}`" v-model="data.value" :id="data.key" />
+      <div class="space-y-4" v-for="(check, index) in data.check" :key="index">
+        <FormToggle :name="`Check the client's ${check.key}`" v-model="check.value" :id="check.key" />
       </div>
     </div>
 
@@ -79,15 +79,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject } from "vue";
+import { ref, inject, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { SvgIcon, FormInput, FormSelect, FormToggle } from "@/components";
 import { Form } from "vee-validate";
-import { term, currency, costFormat, costStripe } from "@/utils";
+import { termObj, currencyObj, arrayToObject, reduceToObject, costFormat, costStripe } from "@/utils";
 import { apiPost } from "@/utils/api";
 
 const route = useRoute();
-
 const getPatterns = inject("getPatterns") as Function;
 const closeDrawer = inject("closeDrawer") as Function;
 
@@ -95,54 +94,55 @@ const loadingStatus = ref({
   save: false,
 });
 
-const patternData = ref({
-  name: "",
+const data = ref({
+  lists: {
+    terms: {},
+    currency: {},
+  },
   limit: [],
-  term: 0,
-  price: 0,
-  currency: 0,
-  check: { "country": false, "ip": false, "mac": false },
+  check: [],
+  price: null,
+});
+
+const patternData = ref({
+  name: null,
+  limit: [],
+  term: null,
+  price: null,
+  currency: null,
+  check: { country: false, ip: false, mac: false },
   status: false,
   private: false,
 });
 
-const limitData = ref([]);
+onMounted(async () => {
+  loadingStatus.value.save = true;
 
-const termList = term.reduce((accumulator, currentValue, index) => {
-  accumulator[index + 1] = currentValue;
-  return accumulator;
-}, {});
+  data.value = {
+    ...data.value,
+    lists: {
+      currency: arrayToObject(currencyObj, currency => currency.name),
+      terms: arrayToObject(termObj, terms => terms.name),
+    },
+    check: Object.entries(patternData.value.check ?? []).map(([key, value]) => ({ key, value })),
+    price: costFormat(patternData.value.price),
+  }
 
-const currencyList = currency.reduce((accumulator, currentValue, index) => {
-  accumulator[index + 1] = currentValue;
-  return accumulator;
-}, {});
-
-const priceData = ref();
-priceData.value = costFormat(patternData.value.price);
-
-const checkData = ref([]);
-checkData.value = Object.entries(patternData.value.check).map(([key, value]) => ({ key, value }));
+  loadingStatus.value.save = false;
+});
 
 const onSubmit = async () => {
   loadingStatus.value.save = true;
 
   try {
-    patternData.value.limit = limitData.value.reduce((obj, item) => {
-      obj[item.key] = Number(item.value);
-      return obj;
-    }, {});
+    const addData = { ...patternData.value };
+    addData.limit = reduceToObject(data.value.limit, Number);
+    addData.check = reduceToObject(data.value.check, Boolean);
+    addData.term = Number(addData.term);
+    addData.price = costStripe(data.value.price);
+    addData.currency = Number(addData.currency);
 
-    patternData.value.term = Number(patternData.value.term);
-    patternData.value.price = costStripe(priceData.value);
-    patternData.value.currency = Number(patternData.value.currency)
-
-    patternData.value.check = checkData.value.reduce((obj, item) => {
-      obj[item.key] = Boolean(item.value);
-      return obj;
-    }, {});
-
-    const res = await apiPost(`/_/api/pattern`, {}, patternData.value);
+    const res = await apiPost(`/_/api/pattern`, {}, addData);
     if (res.code === 200) {
       getPatterns(route.query);
       closeDrawer();
@@ -155,13 +155,13 @@ const onSubmit = async () => {
 };
 
 const addLimitRecord = () => {
-  limitData.value.push({ key: "", value: 0 });
+  data.value.limit.push({ key: null, value: null });
 };
 
 const deleteLimitRecord = (key: string) => {
-  const index = limitData.value.findIndex(item => item.key === key);
+  const index = data.value.limit.findIndex(item => item.key === key);
   if (index !== -1) {
-    limitData.value.splice(index, 1);
+    data.value.limit.splice(index, 1);
   }
 };
 </script>

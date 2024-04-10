@@ -4,9 +4,11 @@ import (
 	"context"
 	"database/sql"
 	"encoding/json"
+	"strconv"
 
 	"github.com/werbot/lime/internal/errors"
 	"github.com/werbot/lime/internal/models"
+	"github.com/werbot/lime/pkg/security"
 	"github.com/werbot/lime/pkg/webutil"
 )
 
@@ -40,7 +42,7 @@ func (q *PaymentsQueries) Payments(ctx context.Context, pagination *webutil.Pagi
 	query += DB().SQLPagination(webutil.PaginationQuery{
 		Limit:  pagination.Limit,
 		Offset: pagination.Offset,
-		SortBy: `"payment"."created_at":DESC`,
+		SortBy: `"payment"."updated_at":DESC`,
 	})
 
 	rows, err := q.DB.QueryContext(ctx, query)
@@ -160,4 +162,58 @@ func (q *PaymentsQueries) Payment(ctx context.Context, id string) (*models.Payme
 	payment.Transaction = transaction
 
 	return payment, nil
+}
+
+// AddPayment is ...
+func (q *PaymentsQueries) AddPayment(ctx context.Context, payment *models.Payment) error {
+	query := `
+		INSERT INTO
+			"payment" (
+				"id",
+				"pattern_id",
+				"customer_id",
+				"provider",
+				"status",
+				"metadata"
+			)
+		VALUES
+			($1, $2, $3, $4, $5, $6)
+	`
+
+	_, err := q.DB.ExecContext(ctx, query,
+		security.NanoID(),
+		payment.Pattern.ID,
+		payment.Customer.ID,
+		strconv.Itoa(int(payment.Transaction.Provider)),
+		strconv.Itoa(int(payment.Transaction.Status)),
+		payment.Transaction.Meta,
+	)
+
+	return err
+}
+
+// UpdatePayment is ...
+func (q *PaymentsQueries) UpdatePayment(ctx context.Context, payment *models.Payment) error {
+	meta, err := json.Marshal(payment.Transaction.Meta)
+	if err != nil {
+		return err
+	}
+
+	query := `
+		UPDATE "payment"
+		SET
+			"status" = $2,
+			"metadata" = $3,
+			"updated_at" = CURRENT_TIMESTAMP
+		WHERE
+			"id" = $1
+`
+
+	_, err = q.DB.ExecContext(ctx, query,
+		payment.ID,
+		strconv.Itoa(int(payment.Transaction.Status)),
+		meta,
+	)
+
+	return err
 }

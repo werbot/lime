@@ -38,9 +38,15 @@ func ApiAdminRoutes(c *fiber.App) {
 
 	payment := api.Group("/payment", middleware.JWTProtected("admin"))
 	payment.Get("/", handlers.Payments)
+	payment.Post("/", handlers.AddPayment)
 	payment.Get(`/:id<regex(\w{15})>`, handlers.Payment)
+	payment.Patch(`/:id<regex(\w{15})>`, handlers.UpdatePayment)
 
 	audit := api.Group("/audit", middleware.JWTProtected("admin"))
 	audit.Get("/", handlers.Audits)
 	audit.Get(`/:id<regex(\w{15})>`, handlers.Audit)
+
+	list := api.Group("/list", middleware.JWTProtected("admin"))
+	list.Get("/patterns/:name?", handlers.ListPatterns)
+	list.Get("/customers/:name?", handlers.ListCustomers)
 }

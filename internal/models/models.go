@@ -20,20 +20,5 @@ func (v Core) Validate() error {
 	)
 }
 
-/*
 // Metadata is ...
-type Metadata struct {
-	Key   string `json:"key"`
-	Value string `json:"value"`
-}
-
-// Validate is ...
-func (v Metadata) Validate() error {
-	return validation.ValidateStruct(&v,
-		validation.Field(&v.Key, validation.Required, validation.Length(1, 20)),
-		validation.Field(&v.Value, validation.Required, validation.Min(0)),
-	)
-}
-*/
-
 type Metadata map[string]any
