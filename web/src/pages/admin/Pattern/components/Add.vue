@@ -4,7 +4,7 @@
   </header>
 
   <Form @submit="onSubmit" v-slot="{ errors }" class="space-y-4">
-    <FormInput name="Name" v-model="patternData.name" :error="errors.name" id="name" type="text" rules="required" title="Name" />
+    <FormInput name="Name" v-model="patternData.name" :error="errors.name" id="name" type="text" rules="required" />
 
     <hr />
     <div>
@@ -17,10 +17,10 @@
       </div>
       <div class="flex" v-for="(limit, index) in data.limit" :key="index">
         <div class="grow pr-3">
-          <FormInput title="Key" v-model="limit.key" :error="errors[`limit-key-${index}`]" :id="`limit-key-${index}`" rules="required|alpha_num" type="text" />
+          <FormInput v-model="limit.key" :error="errors[`limit-key-${index}`]" :id="`limit-key-${index}`" rules="required|alpha_num" type="text" />
         </div>
         <div class="grow">
-          <FormInput title="Value" v-model="limit.value" :error="errors[`limit-value-${index}`]" :id="`limit-value-${index}`" rules="required|numeric" type="text" />
+          <FormInput v-model="limit.value" :error="errors[`limit-value-${index}`]" :id="`limit-value-${index}`" rules="required|numeric" type="text" />
         </div>
         <div class="flex-none cursor-pointer pl-3 pt-4" @click="deleteLimitRecord(limit.key)">
           <SvgIcon name="trash" class="h-5 w-5 text-red-500" stroke="currentColor" />
@@ -40,7 +40,7 @@
     <div class="mt-5 flex flex-row">
       <FormSelect name="Term" v-model="patternData.term" :options="data.lists.terms" id="term" :error="errors.term" class="mr-5 w-10 flex-grow" />
       <div class="grow"></div>
-      <FormInput name="Price" v-model="data.price" :error="errors.price" id="price" type="text" rules="required" title="Price" class="mr-5 w-10 flex-grow" />
+      <FormInput name="Price" v-model="data.price" :error="errors.price" id="price" type="text" rules="required" class="mr-5 w-10 flex-grow" />
       <FormSelect name="Currency" v-model="patternData.currency" :options="data.lists.currency" id="currency" :error="errors.currency" class="w-6 flex-grow" />
     </div>
 

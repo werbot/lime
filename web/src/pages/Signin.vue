@@ -1,7 +1,7 @@
 <template>
   <div class="title">License Manager Access</div>
   <Form @submit="onSubmit" v-slot="{ errors }" v-if="!sendMessage">
-    <FormInput name="Email" v-model="data.email" :error="errors.email" id="email" type="email" rules="required|email" title="Email" ico="at-symbol" />
+    <FormInput name="Email" v-model="data.email" :error="errors.email" id="email" type="email" rules="required|email" ico="at-symbol" />
     <div class="form-control mt-6">
       <button type="submit" class="btn " :disabled="loadingStatus">
         <div v-if="loadingStatus">

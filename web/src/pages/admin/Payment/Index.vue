@@ -37,9 +37,18 @@
           </td>
           <td>
             <div class="flex">
-              <div>
+              <div class="pr-3">
                 <SvgIcon name="pencil-square" @click="openDrawerEdit(item.id)" />
               </div>
+              <div v-if="item.transaction.status === 1 && item.pattern.licenses.total === 0">
+                <SvgIcon name="ticket" class="text-red-500" @click="createLicense(item.id)" />
+              </div>
+              <div v-else-if="item.transaction.status === 1 && item.pattern.licenses.total > 0">
+                <SvgIcon name="ticket" class="text-green-500" />
+              </div>
+              <div v-else>
+                <SvgIcon name="ticket" class="text-gray-200" />
+              </div> 
             </div>
           </td>
         </tr>
@@ -109,6 +118,10 @@ const getPayment = async (id: string, action: string) => {
   } catch (error) {
     console.error('Error fetching payment data:', error);
   }
+};
+
+const createLicense = async (id: string) => {
+  console.log(id)
 };
 
 const openDrawerView = async (id: string) => {

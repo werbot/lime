@@ -25,10 +25,10 @@
       </div>
       <div class="flex" v-for="(meta, index) in data.meta" :key="index">
         <div class="grow pr-3">
-          <FormInput title="Key" v-model="meta.key" :error="errors[`meta-key-${index}`]" :id="`meta-key-${index}`" rules="required" type="text" />
+          <FormInput v-model="meta.key" :error="errors[`meta-key-${index}`]" :id="`meta-key-${index}`" rules="required" type="text" />
         </div>
         <div class="grow">
-          <FormInput title="Value" v-model="meta.value" :error="errors[`meta-value-${index}`]" :id="`meta-value-${index}`" rules="required" type="text" />
+          <FormInput v-model="meta.value" :error="errors[`meta-value-${index}`]" :id="`meta-value-${index}`" rules="required" type="text" />
         </div>
         <div class="flex-none cursor-pointer pl-3 pt-4" @click="deleteMetaRecord(meta.key)">
           <SvgIcon name="trash" class="h-5 w-5 text-red-500" stroke="currentColor" />

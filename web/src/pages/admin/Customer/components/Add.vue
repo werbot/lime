@@ -4,7 +4,7 @@
   </header>
 
   <Form @submit="onSubmit" v-slot="{ errors }" class="space-y-4">
-    <FormInput name="Email" v-model="data.email" :error="errors.email" id="email" type="email" rules="required|email" title="Email" />
+    <FormInput name="Email" v-model="data.email" :error="errors.email" id="email" type="email" rules="required|email" />
 
     <div class="mt-5 flex flex-row">
       <FormToggle name="Status" v-model="data.status" class="mr-5 flex-grow" id="status" />

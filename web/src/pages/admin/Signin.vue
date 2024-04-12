@@ -1,8 +1,8 @@
 <template>
   <div class="title">Admin SingIn</div>
   <Form @submit="onSubmit" v-slot="{ errors }" class="mx-auto mb-0 max-w-md space-y-4">
-    <FormInput name="Email" v-model="data.email" :error="errors.email" id="email" type="email" rules="required|email" title="Email" ico="at-symbol" />
-    <FormInput name="Password" v-model="data.password" :error="errors.password" id="password" type="password" rules="required" title="Password" ico="at-symbol" />
+    <FormInput name="Email" v-model="data.email" :error="errors.email" id="email" type="email" rules="required|email" ico="at-symbol" />
+    <FormInput name="Password" v-model="data.password" :error="errors.password" id="password" type="password" rules="required" ico="at-symbol" />
     <div class="form-control">
       <button type="submit" class="btn mt-4" :disabled="loadingStatus">
         <div v-if="loadingStatus">

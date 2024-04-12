@@ -8,7 +8,7 @@
     </header>
 
     <Form @submit="onSubmit" v-slot="{ errors }" class="space-y-4">
-      <FormInput name="Name" v-model="drawer.data.name" :error="errors.name" id="name" type="text" rules="required" title="Name" />
+      <FormInput name="Name" v-model="drawer.data.name" :error="errors.name" id="name" type="text" rules="required" />
 
       <div class="pt-8">
         <div class="flex">
