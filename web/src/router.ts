@@ -131,12 +131,6 @@ const router = createRouter({
               component: () => import("@/pages/admin/Setting/Site.vue"),
             },
             {
-              path: "payment",
-              name: "admin-setting-payment",
-              meta: { name: "Payment" },
-              component: () => import("@/pages/admin/Setting/Payment.vue"),
-            },
-            {
               path: "mail",
               name: "admin-setting-mail",
               meta: { name: "Mail" },

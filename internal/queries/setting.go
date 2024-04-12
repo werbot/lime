@@ -124,7 +124,17 @@ func (q *SettingQueries) UpdateSettingByGroup(ctx context.Context, settings any)
 	defer stmt.Close()
 
 	for key, value := range fieldMap {
-		if _, err = stmt.ExecContext(ctx, value, key); err != nil {
+		var strValue string
+		switch ptr := value.(type) {
+		case *string:
+			strValue = *ptr
+		case *bool:
+			strValue = fmt.Sprintf("%t", *ptr)
+		case *int:
+			strValue = strconv.Itoa(*ptr)
+		}
+
+		if _, err = stmt.ExecContext(ctx, strValue, key); err != nil {
 			return err
 		}
 	}

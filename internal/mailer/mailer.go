@@ -11,10 +11,10 @@ import (
 	"github.com/werbot/lime/internal/models"
 )
 
-var EncryptionTypes = map[string]mailer.Encryption{
-	"None":     mailer.EncryptionNone,
-	"SSL/TLS":  mailer.EncryptionSSL,
-	"STARTTLS": mailer.EncryptionTLS,
+var EncryptionTypes = []mailer.Encryption{
+	mailer.EncryptionNone,
+	mailer.EncryptionSSL,
+	mailer.EncryptionTLS,
 }
 
 // SendMail is ...

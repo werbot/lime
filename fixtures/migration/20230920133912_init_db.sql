@@ -8,7 +8,7 @@ UPDATE "setting" SET value = 'localhost' WHERE key = 'smtp_host';
 UPDATE "setting" SET value = '1025' WHERE key = 'smtp_port';
 UPDATE "setting" SET value = 'username' WHERE key = 'smtp_username';
 UPDATE "setting" SET value = 'password' WHERE key = 'smtp_password';
-UPDATE "setting" SET value = 'None' WHERE key = 'smtp_encryption';
+UPDATE "setting" SET value = '0' WHERE key = 'smtp_encryption';
 UPDATE "setting" SET value = 'User Name from site' WHERE key = 'mail_sender_name';
 UPDATE "setting" SET value = 'admin@mail.com' WHERE key = 'mail_sender_email';
 

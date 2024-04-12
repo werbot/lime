@@ -31,7 +31,15 @@ func (q *PaymentsQueries) Payments(ctx context.Context, pagination *webutil.Pagi
 			"customer"."email"      AS "customer_email",
 			"customer"."status"     AS "customer_status",  
 			"payment"."provider",
-			"payment"."status"
+			"payment"."status",
+			(
+				SELECT
+					COUNT(*)
+				FROM
+					"license"
+				WHERE
+					"payment_id" = "payment"."id"
+			) AS "total_licenses"
 		FROM
 			"payment"
 			LEFT JOIN "customer" ON "payment"."customer_id" = "customer"."id"
@@ -55,6 +63,7 @@ func (q *PaymentsQueries) Payments(ctx context.Context, pagination *webutil.Pagi
 	for rows.Next() {
 		payment := &models.Payment{}
 		pattern := &models.Pattern{}
+		licenses := &models.Licenses{}
 		customer := &models.Customer{}
 		transaction := &models.Transaction{}
 		err := rows.Scan(
@@ -69,12 +78,14 @@ func (q *PaymentsQueries) Payments(ctx context.Context, pagination *webutil.Pagi
 			&customer.Status,
 			&transaction.Provider,
 			&transaction.Status,
+			&licenses.Total,
 		)
 		if err != nil {
 			return nil, err
 		}
 
 		payment.Pattern = pattern
+		payment.Pattern.Licenses = licenses
 		payment.Customer = customer
 		payment.Transaction = transaction
 

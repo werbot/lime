@@ -22,10 +22,10 @@ func (v SettingName) Validate() error {
 
 // Site is ...
 type Site struct {
-	Domain       string `json:"domain,omitempty"`
-	Name         string `json:"name,omitempty"`
-	Signature    string `json:"signature,omitempty"`
-	EmailSupport string `json:"email_support,omitempty"`
+	Domain       string `json:"domain"`
+	Name         string `json:"name"`
+	Signature    string `json:"signature"`
+	EmailSupport string `json:"email_support"`
 }
 
 // Validate is ...
@@ -40,11 +40,11 @@ func (v Site) Validate() error {
 
 // SMTP is ...
 type SMTP struct {
-	Host       string `json:"host,omitempty"`
-	Port       int    `json:"port,omitempty"`
-	Encryption string `json:"encryption,omitempty"`
-	Username   string `json:"username,omitempty"`
-	Password   string `json:"password,omitempty"`
+	Host       string `json:"host"`
+	Port       int    `json:"port"`
+	Encryption int    `json:"encryption"`
+	Username   string `json:"username"`
+	Password   string `json:"password"`
 }
 
 // Validate is ...

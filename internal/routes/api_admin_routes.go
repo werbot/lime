@@ -49,4 +49,8 @@ func ApiAdminRoutes(c *fiber.App) {
 	list := api.Group("/list", middleware.JWTProtected("admin"))
 	list.Get("/patterns/:name?", handlers.ListPatterns)
 	list.Get("/customers/:name?", handlers.ListCustomers)
+
+	setting := api.Group("/setting", middleware.JWTProtected("admin"))
+	setting.Get("/:group", handlers.SettingGroup)
+	setting.Patch("/:group", handlers.UpdateSettingGroup)
 }
