@@ -11,7 +11,7 @@ require (
 	github.com/golang-jwt/jwt/v5 v5.2.1
 	github.com/jackc/pgx/v5 v5.5.5
 	github.com/oschwald/maxminddb-golang v1.12.0
-	github.com/pelletier/go-toml/v2 v2.2.0
+	github.com/pelletier/go-toml/v2 v2.2.1
 	github.com/pressly/goose/v3 v3.19.2
 	github.com/rs/zerolog v1.32.0
 	github.com/spf13/cobra v1.8.0
