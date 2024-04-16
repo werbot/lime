@@ -21,7 +21,7 @@
             <Badge name="admin" color="indigo" />
           </td>
           <td :class="{ 'text-red-500': !drawer.data.customer.status }" v-else>
-            <router-link active-class="current" :to="{ name: 'admin-customer-description', params: { customer_slug: drawer.data.customer.id } }">
+            <router-link @click="closeDrawer()" :to="{ name: 'admin-customer-description', params: { customer_slug: drawer.data.customer.id } }">
               {{ drawer.data.customer.email }}
             </router-link>
           </td>

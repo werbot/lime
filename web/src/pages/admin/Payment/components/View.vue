@@ -15,15 +15,35 @@
           <td>Customer</td>
           <td>
             <span class="dot mr-2" :class="drawer.data.customer.status ? 'bg-green-500' : 'bg-red-500'"></span>
-            <router-link active-class="current" :to="{ name: 'admin-customer-description', params: { customer_slug: drawer.data.customer.id } }">
+            <router-link @click="closeDrawer()" :to="{ name: 'admin-customer-description', params: { customer_slug: drawer.data.customer.id } }">
               {{ drawer.data.customer.email }}
             </router-link>
           </td>
         </tr>
         <tr>
-          <td>Pattern</td>
+          <td>License</td>
           <td>
-            <router-link active-class="current" :to="{ name: 'admin-pattern-description', params: { pattern_slug: drawer.data.pattern.id } }">
+            <div v-if="drawer.data.transaction.status === 1 && drawer.data.pattern.licenses.total === 0" class="relative inline-flex">
+              <SvgIcon name="ticket" class="text-red-500 mr-2" /> Issue a license
+            </div>
+            <div v-else-if="drawer.data.transaction.status === 1 && drawer.data.pattern.licenses.total > 0" class="flex flex-col">
+              <div v-for="license in drawer.data.pattern.licenses.licenses" :key="license.id" class="inline-flex">
+                <SvgIcon name="ticket" class="mr-2" :class="license.status ? 'text-green-500' : 'text-red-500'" />
+                <router-link @click="closeDrawer()" :to="{ name: 'admin-license-description', params: { license_slug: license.id } }">
+                  {{ license.id }}
+                </router-link>
+              </div>
+            </div>
+            <div v-else class="relative inline-flex">
+              <SvgIcon name="ticket" class="text-gray-200 mr-2" /> It's impossible to issue a license.
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>Pattern</td>
+          <td class="inline-flex">
+            <SvgIcon name="pattern" class="mr-2" />
+            <router-link @click="closeDrawer()" :to="{ name: 'admin-pattern-description', params: { pattern_slug: drawer.data.pattern.id } }">
               {{ drawer.data.pattern.name }}
             </router-link>
           </td>
@@ -78,7 +98,7 @@
 <script setup lang="ts">
 import { inject } from 'vue';
 import { termObj, currencyObj, paymentProvidersObj, formatDate, priceFormat, paymentStatusObj } from "@/utils";
-import { Skeleton, Badge } from "@/components";
+import { Skeleton, Badge, SvgIcon } from "@/components";
 
 const openDrawerEdit = inject("openDrawerEdit") as Function;
 const closeDrawer = inject('closeDrawer') as Function;

@@ -11,13 +11,13 @@ require (
 	github.com/golang-jwt/jwt/v5 v5.2.1
 	github.com/jackc/pgx/v5 v5.5.5
 	github.com/oschwald/maxminddb-golang v1.12.0
-	github.com/pelletier/go-toml/v2 v2.2.0
+	github.com/pelletier/go-toml/v2 v2.2.1
 	github.com/pressly/goose/v3 v3.19.2
 	github.com/rs/zerolog v1.32.0
 	github.com/spf13/cobra v1.8.0
 	github.com/xhit/go-simple-mail/v2 v2.16.0
 	golang.org/x/crypto v0.22.0
-	modernc.org/sqlite v1.29.6
+	modernc.org/sqlite v1.29.7
 )
 
 require (

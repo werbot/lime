@@ -34,7 +34,7 @@ type Payment struct {
 	Core
 	Customer    *Customer    `json:"customer"`
 	Pattern     *Pattern     `json:"pattern"`
-	Transaction *Transaction `json:"transaction"`
+	Transaction *Transaction `json:"transaction,omitempty"`
 }
 
 // Validate is ...

@@ -121,6 +121,21 @@ func (q *PaymentsQueries) Payment(ctx context.Context, id string) (*models.Payme
 			"customer"."status"     AS "customer_status",
 			"payment"."provider",
 			"payment"."status",
+			(
+				SELECT
+					json_agg(
+						json_build_object(
+							'id',
+							"license"."id",
+							'status',
+							"license"."status"
+						)
+					)
+				FROM
+					"license"
+				WHERE
+					"payment_id" = "payment"."id"
+			) AS "list_licenses",
 			"payment"."metadata",
 			"payment"."created_at",
 			"payment"."updated_at"
@@ -133,8 +148,10 @@ func (q *PaymentsQueries) Payment(ctx context.Context, id string) (*models.Payme
 	`
 
 	var metadata sql.NullString
+	var licenseJSON sql.NullString
 	payment := &models.Payment{}
 	pattern := &models.Pattern{}
+	licenses := &models.Licenses{}
 	customer := &models.Customer{}
 	transaction := &models.Transaction{}
 
@@ -151,6 +168,7 @@ func (q *PaymentsQueries) Payment(ctx context.Context, id string) (*models.Payme
 			&customer.Status,
 			&transaction.Provider,
 			&transaction.Status,
+			&licenseJSON,
 			&metadata,
 			&payment.Created,
 			&payment.Updated,
@@ -162,8 +180,15 @@ func (q *PaymentsQueries) Payment(ctx context.Context, id string) (*models.Payme
 		return nil, err
 	}
 
-	payment.Pattern = pattern
 	payment.Customer = customer
+	payment.Pattern = pattern
+	if licenseJSON.Valid {
+		var licensesTMP []*models.License
+		json.Unmarshal([]byte(licenseJSON.String), &licensesTMP)
+		licenses.Licenses = licensesTMP
+		licenses.Total = len(licensesTMP)
+	}
+	payment.Pattern.Licenses = licenses
 
 	if metadata.Valid {
 		var meta models.Metadata

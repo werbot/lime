@@ -23,19 +23,28 @@
           <td>{{ formatDate(drawer.data.updated) }}</td>
         </tr>
         <tr>
+          <td>Payment</td>
+          <td class="inline-flex">
+            <SvgIcon name="banknotes" class="mr-2" />
+            <router-link @click="closeDrawer()" :to="{ name: 'admin-payment-description', params: { payment_slug: drawer.data.payment.id } }">
+              {{ drawer.data.payment.id }}
+            </router-link>
+          </td>
+        </tr>
+        <tr>
           <td>Customer</td>
-          <td>
-            <span class="dot mr-2" :class="drawer.data.customer.status ? 'bg-green-500' : 'bg-red-500'"></span>
-            <router-link active-class="current" :to="{ name: 'admin-customer-description', params: { customer_slug: drawer.data.customer.id } }">
-              {{ drawer.data.customer.email }}
+          <td class="inline-flex">
+            <SvgIcon name="users" :class="drawer.data.payment.customer.status ? 'text-green-500' : 'text-red-500'" class="mr-2" />
+            <router-link @click="closeDrawer()" :to="{ name: 'admin-customer-description', params: { customer_slug: drawer.data.payment.customer.id } }">
+              {{ drawer.data.payment.customer.email }}
             </router-link>
           </td>
         </tr>
         <tr>
           <td>Pattern</td>
           <td>
-            <router-link active-class="current" :to="{ name: 'admin-pattern-description', params: { pattern_slug: drawer.data.pattern.id } }">
-              {{ drawer.data.pattern.name }}
+            <router-link @click="closeDrawer()" :to="{ name: 'admin-pattern-description', params: { pattern_slug: drawer.data.payment.pattern.id } }">
+              {{ drawer.data.payment.pattern.name }}
             </router-link>
           </td>
         </tr>
@@ -43,7 +52,7 @@
           <td>Limits</td>
           <td class="!p-0">
             <table class="mini">
-              <tr v-for="(value, key, index) in drawer.data.pattern.limit" :key="index">
+              <tr v-for="(value, key, index) in drawer.data.payment.pattern.limit" :key="index">
                 <td>{{ key }}</td>
                 <td>{{ value }}</td>
               </tr>
@@ -52,12 +61,12 @@
         </tr>
         <tr>
           <td>Price</td>
-          <td>{{ priceFormat(drawer.data.pattern.price) }} {{ currencyObj[drawer.data.pattern.currency - 1].name }}</td>
+          <td>{{ priceFormat(drawer.data.payment.pattern.price) }} {{ currencyObj[drawer.data.payment.pattern.currency - 1].name }}</td>
         </tr>
         <tr>
           <td>Term</td>
           <td>
-            <Badge :name="termObj[drawer.data.pattern.term - 1].name" :color="termObj[drawer.data.pattern.term - 1].color" />
+            <Badge :name="termObj[drawer.data.payment.pattern.term - 1].name" :color="termObj[drawer.data.payment.pattern.term - 1].color" />
           </td>
         </tr>
         <tr>
@@ -83,7 +92,7 @@
 
 <script setup lang="ts">
 import { inject } from 'vue';
-import { Skeleton, Badge } from "@/components";
+import { SvgIcon, Skeleton, Badge } from "@/components";
 import { termObj, currencyObj, priceFormat, formatDate } from "@/utils";
 
 const openDrawerEdit = inject("openDrawerEdit") as Function;

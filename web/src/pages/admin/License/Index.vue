@@ -28,12 +28,12 @@
               <span class="dot" :class="item.status ? 'bg-green-500' : 'bg-red-500'"></span>
             </div>
           </td>
-          <td @click="openDrawerView(item.id)" :class="{ 'text-red-500': !item.customer.status }">{{ item.customer.email }}</td>
-          <td @click="openDrawerView(item.id)">{{ item.pattern.name }}</td>
+          <td @click="openDrawerView(item.id)" :class="{ 'text-red-500': !item.payment.customer.status }">{{ item.payment.customer.email }}</td>
+          <td @click="openDrawerView(item.id)">{{ item.payment.pattern.name }}</td>
           <td @click="openDrawerView(item.id)">
-            <Badge :name="termObj[item.pattern.term - 1].name" :color="termObj[item.pattern.term - 1].color" />
+            <Badge :name="termObj[item.payment.pattern.term - 1].name" :color="termObj[item.payment.pattern.term - 1].color" />
           </td>
-          <td @click="openDrawerView(item.id)">{{ priceFormat(item.pattern.price) }} {{ currencyObj[item.pattern.currency - 1].name }}</td>
+          <td @click="openDrawerView(item.id)">{{ priceFormat(item.payment.pattern.price) }} {{ currencyObj[item.payment.pattern.currency - 1].name }}</td>
           <td @click="openDrawerView(item.id)">{{ formatDate(item.created) }}</td>
           <td>
             <div class="flex">

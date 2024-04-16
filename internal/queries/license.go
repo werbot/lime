@@ -74,28 +74,29 @@ func (q *LicenseQueries) Licenses(ctx context.Context, pagination *webutil.Pagin
 
 	for rows.Next() {
 		license := models.License{}
-		customer := models.Customer{}
-		pattern := models.Pattern{}
+		payment := models.Payment{
+			Customer: &models.Customer{},
+			Pattern:  &models.Pattern{},
+		}
 		err := rows.Scan(
 			&license.ID,
 			&license.Status,
 			&license.Created,
 			&license.Updated,
-			&customer.ID,
-			&customer.Email,
-			&customer.Status,
-			&pattern.Name,
-			&pattern.ID,
-			&pattern.Term,
-			&pattern.Price,
-			&pattern.Currency,
+			&payment.Customer.ID,
+			&payment.Customer.Email,
+			&payment.Customer.Status,
+			&payment.Pattern.Name,
+			&payment.Pattern.ID,
+			&payment.Pattern.Term,
+			&payment.Pattern.Price,
+			&payment.Pattern.Currency,
 		)
 		if err != nil {
 			return nil, err
 		}
 
-		license.Pattern = &pattern
-		license.Customer = &customer
+		license.Payment = &payment
 		response.Licenses = append(response.Licenses, &license)
 	}
 
@@ -116,6 +117,7 @@ func (q *LicenseQueries) License(ctx context.Context, id string, customerID stri
 			"license"."status",
 			"license"."created_at",
 			"license"."updated_at",
+			"payment"."id",
 			"payment"."customer_id",
 			"customer"."status"     AS "customer_status",
 			"customer"."email"      AS "customer_email",
@@ -140,24 +142,27 @@ func (q *LicenseQueries) License(ctx context.Context, id string, customerID stri
 
 	var limit sql.NullString
 	license := &models.License{}
-	customer := &models.Customer{}
-	pattern := &models.Pattern{}
+	payment := &models.Payment{
+		Customer: &models.Customer{},
+		Pattern:  &models.Pattern{},
+	}
 	err := q.DB.QueryRowContext(ctx, query, request[1]).
 		Scan(
 			&license.ID,
 			&license.Status,
 			&license.Created,
 			&license.Updated,
-			&customer.ID,
-			&customer.Status,
-			&customer.Email,
+			&payment.ID,
+			&payment.Customer.ID,
+			&payment.Customer.Status,
+			&payment.Customer.Email,
 			&license.Hash,
-			&pattern.Name,
-			&pattern.ID,
+			&payment.Pattern.Name,
+			&payment.Pattern.ID,
 			&limit,
-			&pattern.Term,
-			&pattern.Price,
-			&pattern.Currency,
+			&payment.Pattern.Term,
+			&payment.Pattern.Price,
+			&payment.Pattern.Currency,
 		)
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -169,11 +174,10 @@ func (q *LicenseQueries) License(ctx context.Context, id string, customerID stri
 	if limit.Valid {
 		var meta *models.Metadata
 		json.Unmarshal([]byte(limit.String), &meta)
-		pattern.Limit = meta
+		payment.Pattern.Limit = meta
 	}
 
-	license.Pattern = pattern
-	license.Customer = customer
+	license.Payment = payment
 
 	return license, nil
 }

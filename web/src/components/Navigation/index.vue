@@ -2,7 +2,7 @@
   <nav class="sidebar">
     <ul>
       <li v-for="(item) in mainMenu()">
-        <router-link active-class="current" :to="item.link" :class="{ current: (route.name as string).startsWith(item.link.name) }">
+        <router-link :to="item.link" :class="{ current: (route.name as string).startsWith(item.link.name) }">
           <SvgIcon :name="item.icon" />
           <span>{{ item.name }}</span>
         </router-link>

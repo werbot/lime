@@ -37,18 +37,9 @@
           </td>
           <td>
             <div class="flex">
-              <div class="pr-3">
+              <div>
                 <SvgIcon name="pencil-square" @click="openDrawerEdit(item.id)" />
               </div>
-              <div v-if="item.transaction.status === 1 && item.pattern.licenses.total === 0">
-                <SvgIcon name="ticket" class="text-red-500" @click="createLicense(item.id)" />
-              </div>
-              <div v-else-if="item.transaction.status === 1 && item.pattern.licenses.total > 0">
-                <SvgIcon name="ticket" class="text-green-500" />
-              </div>
-              <div v-else>
-                <SvgIcon name="ticket" class="text-gray-200" />
-              </div> 
             </div>
           </td>
         </tr>
@@ -86,8 +77,8 @@ const route = useRoute();
 
 onMounted(() => {
   getPayments(route.query);
-  if (route.params.customer_slug) {
-    openDrawerView(<string>route.params.customer_slug)
+  if (route.params.payment_slug) {
+    openDrawerView(<string>route.params.payment_slug)
   }
 });
 
