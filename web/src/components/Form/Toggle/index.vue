@@ -1,8 +1,9 @@
 <template>
-  <label :for="`toggle_` + id" class="toggle">
-    <input type="checkbox" :id="`toggle_` + id" class="peer sr-only" v-model="value" :checked="Boolean(value)" :disabled="disabled" />
+  <label :for="id" class="toggle">
+    <input type="checkbox" :id="id" class="peer sr-only" v-model="value" :checked="Boolean(value)" :disabled="disabled" />
     <div
-      class="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:top-[2px] after:left-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-green-500 peer-checked:after:translate-x-full peer-checked:after:border-white">
+      class="peer h-6 w-11 rounded-full after:absolute after:top-[2px] after:left-[2px] after:h-5 after:w-5 after:rounded-full after:border after:bg-white after:transition-all after:content-[''] peer-checked:after:translate-x-full"
+      :class="color()">
     </div>
     <span v-if="name" class="ml-3 text-sm font-medium">{{ name }}</span>
   </label>
@@ -10,19 +11,31 @@
 
 <script lang="ts" setup>
 import { computed } from "vue";
+import { customAlphabet } from "nanoid";
+
+const nanoid = customAlphabet('1234567890abcdef', 10);
 
 const props = defineProps({
-  name: {
-    type: String,
-  },
   modelValue: {
     required: false,
+  },
+  name: {
+    type: String,
   },
   disabled: {
     type: Boolean,
     default: false,
   },
-  id: {},
+  id: {
+    type: String,
+  },
+  lColor: {
+    type: String,
+  },
+  rColor: {
+    type: String,
+    default: "green",
+  }
 });
 
 const emits = defineEmits(["update:modelValue"]);
@@ -34,6 +47,16 @@ const value = computed({
     emits("update:modelValue", val);
   },
 });
+
+const color = () => {
+  const { rColor, lColor } = props;
+  const rightColor = `peer-checked:bg-${rColor}-500 peer-checked:after:border-${rColor}-600`;
+  const leftColor = lColor ? `bg-${lColor}-500 after:border-${lColor}-600` : "bg-gray-200 after:border-gray-300";
+  return `${rightColor} ${leftColor}`;
+}
+
+
+const id = props.id ? props.id : "toggle_" + nanoid();
 </script>
 
 <style lang="scss">

@@ -32,9 +32,7 @@
             <table class="mini">
               <tr v-for="(value, key, index) in drawer.data.limit" :key="index">
                 <td>{{ key }}</td>
-                <td>
-                  <Badge :name="String(value)" />
-                </td>
+                <td><Badge :name="String(value)" /></td>
               </tr>
             </table>
           </td>

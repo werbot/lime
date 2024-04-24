@@ -131,7 +131,7 @@ const onSubmit = async () => {
     const res = await apiPost(`/_/api/payment`, {}, addData);
     if (res.code === 200) {
       getPayments(route.query);
-      //closeDrawer();
+      closeDrawer();
     }
   } catch (error) {
     console.error("Error fetching sign data:", error);

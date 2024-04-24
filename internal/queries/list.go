@@ -12,6 +12,8 @@ type ListQueries struct {
 	*sql.DB
 }
 
+//  TODO remove this constructions !!!!
+
 // ListPatterns is ...
 func (q *ListQueries) ListPatterns(ctx context.Context) (*models.Patterns, error) {
 	query := `
@@ -100,6 +102,51 @@ func (q *ListQueries) ListCustomers(ctx context.Context) (*models.Customers, err
 	query = `SELECT COUNT(DISTINCT customer.id) FROM customer`
 	err = q.DB.QueryRowContext(ctx, query).Scan(&response.Total)
 	if err != nil && err != sql.ErrNoRows {
+		return nil, err
+	}
+
+	return response, nil
+}
+
+// ListCountries is ...
+func (q *ListQueries) ListCountries(ctx context.Context, name string) ([]models.SettingName, error) {
+	query := `
+		SELECT
+			"code",
+			"name"
+		FROM
+			"country"
+		WHERE
+			LOWER("name") LIKE LOWER($1)
+		ORDER BY
+			"name" ASC
+		LIMIT
+			15
+		OFFSET
+			0
+	`
+
+	rows, err := q.DB.QueryContext(ctx, query, name+"%")
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	response := []models.SettingName{}
+	for rows.Next() {
+		country := models.SettingName{}
+		err := rows.Scan(
+			&country.Key,
+			&country.Value,
+		)
+		if err != nil {
+			return nil, err
+		}
+
+		response = append(response, country)
+	}
+
+	if err := rows.Err(); err != nil {
 		return nil, err
 	}
 

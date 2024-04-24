@@ -1,17 +1,11 @@
 package handlers
 
 import (
-	"path/filepath"
-	"time"
-
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/utils"
 
-	"github.com/werbot/lime/internal/config"
 	"github.com/werbot/lime/internal/errors"
+	"github.com/werbot/lime/internal/models"
 	"github.com/werbot/lime/internal/queries"
-	"github.com/werbot/lime/pkg/fsutil"
-	"github.com/werbot/lime/pkg/license"
 	"github.com/werbot/lime/pkg/logging"
 	"github.com/werbot/lime/pkg/webutil"
 )
@@ -55,46 +49,29 @@ func License(c *fiber.Ctx) error {
 	return webutil.StatusOK(c, "License info", license)
 }
 
-// NewLicense is a ...
+// AddLicense is a ...
 // @Accept application/json
 // @Produce application/json
 // @Param
 // @Success 200 {string} string "{"status":"200", "msg":""}"
 // @Router /_/api/license [post]
-func NewLicense(c *fiber.Ctx) error {
-	cfg := config.Data()
+func AddLicense(c *fiber.Ctx) error {
+	log := logging.New()
+	// cfg := config.Data()
 
-	month := time.Hour * 24 * 31
-
-	licenseInfo := &license.License{
-		IssuedBy:     "customer.Name",
-		CustomerID:   "subscription.StripeID",
-		SubscriberID: 123,
-		Type:         "tariff.Name",
-		Limit: []license.Limits{
-			{
-				Key:   "key1",
-				Value: "value1",
-			},
-			{
-				Key:   "key2",
-				Value: "value2",
-			},
-		},
-		Metadata:  []byte(`{"message": "test message"}`),
-		ExpiresAt: time.Now().UTC().Add(month),
-		IssuedAt:  time.Now().UTC(),
+	request := &models.Payment{}
+	if err := c.BodyParser(request); err != nil {
+		log.ErrorStack(err)
+		return webutil.StatusBadRequest(c, err.Error())
 	}
 
-	privKey := fsutil.MustReadFile(filepath.Join(cfg.Keys.KeyDir, cfg.Keys.License.PrivateKey))
-	licenseKey := license.DecodePrivateKey(privKey)
-
-	encoded, err := licenseInfo.Encode(licenseKey)
+	err := queries.DB().AddLicense(c.Context(), request)
 	if err != nil {
-		return webutil.StatusNotFound(c, utils.StatusMessage(fiber.StatusNotFound))
+		log.ErrorStack(err)
+		return webutil.StatusInternalServerError(c, nil)
 	}
 
-	return webutil.StatusOK(c, "Create license", string(encoded))
+	return webutil.StatusOK(c, "Create license", nil)
 }
 
 // UpdateLicense is a ...

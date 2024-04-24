@@ -15,9 +15,11 @@ const (
 
 	MsgSettingNotFound = "setting record not found"
 
-	MsgLicenseNotFound = "license not found"
 	MsgPaymentNotFound = "payment record not found"
 	MsgAuditNotFound   = "audit record not found"
+
+	MsgLicenseNotFound        = "license not found"
+	MsgLicenseLinkedToPayment = "license is already linked to this payment"
 
 	MsgPatternNotFound   = "pattern not found"
 	MsgPatternNotDeleted = "pattern cannot be deleted because there are associated licenses"
@@ -38,9 +40,11 @@ var (
 	// ErrTokenIsInvalid           = errors.New(MsgTokenIsInvalid)
 
 	ErrSettingNotFound = errors.New(MsgSettingNotFound)
-	ErrLicenseNotFound = errors.New(MsgLicenseNotFound)
 	ErrPaymentNotFound = errors.New(MsgPaymentNotFound)
 	ErrAuditNotFound   = errors.New(MsgAuditNotFound)
+
+	ErrLicenseNotFound        = errors.New(MsgLicenseNotFound)
+	ErrLicenseLinkedToPayment = errors.New(MsgLicenseLinkedToPayment)
 
 	ErrPatternNotFound   = errors.New(MsgPatternNotFound)
 	ErrPatternNotDeleted = errors.New(MsgPatternNotDeleted)

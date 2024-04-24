@@ -1,5 +1,11 @@
 -- +goose Up
 -- +goose StatementBegin
+CREATE TABLE "public"."country" (
+    "code" varchar(2) NOT NULL,
+    "name" varchar(128) NOT NULL,
+    PRIMARY KEY ("code")
+);
+
 CREATE TABLE "audit" (
   "id" varchar(15) PRIMARY KEY NOT NULL,
   "section" varchar(1) NOT NULL,
@@ -62,6 +68,7 @@ CREATE TABLE "payment" (
   "provider" varchar(1) NOT NULL,
   "status" varchar(1) NOT NULL,
   "metadata" json DEFAULT '{}' NOT NULL,
+  "payment_at" timestamp,
   "updated_at" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   "created_at" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY ("pattern_id") REFERENCES "pattern"("id") ON UPDATE CASCADE ON DELETE CASCADE,
@@ -75,7 +82,9 @@ CREATE TABLE "license" (
   "id" varchar(15) PRIMARY KEY NOT NULL,
   "payment_id" varchar(15) NOT NULL,
   "hash" varchar(32) NOT NULL,
+  "data" text NOT NULL,
   "status" bool NOT NULL DEFAULT true,
+  "check" json DEFAULT '{}' NOT NULL,
   "metadata" json DEFAULT '{}' NOT NULL,
   "updated_at" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   "created_at" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -93,4 +102,5 @@ DROP TABLE IF EXISTS "pattern";
 DROP TABLE IF EXISTS "customer";
 DROP TABLE IF EXISTS "setting";
 DROP TABLE IF EXISTS "audit";
+DROP TABLE IF EXISTS "country";
 -- +goose StatementEnd

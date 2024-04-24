@@ -106,6 +106,68 @@ func (q *PaymentsQueries) Payments(ctx context.Context, pagination *webutil.Pagi
 	return response, nil
 }
 
+// PaymentsNoLicense is ...
+func (q *PaymentsQueries) PaymentsNoLicense(ctx context.Context) (*models.Payments, error) {
+	query := `
+		SELECT
+			"payment"."id",
+			"pattern"."id"         AS "pattern_id",
+			"pattern"."name"       AS "pattern_name",
+			"customer"."id"        AS "customer_id",
+			"customer"."email"     AS "customer_email"
+		FROM
+			"payment"
+			LEFT JOIN "customer" ON "payment"."customer_id" = "customer"."id"
+			LEFT JOIN "pattern" ON "payment"."pattern_id" = "pattern"."id"
+		WHERE
+			"customer"."status" = TRUE
+			AND "payment"."status" = '1'
+			AND (
+				SELECT
+					COUNT(*)
+				FROM
+					"license"
+				WHERE
+					"payment_id" = "payment"."id"
+			) = 0
+	`
+
+	rows, err := q.DB.QueryContext(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	response := &models.Payments{}
+	for rows.Next() {
+		payment := &models.Payment{}
+		pattern := &models.Pattern{}
+		customer := &models.Customer{}
+		err := rows.Scan(
+			&payment.ID,
+			&pattern.ID,
+			&pattern.Name,
+			&customer.ID,
+			&customer.Email,
+		)
+		if err != nil {
+			return nil, err
+		}
+
+		payment.Pattern = pattern
+		payment.Customer = customer
+		response.Payments = append(response.Payments, payment)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	response.Total = len(response.Payments)
+
+	return response, nil
+}
+
 // Payment is ...
 func (q *PaymentsQueries) Payment(ctx context.Context, id string) (*models.Payment, error) {
 	query := `
@@ -116,6 +178,7 @@ func (q *PaymentsQueries) Payment(ctx context.Context, id string) (*models.Payme
 			"pattern"."term"        AS "pattern_term",
 			"pattern"."price"       AS "pattern_price",
 			"pattern"."currency"    AS "pattern_currency",
+			"pattern"."limit"       AS "pattern_limit",
 			"payment"."customer_id",
 			"customer"."email"      AS "customer_email",
 			"customer"."status"     AS "customer_status",
@@ -137,6 +200,7 @@ func (q *PaymentsQueries) Payment(ctx context.Context, id string) (*models.Payme
 					"payment_id" = "payment"."id"
 			) AS "list_licenses",
 			"payment"."metadata",
+			"payment"."payment_at",
 			"payment"."created_at",
 			"payment"."updated_at"
 		FROM
@@ -147,8 +211,10 @@ func (q *PaymentsQueries) Payment(ctx context.Context, id string) (*models.Payme
 			"payment"."id" = $1
 	`
 
+	var limit sql.NullString
 	var metadata sql.NullString
 	var licenseJSON sql.NullString
+	var paymentAt sql.NullTime
 	payment := &models.Payment{}
 	pattern := &models.Pattern{}
 	licenses := &models.Licenses{}
@@ -163,6 +229,7 @@ func (q *PaymentsQueries) Payment(ctx context.Context, id string) (*models.Payme
 			&pattern.Term,
 			&pattern.Price,
 			&pattern.Currency,
+			&limit,
 			&customer.ID,
 			&customer.Email,
 			&customer.Status,
@@ -170,6 +237,7 @@ func (q *PaymentsQueries) Payment(ctx context.Context, id string) (*models.Payme
 			&transaction.Status,
 			&licenseJSON,
 			&metadata,
+			&paymentAt,
 			&payment.Created,
 			&payment.Updated,
 		)
@@ -190,11 +258,22 @@ func (q *PaymentsQueries) Payment(ctx context.Context, id string) (*models.Payme
 	}
 	payment.Pattern.Licenses = licenses
 
+	if limit.Valid {
+		var meta *models.Metadata
+		json.Unmarshal([]byte(limit.String), &meta)
+		payment.Pattern.Limit = meta
+	}
+
 	if metadata.Valid {
 		var meta models.Metadata
 		json.Unmarshal([]byte(metadata.String), &meta)
 		transaction.Meta = meta
 	}
+
+	if paymentAt.Valid {
+		transaction.Payment = &paymentAt.Time
+	}
+
 	payment.Transaction = transaction
 
 	return payment, nil
@@ -210,12 +289,12 @@ func (q *PaymentsQueries) AddPayment(ctx context.Context, payment *models.Paymen
 				"customer_id",
 				"provider",
 				"status",
-				"metadata"
+				"metadata",
+				"payment_at"
 			)
 		VALUES
-			($1, $2, $3, $4, $5, $6)
+			($1, $2, $3, $4, $5, $6, CASE WHEN $7 = 1 THEN CURRENT_TIMESTAMP ELSE NULL END)
 	`
-
 	_, err := q.DB.ExecContext(ctx, query,
 		security.NanoID(),
 		payment.Pattern.ID,
@@ -223,6 +302,7 @@ func (q *PaymentsQueries) AddPayment(ctx context.Context, payment *models.Paymen
 		strconv.Itoa(int(payment.Transaction.Provider)),
 		strconv.Itoa(int(payment.Transaction.Status)),
 		payment.Transaction.Meta,
+		payment.Transaction.Status,
 	)
 
 	return err
@@ -240,6 +320,7 @@ func (q *PaymentsQueries) UpdatePayment(ctx context.Context, payment *models.Pay
 		SET
 			"status" = $2,
 			"metadata" = $3,
+			"payment_at" = CASE WHEN $4 = 1 THEN CURRENT_TIMESTAMP ELSE "payment_at" END,
 			"updated_at" = CURRENT_TIMESTAMP
 		WHERE
 			"id" = $1
@@ -249,6 +330,7 @@ func (q *PaymentsQueries) UpdatePayment(ctx context.Context, payment *models.Pay
 		payment.ID,
 		strconv.Itoa(int(payment.Transaction.Status)),
 		meta,
+		payment.Transaction.Status,
 	)
 
 	return err

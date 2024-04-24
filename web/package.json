@@ -12,11 +12,13 @@
   "dependencies": {
     "@vee-validate/rules": "^4.12.6",
     "@vueuse/core": "^10.9.0",
+    "ip-address": "^9.0.5",
+    "nanoid": "5",
     "notiwind": "^2.0.2",
     "nprogress": "^0.2.0",
     "pinia": "^2.1.7",
     "vee-validate": "^4.12.6",
-    "vue": "^3.4.22",
+    "vue": "^3.4.25",
     "vue-router": "4"
   },
   "devDependencies": {
@@ -29,15 +31,15 @@
     "npm-run-all2": "^6.1.2",
     "postcss": "^8.4.38",
     "postcss-import": "^16.1.0",
-    "postcss-nesting": "^12.1.1",
+    "postcss-nesting": "^12.1.2",
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.5.14",
     "sass": "^1.75.0",
     "tailwindcss": "^3.4.3",
     "typescript": "~5.4.5",
-    "vite": "^5.2.9",
+    "vite": "^5.2.10",
     "vite-plugin-svg-icons": "^2.0.1",
     "vite-plugin-webfont-dl": "^3.9.3",
-    "vue-tsc": "^2.0.13"
+    "vue-tsc": "^2.0.14"
   }
 }

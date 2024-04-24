@@ -54,7 +54,7 @@
             <table class="mini">
               <tr v-for="(value, key, index) in drawer.data.payment.pattern.limit" :key="index">
                 <td>{{ key }}</td>
-                <td>{{ value }}</td>
+                <td><Badge :name="String(value)" /></td>
               </tr>
             </table>
           </td>
@@ -73,6 +73,10 @@
           <td>Hash</td>
           <td>{{ drawer.data.hash }}</td>
         </tr>
+        <tr>
+          <td>License</td>
+          <td>{{ drawer.data.data }}</td>
+        </tr>
       </table>
     </div>
 
@@ -82,9 +86,6 @@
           <div class="btn cursor-pointer" @click="closeDrawer()">Close</div>
         </div>
         <div class="grow"></div>
-        <div class="flex-none">
-          <div class="btn btn-green cursor-pointer" @click="openDrawerEdit(drawer.data.id)">Edit</div>
-        </div>
       </div>
     </div>
   </div>
@@ -95,7 +96,6 @@ import { inject } from 'vue';
 import { SvgIcon, Skeleton, Badge } from "@/components";
 import { termObj, currencyObj, priceFormat, formatDate } from "@/utils";
 
-const openDrawerEdit = inject("openDrawerEdit") as Function;
 const closeDrawer = inject('closeDrawer') as Function;
 
 defineProps({

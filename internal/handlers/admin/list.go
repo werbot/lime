@@ -43,3 +43,21 @@ func ListCustomers(c *fiber.Ctx) error {
 
 	return webutil.StatusOK(c, "Customers", customers)
 }
+
+// ListCountries is a ...
+// @accept application/json
+// @Produce application/json
+// @Param
+// @Success 200 {string} string "{"status":"200", "msg":""}"
+// @Router /_/api/list/countries/:country [get]
+func ListCountries(c *fiber.Ctx) error {
+	log := logging.New()
+
+	countries, err := queries.DB().ListCountries(c.Context(), c.Params("country"))
+	if err != nil {
+		log.ErrorStack(err)
+		return webutil.StatusInternalServerError(c, nil)
+	}
+
+	return webutil.StatusOK(c, "Countries", countries)
+}

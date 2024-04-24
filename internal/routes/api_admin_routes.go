@@ -17,7 +17,7 @@ func ApiAdminRoutes(c *fiber.App) {
 
 	license := api.Group("/license", middleware.JWTProtected("admin"))
 	license.Get("/", handlers.Licenses)
-	license.Post("/", handlers.NewLicense)
+	license.Post("/", handlers.AddLicense)
 	license.Get(`/:id<regex((lic_|cst_)\w{15})>`, handlers.License)
 	license.Patch(`/:id<regex(\w{15})>`, handlers.UpdateLicense)
 
@@ -37,7 +37,7 @@ func ApiAdminRoutes(c *fiber.App) {
 	customer.Delete(`/:id<regex(\w{15})>`, handlers.DeleteCustomer)
 
 	payment := api.Group("/payment", middleware.JWTProtected("admin"))
-	payment.Get("/", handlers.Payments)
+	payment.Get(`/:filter<regex(^(no_lic|all)$)>?`, handlers.Payments)
 	payment.Post("/", handlers.AddPayment)
 	payment.Get(`/:id<regex(\w{15})>`, handlers.Payment)
 	payment.Patch(`/:id<regex(\w{15})>`, handlers.UpdatePayment)
@@ -47,8 +47,9 @@ func ApiAdminRoutes(c *fiber.App) {
 	audit.Get(`/:id<regex(\w{15})>`, handlers.Audit)
 
 	list := api.Group("/list", middleware.JWTProtected("admin"))
-	list.Get("/patterns/:name?", handlers.ListPatterns)
-	list.Get("/customers/:name?", handlers.ListCustomers)
+	list.Get("/patterns/:pattern?", handlers.ListPatterns)
+	list.Get("/customers/:customer?", handlers.ListCustomers)
+	list.Get("/countries/:country", handlers.ListCountries)
 
 	setting := api.Group("/setting", middleware.JWTProtected("admin"))
 	setting.Get("/:group", handlers.SettingGroup)

@@ -22,7 +22,7 @@ var (
 type License struct {
 	IssuedBy     string          `json:"iss,omitempty"`
 	CustomerID   string          `json:"cus,omitempty"`
-	SubscriberID uint32          `json:"sub,omitempty"`
+	SubscriberID string          `json:"sub,omitempty"`
 	Type         string          `json:"typ,omitempty"`
 	Limit        []Limits        `json:"lim,omitempty"`
 	IssuedAt     time.Time       `json:"iat,omitempty"`
@@ -33,7 +33,7 @@ type License struct {
 // Limits is ...
 type Limits struct {
 	Key   string `json:"key"`
-	Value string `json:"value"`
+	Value int    `json:"value"`
 }
 
 // Expired is a ...

@@ -38,32 +38,32 @@ INSERT INTO "pattern" ("id", "name", "limit", "price", "currency", "term", "priv
 ('4lLLn3F2Ggfc6Q4', 'pattern 9', '{"servers":99,"companies":20,"users":20}', 99000, 2, 5, 't', 'f', '{"ip":false,"mac":true,"country":true}'),
 ('ReU41LFrf2El76u', 'pattern 10', '{"servers":1000,"companies":99,"users":20}', 12010, 2, 5, 'f', 't', '{"ip":true,"mac":true,"country":false}');
 
-INSERT INTO "payment" ("id", "pattern_id", "customer_id", "provider", "status", "metadata") VALUES 
-('A0sB9XpSx0P65ab', '4dDADaT1t0m71Md', '7v38n58hXHVsNxS', 2, 1, '{"stripe_id":"cus_APBaLDeqQoVy8m"}'),
-('qa4AAQmaMn00N65', 't7Kl9LT44Xki3Ix', '8Rz96VZEeHrv1h2', 2, 1, '{"stripe_id":"cus_APBaLDeqQoVy7m"}'),
-('5OkK93H3I2Yyhio', '0BDbBZ10d3Jb9jz', 'bkS4BCcQqK01s67', 2, 1, '{"stripe_id":"cus_APBaLDeqQoVy6m"}'),
-('E1gG8gw26rR2eGW', 'AFQG1faC02qc2g6', '8Uul6gGZ49P2pzL', 2, 2, '{"stripe_id":"cus_APBaLDeqQoVy5m"}'),
-('Nv8851QD6dnWVwq', 'cX1ACDa81do05xO', 'Y1ycF9Cj0J32fdD', 2, 1, '{"stripe_id":"cus_APBaLDeqQoVy4m"}'),
-('4AkwFd0KD12aW8f', '4dDADaT1t0m71Md', 'u5O57U8r6nNRXxo', 2, 1, '{"stripe_id":"cus_APBaLDeqQoVy3m"}'),
-('Hve8AaEo5O0hV21', 't7Kl9LT44Xki3Ix', 'm1MeQvVE63q84jJ', 2, 1, '{"stripe_id":"cus_APBaLDeqQoVy2m"}'),
-('4klLY5O489xyKXo', 't7Kl9LT44Xki3Ix', '674wsKSt8DdTWk1', 2, 1, '{"stripe_id":"cus_APBaLDeqQoVy1m"}'),
-('l63siQ4LI9Xx7Sq', 't7Kl9LT44Xki3Ix', '4lLLn3N5jUu74lJ', 2, 2, '{"stripe_id":"cus_APBaLDeqQoVy0m"}'),
-('B066SsSRuUrs76b', '4dDADaT1t0m71Md', 'E7sOofi13S2I5eF', 2, 1, '{"stripe_id":"cus_APBaLDeqQoVy9m"}'),
-('FofOoO52oO5H1h5', '4dDADaT1t0m71Md', '2WwO5T58nNto7gG', 2, 1, '{"stripe_id":"cus_APBaLDeqQoVy11"}'),
-('9576nYtyRuN8rUT', '4dDADaT1t0m71Md', '2WwO5T58nNto7gG', 2, 4, '{}');
+INSERT INTO "payment" ("id", "pattern_id", "customer_id", "provider", "status", "metadata", "payment_at") VALUES 
+('A0sB9XpSx0P65ab', '4dDADaT1t0m71Md', '7v38n58hXHVsNxS', 2, 1, '{"stripe_id":"cus_APBaLDeqQoVy8m"}', CURRENT_TIMESTAMP),
+('qa4AAQmaMn00N65', 't7Kl9LT44Xki3Ix', '8Rz96VZEeHrv1h2', 2, 1, '{"stripe_id":"cus_APBaLDeqQoVy7m"}', CURRENT_TIMESTAMP),
+('5OkK93H3I2Yyhio', '0BDbBZ10d3Jb9jz', 'bkS4BCcQqK01s67', 2, 1, '{"stripe_id":"cus_APBaLDeqQoVy6m"}', CURRENT_TIMESTAMP),
+('E1gG8gw26rR2eGW', 'AFQG1faC02qc2g6', '8Uul6gGZ49P2pzL', 2, 2, '{"stripe_id":"cus_APBaLDeqQoVy5m"}', NULL),
+('Nv8851QD6dnWVwq', 'cX1ACDa81do05xO', 'Y1ycF9Cj0J32fdD', 2, 1, '{"stripe_id":"cus_APBaLDeqQoVy4m"}', CURRENT_TIMESTAMP),
+('4AkwFd0KD12aW8f', '4dDADaT1t0m71Md', 'u5O57U8r6nNRXxo', 2, 1, '{"stripe_id":"cus_APBaLDeqQoVy3m"}', CURRENT_TIMESTAMP),
+('Hve8AaEo5O0hV21', 't7Kl9LT44Xki3Ix', 'm1MeQvVE63q84jJ', 2, 1, '{"stripe_id":"cus_APBaLDeqQoVy2m"}', CURRENT_TIMESTAMP),
+('4klLY5O489xyKXo', 't7Kl9LT44Xki3Ix', '674wsKSt8DdTWk1', 2, 1, '{"stripe_id":"cus_APBaLDeqQoVy1m"}', CURRENT_TIMESTAMP),
+('l63siQ4LI9Xx7Sq', 't7Kl9LT44Xki3Ix', '4lLLn3N5jUu74lJ', 2, 2, '{"stripe_id":"cus_APBaLDeqQoVy0m"}', NULL),
+('B066SsSRuUrs76b', '4dDADaT1t0m71Md', 'E7sOofi13S2I5eF', 2, 1, '{"stripe_id":"cus_APBaLDeqQoVy9m"}', CURRENT_TIMESTAMP),
+('FofOoO52oO5H1h5', '4dDADaT1t0m71Md', '2WwO5T58nNto7gG', 2, 1, '{"stripe_id":"cus_APBaLDeqQoVy11"}', CURRENT_TIMESTAMP),
+('9576nYtyRuN8rUT', '4dDADaT1t0m71Md', '2WwO5T58nNto7gG', 2, 4, '{}', NULL);
 
-INSERT INTO "license" ("id", "payment_id", "status", "hash") VALUES 
-('jG2Jg83WLw4Dd1l', 'A0sB9XpSx0P65ab', 't', '81dc9bdb52d04dc20036dbd8313ed055'),
-('4kMV8O54Km7vTto', 'qa4AAQmaMn00N65', 'f', 'c4ca4238a0b923820dcc509a6f75849b'),
-('7OU1SGsc2o7g5uC', '5OkK93H3I2Yyhio', 't', 'c20ad4d76fe97759aa27a0c99bff6710'),
-('aN5As7SnhHN350n', 'E1gG8gw26rR2eGW', 't', '5455f4c3847d506a0be7afb78eb0e618'),
-('45l98Z7LTzpwWPt', 'Nv8851QD6dnWVwq', 't', 'de121459f979a1dafd43ebe02785f0e0'),
-('a7tA9nyY3T0JN5j', '4AkwFd0KD12aW8f', 't', 'a3026b0a6849f749c489cd798654a809'),
-('ju7J9423mgUxXGM', 'Hve8AaEo5O0hV21', 't', 'a7653fad4df83288ed8888663f8ff585'),
-('B36w8WrZzbI9i0R', '4klLY5O489xyKXo', 't', '15de21c670ae7c3f6f3f1f37029303c9'),
-('z2kgL9lGZNK454n', 'l63siQ4LI9Xx7Sq', 't', '386854131f58a556343e056f03626e00'),
-('qeCEmC00c1MQ4c6', 'B066SsSRuUrs76b', 't', '84adae6beecaa29029addfc1371b29f9'),
-('77imoSIM5s3OSs4', '9576nYtyRuN8rUT', 'f', '0a4441b52449ea8b49697438a26be13e');
+INSERT INTO "license" ("id", "payment_id", "status", "hash", "data") VALUES 
+('jG2Jg83WLw4Dd1l', 'A0sB9XpSx0P65ab', 't', '81dc9bdb52d04dc20036dbd8313ed055', ''),
+('4kMV8O54Km7vTto', 'qa4AAQmaMn00N65', 'f', 'c4ca4238a0b923820dcc509a6f75849b', ''),
+('7OU1SGsc2o7g5uC', '5OkK93H3I2Yyhio', 't', 'c20ad4d76fe97759aa27a0c99bff6710', ''),
+('aN5As7SnhHN350n', 'E1gG8gw26rR2eGW', 't', '5455f4c3847d506a0be7afb78eb0e618', ''),
+('45l98Z7LTzpwWPt', 'Nv8851QD6dnWVwq', 't', 'de121459f979a1dafd43ebe02785f0e0', ''),
+('a7tA9nyY3T0JN5j', '4AkwFd0KD12aW8f', 't', 'a3026b0a6849f749c489cd798654a809', ''),
+('ju7J9423mgUxXGM', 'Hve8AaEo5O0hV21', 't', 'a7653fad4df83288ed8888663f8ff585', ''),
+('B36w8WrZzbI9i0R', '4klLY5O489xyKXo', 't', '15de21c670ae7c3f6f3f1f37029303c9', ''),
+('z2kgL9lGZNK454n', 'l63siQ4LI9Xx7Sq', 't', '386854131f58a556343e056f03626e00', ''),
+('qeCEmC00c1MQ4c6', 'B066SsSRuUrs76b', 't', '84adae6beecaa29029addfc1371b29f9', ''),
+('77imoSIM5s3OSs4', '9576nYtyRuN8rUT', 'f', '0a4441b52449ea8b49697438a26be13e', '');
 
 INSERT INTO "audit" ("id", "section", "customer_id", "action", "metadata") VALUES 
 ('k3Kmm4R6GM4rMg2', 1, 'admin', 2, '{"request":{"user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Safari/605.1.15","user_ip":"127.0.0.1"},"data":null}'),

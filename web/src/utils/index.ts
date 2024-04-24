@@ -1,3 +1,5 @@
+import { apiGet } from "@/utils/api";
+
 export function getCookie(cname: string): string {
   const name = cname + "=";
   const decodedCookie = decodeURIComponent(document.cookie);
@@ -157,3 +159,28 @@ export function costFormat(cost) {
 export function costStripe(cost) {
   return Math.round(Number(cost) * 100);
 }
+
+/*
+export async function fetchListData(url, listType, keyPath, valuePath) {
+  try {
+    const res = await apiGet(url, {});
+    if (res.code === 200 && Array.isArray(res.result[listType])) {
+      const partsKeyPath = keyPath.split('.');
+      const partsValuePath = valuePath.split('.');
+
+      return res.result[listType].reduce((accumulator, item) => {
+        let key = partsKeyPath.reduce((subItem, part) => subItem?.[part], item);
+        let value = partsValuePath.reduce((subItem, part) => subItem?.[part], item);
+        if (key !== undefined && value !== undefined) {
+          accumulator[key] = value;
+        }
+        return accumulator;
+      }, {});
+    }
+  } catch (error) {
+    console.error(`Error fetching ${listType}:`, error);
+  }
+
+  return {};
+}
+*/

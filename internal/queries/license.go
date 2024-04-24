@@ -2,12 +2,20 @@ package queries
 
 import (
 	"context"
+	"crypto/md5"
 	"database/sql"
+	"encoding/base64"
+	"encoding/hex"
 	"encoding/json"
+	"path/filepath"
 	"strings"
 
+	"github.com/werbot/lime/internal/config"
 	"github.com/werbot/lime/internal/errors"
 	"github.com/werbot/lime/internal/models"
+	"github.com/werbot/lime/pkg/fsutil"
+	"github.com/werbot/lime/pkg/license"
+	"github.com/werbot/lime/pkg/security"
 	"github.com/werbot/lime/pkg/webutil"
 )
 
@@ -22,7 +30,7 @@ func (q *LicenseQueries) Licenses(ctx context.Context, pagination *webutil.Pagin
 
 	queryAddonCustomer := ""
 	if customerID != "" {
-		queryAddonCustomer = `WHERE "payment"."customer_id" = '7v38n58hXHVsNxS'`
+		queryAddonCustomer = `WHERE "payment"."customer_id" = '` + customerID + `'`
 	}
 
 	// Count total records
@@ -122,6 +130,7 @@ func (q *LicenseQueries) License(ctx context.Context, id string, customerID stri
 			"customer"."status"     AS "customer_status",
 			"customer"."email"      AS "customer_email",
 			"license"."hash",
+			"license"."data",
 			"pattern"."name"        AS "pattern_name",
 			"pattern"."id"          AS "pattern_id",
 			"pattern"."limit"       AS "pattern_limit",
@@ -141,22 +150,23 @@ func (q *LicenseQueries) License(ctx context.Context, id string, customerID stri
 	}
 
 	var limit sql.NullString
-	license := &models.License{}
+	lic := &models.License{}
 	payment := &models.Payment{
 		Customer: &models.Customer{},
 		Pattern:  &models.Pattern{},
 	}
 	err := q.DB.QueryRowContext(ctx, query, request[1]).
 		Scan(
-			&license.ID,
-			&license.Status,
-			&license.Created,
-			&license.Updated,
+			&lic.ID,
+			&lic.Status,
+			&lic.Created,
+			&lic.Updated,
 			&payment.ID,
 			&payment.Customer.ID,
 			&payment.Customer.Status,
 			&payment.Customer.Email,
-			&license.Hash,
+			&lic.Hash,
+			&lic.Data,
 			&payment.Pattern.Name,
 			&payment.Pattern.ID,
 			&limit,
@@ -177,7 +187,82 @@ func (q *LicenseQueries) License(ctx context.Context, id string, customerID stri
 		payment.Pattern.Limit = meta
 	}
 
-	license.Payment = payment
+	lic.Payment = payment
+	return lic, nil
+}
 
-	return license, nil
+// AddLicense is ...
+func (q *LicenseQueries) AddLicense(ctx context.Context, payment *models.Payment) error {
+	query := `
+		SELECT
+			"id"
+		FROM
+			"license"
+		WHERE
+			"payment_id" = $1
+	`
+
+	var licenseID string
+	q.DB.QueryRowContext(ctx, query, payment.ID).Scan(&licenseID)
+	if licenseID != "" {
+		return errors.ErrLicenseLinkedToPayment
+	}
+
+	checkByteSlice, err := json.Marshal(payment.Pattern.Check)
+	if err != nil {
+		return err
+	}
+
+	paymentInfo, err := db.Payment(ctx, payment.ID)
+	if err != nil {
+		return err
+	}
+
+	var limitsSlice []license.Limits
+	for key, value := range *paymentInfo.Pattern.Limit {
+		limitsSlice = append(limitsSlice, license.Limits{Key: key, Value: int(value.(float64))})
+	}
+
+	licenseInfo := &license.License{
+		IssuedBy:     paymentInfo.Customer.Email,
+		CustomerID:   paymentInfo.Customer.ID,
+		SubscriberID: payment.ID,
+		Type:         paymentInfo.Pattern.Name,
+		Limit:        limitsSlice,
+		Metadata:     checkByteSlice,
+		ExpiresAt:    paymentInfo.Transaction.Payment.UTC().Add(paymentInfo.Pattern.Term.ToDuration()),
+		IssuedAt:     paymentInfo.Transaction.Payment.UTC(),
+	}
+
+	cfg := config.Data()
+	privKey := fsutil.MustReadFile(filepath.Join(cfg.Keys.KeyDir, cfg.Keys.License.PrivateKey))
+	licenseKey := license.DecodePrivateKey(privKey)
+	encoded, err := licenseInfo.Encode(licenseKey)
+	if err != nil {
+		return err
+	}
+
+	query = `
+			INSERT INTO
+				"license" (
+					"id",
+					"payment_id",
+					"hash",
+					"data",
+					"check"
+				)
+			VALUES
+				($1, $2, $3, $4, $5)
+		`
+
+	hash := md5.Sum(encoded)
+	_, err = q.DB.ExecContext(ctx, query,
+		security.NanoID(),
+		payment.ID,
+		hex.EncodeToString(hash[:]),
+		base64.StdEncoding.EncodeToString(encoded),
+		payment.Pattern.Check,
+	)
+
+	return err
 }

@@ -70,6 +70,10 @@
             <Badge :name="paymentStatusObj[drawer.data.transaction.status - 1].name" :color="paymentStatusObj[drawer.data.transaction.status - 1].color" />
           </td>
         </tr>
+        <tr v-if="drawer.data.transaction.payment">
+          <td>Payment</td>
+          <td>{{ formatDate(drawer.data.transaction.payment) }}</td>
+        </tr>
         <tr>
           <td>Created</td>
           <td>{{ formatDate(drawer.data.created) }}</td>

@@ -1,6 +1,8 @@
 package models
 
 import (
+	"time"
+
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 )
 
@@ -32,8 +34,8 @@ type Payments struct {
 // Payment is a ...
 type Payment struct {
 	Core
-	Customer    *Customer    `json:"customer"`
-	Pattern     *Pattern     `json:"pattern"`
+	Customer    *Customer    `json:"customer,omitempty"`
+	Pattern     *Pattern     `json:"pattern,omitempty"`
 	Transaction *Transaction `json:"transaction,omitempty"`
 }
 
@@ -51,4 +53,5 @@ type Transaction struct {
 	Provider PaymentProvider `json:"provider"`
 	Status   PaymentStatus   `json:"status"`
 	Meta     Metadata        `json:"meta,omitempty"`
+	Payment  *time.Time      `json:"payment,omitempty"`
 }

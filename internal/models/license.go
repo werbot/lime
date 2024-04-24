@@ -16,6 +16,7 @@ type License struct {
 	Payment *Payment `json:"payment,omitempty"`
 	License *[]byte  `json:"license,omitempty"`
 	Hash    string   `json:"hash,omitempty"`
+	Data    string   `json:"data,omitempty"`
 	Status  bool     `json:"status"`
 }
 

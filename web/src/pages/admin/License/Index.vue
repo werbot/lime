@@ -55,7 +55,7 @@
   <Drawer :is-open="isDrawer.open" @close="closeDrawer()" maxWidth="600px">
     <View :drawer="isDrawer" v-if="isDrawer.action === 'view'" />
     <Edit :drawer="isDrawer" v-if="isDrawer.action === 'edit'" />
-    <Add :drawer="isDrawer" v-if="isDrawer.action === 'add'" />
+    <Add v-if="isDrawer.action === 'add'" />
   </Drawer>
 </template>
 
@@ -130,6 +130,7 @@ const closeDrawer = async () => {
   isDrawer.value.action = null;
 };
 
+provide("getLicenses", getLicenses);
 provide("openDrawerEdit", openDrawerEdit);
 provide('closeDrawer', closeDrawer);
 </script>

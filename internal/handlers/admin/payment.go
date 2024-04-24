@@ -15,12 +15,20 @@ import (
 // @Produce application/json
 // @Param
 // @Success 200 {string} string "{"status":"200", "msg":""}"
-// @Router /_/api/payment [get]
+// @Router /_/api/payment/:filter? [get]
 func Payments(c *fiber.Ctx) error {
 	log := logging.New()
 
-	pagination := webutil.GetPaginationFromCtx(c)
-	payments, err := queries.DB().Payments(c.Context(), pagination)
+	var payments *models.Payments
+	var err error
+
+	if c.Params("filter") == "no_lic" {
+		payments, err = queries.DB().PaymentsNoLicense(c.Context())
+	} else {
+		pagination := webutil.GetPaginationFromCtx(c)
+		payments, err = queries.DB().Payments(c.Context(), pagination)
+	}
+
 	if err != nil {
 		log.ErrorStack(err)
 		return webutil.StatusInternalServerError(c, nil)
