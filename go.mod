@@ -17,7 +17,7 @@ require (
 	github.com/spf13/cobra v1.8.0
 	github.com/xhit/go-simple-mail/v2 v2.16.0
 	golang.org/x/crypto v0.22.0
-	modernc.org/sqlite v1.29.8
+	modernc.org/sqlite v1.29.9
 )
 
 require (
