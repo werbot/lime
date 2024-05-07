@@ -10,21 +10,21 @@
     "update": "ncu -i --format group"
   },
   "dependencies": {
-    "@vee-validate/rules": "^4.12.6",
+    "@vee-validate/rules": "^4.12.7",
     "@vueuse/core": "^10.9.0",
     "ip-address": "^9.0.5",
     "nanoid": "5",
     "notiwind": "^2.0.2",
     "nprogress": "^0.2.0",
     "pinia": "^2.1.7",
-    "vee-validate": "^4.12.6",
-    "vue": "^3.4.26",
+    "vee-validate": "^4.12.7",
+    "vue": "^3.4.27",
     "vue-router": "4"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.7",
     "@tsconfig/node18": "^18.2.4",
-    "@types/node": "^20.12.8",
+    "@types/node": "^20.12.10",
     "@vitejs/plugin-vue": "^5.0.4",
     "@vue/tsconfig": "^0.5.1",
     "autoprefixer": "^10.4.19",
@@ -34,10 +34,10 @@
     "postcss-nesting": "^12.1.2",
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.5.14",
-    "sass": "^1.76.0",
+    "sass": "^1.77.0",
     "tailwindcss": "^3.4.3",
     "typescript": "~5.4.5",
-    "vite": "^5.2.10",
+    "vite": "^5.2.11",
     "vite-plugin-svg-icons": "^2.0.1",
     "vite-plugin-webfont-dl": "^3.9.4",
     "vue-tsc": "^2.0.16"
