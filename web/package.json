@@ -18,7 +18,7 @@
     "nprogress": "^0.2.0",
     "pinia": "^2.1.7",
     "vee-validate": "^4.12.6",
-    "vue": "^3.4.26",
+    "vue": "^3.4.27",
     "vue-router": "4"
   },
   "devDependencies": {
