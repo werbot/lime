@@ -218,12 +218,19 @@ func (q *LicenseQueries) AddLicense(ctx context.Context, payment *models.Payment
 		return err
 	}
 
-	var limitsSlice []license.Limits
+	var limitsSlice license.Limits
 	for key, value := range *paymentInfo.Pattern.Limit {
-		limitsSlice = append(limitsSlice, license.Limits{Key: key, Value: int(value.(float64))})
+		limitsSlice.Limits = append(limitsSlice.Limits, license.Limit{Key: key, Value: int(value.(float64))})
 	}
 
-	licenseInfo := &license.License{
+	cfg := config.Data()
+
+	privKey := fsutil.MustReadFile(filepath.Join(cfg.Keys.KeyDir, cfg.Keys.License.PrivateKey))
+	licenseData, err := license.DecodePrivateKey(privKey)
+	if err != nil {
+		return err
+	}
+	licenseData.License = license.License{
 		IssuedBy:     paymentInfo.Customer.Email,
 		CustomerID:   paymentInfo.Customer.ID,
 		SubscriberID: payment.ID,
@@ -234,10 +241,7 @@ func (q *LicenseQueries) AddLicense(ctx context.Context, payment *models.Payment
 		IssuedAt:     paymentInfo.Transaction.Payment.UTC(),
 	}
 
-	cfg := config.Data()
-	privKey := fsutil.MustReadFile(filepath.Join(cfg.Keys.KeyDir, cfg.Keys.License.PrivateKey))
-	licenseKey := license.DecodePrivateKey(privKey)
-	encoded, err := licenseInfo.Encode(licenseKey)
+	encoded, err := licenseData.Encode()
 	if err != nil {
 		return err
 	}

@@ -1,19 +1,16 @@
 package license
 
 import (
-	"encoding/pem"
-
-	"golang.org/x/crypto/ed25519"
+	"encoding/base64"
+	"errors"
 )
 
-// DecodePublicKey is a ...
-func DecodePublicKey(data []byte) ed25519.PublicKey {
-	block, _ := pem.Decode(data)
-	return ed25519.PublicKey(block.Bytes)
-}
-
-// DecodePrivateKey is a ...
-func DecodePrivateKey(data []byte) ed25519.PrivateKey {
-	block, _ := pem.Decode(data)
-	return ed25519.PrivateKey(block.Bytes)
+func decodeKey(b []byte) ([]byte, error) {
+	enc := base64.StdEncoding
+	buf := make([]byte, enc.DecodedLen(len(b)))
+	n, err := enc.Decode(buf, b)
+	if err != nil {
+		return nil, errors.New("illegal base64 data")
+	}
+	return buf[:n], nil
 }

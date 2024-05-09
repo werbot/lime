@@ -11,45 +11,41 @@ import (
 )
 
 var (
-	// ErrInvalidSignature is a ...
-	ErrInvalidSignature = errors.New("Invalid signature")
+	// ErrInvalidLicense  is ...
+	ErrInvalidLicense = errors.New("invalid license")
 
 	// ErrMalformedLicense is a ...
-	ErrMalformedLicense = errors.New("Malformed License")
+	ErrMalformedLicense = errors.New("malformed license")
+
+	// ErrPublicKeyNotSet is ...
+	ErrPublicKeyNotSet = errors.New("public key is not set")
 )
 
-// License is a ...
-type License struct {
-	IssuedBy     string          `json:"iss,omitempty"`
-	CustomerID   string          `json:"cus,omitempty"`
-	SubscriberID string          `json:"sub,omitempty"`
-	Type         string          `json:"typ,omitempty"`
-	Limit        []Limits        `json:"lim,omitempty"`
-	IssuedAt     time.Time       `json:"iat,omitempty"`
-	ExpiresAt    time.Time       `json:"exp,omitempty"`
-	Metadata     json.RawMessage `json:"dat,omitempty"`
-}
-
-// Limits is ...
-type Limits struct {
-	Key   string `json:"key"`
-	Value int    `json:"value"`
-}
-
-// Expired is a ...
-func (l *License) Expired() bool {
-	return !l.ExpiresAt.IsZero() && time.Now().After(l.ExpiresAt)
-}
-
-// Encode is a ...
-func (l *License) Encode(privateKey ed25519.PrivateKey) ([]byte, error) {
-	msg, err := json.Marshal(l)
+// DecodePrivateKey is decode private key from base64
+func DecodePrivateKey(privateKey []byte) (*Private, error) {
+	decodedPrivateKey, err := decodeKey(privateKey)
 	if err != nil {
 		return nil, err
 	}
 
-	sig := ed25519.Sign(privateKey, msg)
-	buf := new(bytes.Buffer)
+	return &Private{
+		key: ed25519.PrivateKey(decodedPrivateKey),
+	}, nil
+}
+
+// Encode is a generate new license
+func (l *Private) Encode() ([]byte, error) {
+	if l.key == nil {
+		return nil, ErrPublicKeyNotSet
+	}
+
+	msg, err := json.Marshal(l.License)
+	if err != nil {
+		return nil, err
+	}
+
+	sig := ed25519.Sign(l.key, msg)
+	buf := &bytes.Buffer{}
 	buf.Write(sig)
 	buf.Write(msg)
 
@@ -60,8 +56,29 @@ func (l *License) Encode(privateKey ed25519.PrivateKey) ([]byte, error) {
 	return pem.EncodeToMemory(block), nil
 }
 
-// Decode is a ...
-func Decode(data []byte, publicKey ed25519.PublicKey) (*License, error) {
+// Expired is a ...
+func (l *Private) Expired() bool {
+	return !l.License.ExpiresAt.IsZero() && time.Now().After(l.License.ExpiresAt)
+}
+
+// DecodePublicKey and decode public key from base64
+func DecodePublicKey(publicKey []byte) (*Public, error) {
+	decodedPublicKey, err := decodeKey(publicKey)
+	if err != nil {
+		return nil, err
+	}
+
+	return &Public{
+		key: ed25519.PublicKey(decodedPublicKey),
+	}, nil
+}
+
+// Decode license file
+func (l *Public) Decode(data []byte) (*Public, error) {
+	if l.key == nil {
+		return nil, ErrPublicKeyNotSet
+	}
+
 	block, _ := pem.Decode(data)
 	if block == nil || len(block.Bytes) < ed25519.SignatureSize {
 		return nil, ErrMalformedLicense
@@ -70,11 +87,22 @@ func Decode(data []byte, publicKey ed25519.PublicKey) (*License, error) {
 	sig := block.Bytes[:ed25519.SignatureSize]
 	msg := block.Bytes[ed25519.SignatureSize:]
 
-	verified := ed25519.Verify(publicKey, msg, sig)
+	verified := ed25519.Verify(l.key, msg, sig)
 	if !verified {
-		return nil, ErrInvalidSignature
+		return nil, ErrInvalidLicense
 	}
-	out := new(License)
+	out := &License{}
 	err := json.Unmarshal(msg, out)
-	return out, err
+	l.License = *out
+	return l, err
+}
+
+// Expired is a ...
+func (l *Public) Expired() bool {
+	return !l.License.ExpiresAt.IsZero() && time.Now().After(l.License.ExpiresAt)
+}
+
+// Info is ...
+func (l *Public) Info() License {
+	return l.License
 }

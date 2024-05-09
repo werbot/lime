@@ -3,28 +3,28 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "VITE_CJS_IGNORE_WARNING=true vite",
+    "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
     "type-check": "vue-tsc --noEmit -p tsconfig.json --composite false",
     "update": "ncu -i --format group"
   },
   "dependencies": {
-    "@vee-validate/rules": "^4.12.7",
+    "@vee-validate/rules": "^4.12.8",
     "@vueuse/core": "^10.9.0",
     "ip-address": "^9.0.5",
     "nanoid": "5",
     "notiwind": "^2.0.2",
     "nprogress": "^0.2.0",
     "pinia": "^2.1.7",
-    "vee-validate": "^4.12.7",
+    "vee-validate": "^4.12.8",
     "vue": "^3.4.27",
     "vue-router": "4"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.7",
     "@tsconfig/node18": "^18.2.4",
-    "@types/node": "^20.12.10",
+    "@types/node": "^20.12.11",
     "@vitejs/plugin-vue": "^5.0.4",
     "@vue/tsconfig": "^0.5.1",
     "autoprefixer": "^10.4.19",
