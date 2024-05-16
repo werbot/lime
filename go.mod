@@ -50,7 +50,7 @@ require (
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/toorop/go-dkim v0.0.0-20240103092955-90b7d1423f92 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
-	github.com/valyala/fasthttp v1.52.0 // indirect
+	github.com/valyala/fasthttp v1.53.0 // indirect
 	github.com/valyala/tcplisten v1.0.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	golang.org/x/sync v0.7.0 // indirect
@@ -58,7 +58,7 @@ require (
 	golang.org/x/text v0.15.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	modernc.org/gc/v3 v3.0.0-20240304020402-f0dba7c97c2b // indirect
-	modernc.org/libc v1.50.5 // indirect
+	modernc.org/libc v1.50.6 // indirect
 	modernc.org/mathutil v1.6.0 // indirect
 	modernc.org/memory v1.8.0 // indirect
 	modernc.org/strutil v1.2.0 // indirect
