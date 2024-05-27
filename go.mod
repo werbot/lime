@@ -9,7 +9,7 @@ require (
 	github.com/gofiber/contrib/jwt v1.0.9
 	github.com/gofiber/fiber/v2 v2.52.4
 	github.com/golang-jwt/jwt/v5 v5.2.1
-	github.com/jackc/pgx/v5 v5.5.5
+	github.com/jackc/pgx/v5 v5.6.0
 	github.com/oschwald/maxminddb-golang v1.12.0
 	github.com/pelletier/go-toml/v2 v2.2.2
 	github.com/pressly/goose/v3 v3.20.0
