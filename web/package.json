@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@vee-validate/rules": "^4.12.8",
-    "@vueuse/core": "^10.9.0",
+    "@vueuse/core": "^10.10.0",
     "ip-address": "^9.0.5",
     "nanoid": "5",
     "notiwind": "^2.0.2",
