@@ -17,7 +17,7 @@
     "notiwind": "^2.0.2",
     "nprogress": "^0.2.0",
     "pinia": "^2.1.7",
-    "vee-validate": "^4.12.8",
+    "vee-validate": "^4.13.0",
     "vue": "^3.4.27",
     "vue-router": "4"
   },
