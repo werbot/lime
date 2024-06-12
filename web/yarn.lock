@@ -485,27 +485,27 @@
   resolved "https://registry.yarnpkg.com/@vue/tsconfig/-/tsconfig-0.5.1.tgz#3124ec16cc0c7e04165b88dc091e6b97782fffa9"
   integrity sha512-VcZK7MvpjuTPx2w6blwnwZAu5/LgBUtejFOi3pPGQFXQN5Ela03FUtd2Qtg4yWGGissVL0dr6Ro1LfOFh+PCuQ==
 
-"@vueuse/core@^10.9.0":
-  version "10.9.0"
-  resolved "https://registry.yarnpkg.com/@vueuse/core/-/core-10.9.0.tgz#7d779a95cf0189de176fee63cee4ba44b3c85d64"
-  integrity sha512-/1vjTol8SXnx6xewDEKfS0Ra//ncg4Hb0DaZiwKf7drgfMsKFExQ+FnnENcN6efPen+1kIzhLQoGSy0eDUVOMg==
+"@vueuse/core@^10.10.1":
+  version "10.10.1"
+  resolved "https://registry.yarnpkg.com/@vueuse/core/-/core-10.10.1.tgz#8f62ab7574f7d37511090cc22ce88ef704592b59"
+  integrity sha512-8Vr8wxILdK+qfBjbngav8LVI+6UuM2TQCufRKMPz/GrpLHQ6dbY6kL5PLa9Eobq8JRrMaDyArPX9Jj18fMTPew==
   dependencies:
     "@types/web-bluetooth" "^0.0.20"
-    "@vueuse/metadata" "10.9.0"
-    "@vueuse/shared" "10.9.0"
-    vue-demi ">=0.14.7"
+    "@vueuse/metadata" "10.10.1"
+    "@vueuse/shared" "10.10.1"
+    vue-demi ">=0.14.8"
 
-"@vueuse/metadata@10.9.0":
-  version "10.9.0"
-  resolved "https://registry.yarnpkg.com/@vueuse/metadata/-/metadata-10.9.0.tgz#769a1a9db65daac15cf98084cbf7819ed3758620"
-  integrity sha512-iddNbg3yZM0X7qFY2sAotomgdHK7YJ6sKUvQqbvwnf7TmaVPxS4EJydcNsVejNdS8iWCtDk+fYXr7E32nyTnGA==
+"@vueuse/metadata@10.10.1":
+  version "10.10.1"
+  resolved "https://registry.yarnpkg.com/@vueuse/metadata/-/metadata-10.10.1.tgz#a5a0fed19d1249cfb416464e955092a62d19a830"
+  integrity sha512-dpEL5afVLUqbchwGiLrV6spkl4/6UOKJ3YgxFE+wWLj/LakyIZUC83bfeFgbHkRcNhsAqTQCGR74jImsLfK8pg==
 
-"@vueuse/shared@10.9.0":
-  version "10.9.0"
-  resolved "https://registry.yarnpkg.com/@vueuse/shared/-/shared-10.9.0.tgz#13af2a348de15d07b7be2fd0c7fc9853a69d8fe0"
-  integrity sha512-Uud2IWncmAfJvRaFYzv5OHDli+FbOzxiVEQdLCKQKLyhz94PIyFC3CHcH7EDMwIn8NPtD06+PNbC/PiO0LGLtw==
+"@vueuse/shared@10.10.1":
+  version "10.10.1"
+  resolved "https://registry.yarnpkg.com/@vueuse/shared/-/shared-10.10.1.tgz#79f372630f35e108be0d260fda731d73bb67470f"
+  integrity sha512-edqexI+RQpoeqDxTatqBZa+K87ganbrwpoP++Fd9828U3js5jzwcEDeyrYcUgkKZ5LLL8q7M5SOMvSpMrxBPxg==
   dependencies:
-    vue-demi ">=0.14.7"
+    vue-demi ">=0.14.8"
 
 ansi-regex@^2.0.0:
   version "2.1.1"
@@ -2412,8 +2412,16 @@ strict-uri-encode@^1.0.0:
   resolved "https://registry.yarnpkg.com/strict-uri-encode/-/strict-uri-encode-1.1.0.tgz#279b225df1d582b1f54e65addd4352e18faa0713"
   integrity sha512-R3f198pcvnB+5IpnBlRkphuE9n46WyVl8I39W/ZUTZLz4nqSP/oLYUrcnJrw462Ds8he4YKMov2efsTIw1BDGQ==
 
-"string-width-cjs@npm:string-width@^4.2.0", string-width@^4.1.0:
-  name string-width-cjs
+"string-width-cjs@npm:string-width@^4.2.0":
+  version "4.2.3"
+  resolved "https://registry.yarnpkg.com/string-width/-/string-width-4.2.3.tgz#269c7117d27b05ad2e536830a8ec895ef9c6d010"
+  integrity sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==
+  dependencies:
+    emoji-regex "^8.0.0"
+    is-fullwidth-code-point "^3.0.0"
+    strip-ansi "^6.0.1"
+
+string-width@^4.1.0:
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/string-width/-/string-width-4.2.3.tgz#269c7117d27b05ad2e536830a8ec895ef9c6d010"
   integrity sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==
@@ -2438,8 +2446,7 @@ string_decoder@^1.1.1:
   dependencies:
     safe-buffer "~5.2.0"
 
-"strip-ansi-cjs@npm:strip-ansi@^6.0.1", strip-ansi@^6.0.0, strip-ansi@^6.0.1:
-  name strip-ansi-cjs
+"strip-ansi-cjs@npm:strip-ansi@^6.0.1":
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/strip-ansi/-/strip-ansi-6.0.1.tgz#9e26c63d30f53443e9489495b2105d37b67a85d9"
   integrity sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==
@@ -2452,6 +2459,13 @@ strip-ansi@^3.0.0:
   integrity sha512-VhumSSbBqDTP8p2ZLKj40UjBCV4+v8bUSEpUb4KjRgWk9pbqGF4REFj6KEagidb2f/M6AzC0EmFyDNGaw9OCzg==
   dependencies:
     ansi-regex "^2.0.0"
+
+strip-ansi@^6.0.0, strip-ansi@^6.0.1:
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/strip-ansi/-/strip-ansi-6.0.1.tgz#9e26c63d30f53443e9489495b2105d37b67a85d9"
+  integrity sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==
+  dependencies:
+    ansi-regex "^5.0.1"
 
 strip-ansi@^7.0.1:
   version "7.1.0"
@@ -2715,10 +2729,10 @@ vite@^5.2.11:
   optionalDependencies:
     fsevents "~2.3.3"
 
-vue-demi@>=0.14.5, vue-demi@>=0.14.7:
-  version "0.14.7"
-  resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.14.7.tgz#8317536b3ef74c5b09f268f7782e70194567d8f2"
-  integrity sha512-EOG8KXDQNwkJILkx/gPcoL/7vH+hORoBaKgGe+6W7VFMvCYJfmF2dGbvgDroVnI8LU7/kTu8mbjRZGBU1z9NTA==
+vue-demi@>=0.14.5, vue-demi@>=0.14.8:
+  version "0.14.8"
+  resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.14.8.tgz#00335e9317b45e4a68d3528aaf58e0cec3d5640a"
+  integrity sha512-Uuqnk9YE9SsWeReYqK2alDI5YzciATE0r2SkA6iMAtuXvNTMNACJLJEXNXaEy94ECuBe4Sk6RzRU80kjdbIo1Q==
 
 vue-router@4:
   version "4.3.0"
