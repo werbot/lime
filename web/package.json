@@ -40,6 +40,6 @@
     "vite": "^5.3.3",
     "vite-plugin-svg-icons": "^2.0.1",
     "vite-plugin-webfont-dl": "^3.9.4",
-    "vue-tsc": "^2.0.24"
+    "vue-tsc": "^2.0.26"
   }
 }
