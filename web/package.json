@@ -10,7 +10,7 @@
     "update": "ncu -i --format group"
   },
   "dependencies": {
-    "@vee-validate/rules": "^4.13.1",
+    "@vee-validate/rules": "^4.13.2",
     "@vueuse/core": "^10.11.0",
     "ip-address": "^9.0.5",
     "nanoid": "5",
