@@ -1,4 +1,6 @@
 {
+  "npm.packageManager": "bun",
+
   "git.ignoreLimitWarning": true,
   "scss.lint.unknownAtRules": "ignore",
 
