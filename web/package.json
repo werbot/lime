@@ -31,7 +31,7 @@
     "npm-run-all2": "^6.2.2",
     "postcss": "^8.4.39",
     "postcss-import": "^16.1.0",
-    "postcss-nesting": "^12.1.5",
+    "postcss-nesting": "^13.0.0",
     "prettier": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.5",
     "sass": "^1.77.8",
