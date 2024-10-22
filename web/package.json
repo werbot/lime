@@ -28,7 +28,7 @@
     "@vitejs/plugin-vue": "^5.0.5",
     "@vue/tsconfig": "^0.5.1",
     "autoprefixer": "^10.4.19",
-    "npm-run-all2": "^6.2.2",
+    "npm-run-all2": "^7.0.0",
     "postcss": "^8.4.39",
     "postcss-import": "^16.1.0",
     "postcss-nesting": "^13.0.0",
