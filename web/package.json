@@ -16,7 +16,7 @@
     "nanoid": "^5.0.7",
     "notiwind": "^2.0.2",
     "nprogress": "^0.2.0",
-    "pinia": "^2.1.7",
+    "pinia": "^3.0.1",
     "vee-validate": "^4.13.2",
     "vue": "^3.4.32",
     "vue-router": "^4.4.0"
