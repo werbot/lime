@@ -1,7 +1,7 @@
 module github.com/werbot/lime
 
 go 1.22
-toolchain go1.23.6
+toolchain go1.24.1
 
 require (
 	github.com/go-ozzo/ozzo-validation v3.6.0+incompatible
@@ -19,7 +19,7 @@ require (
 	github.com/stretchr/testify v1.10.0
 	github.com/xhit/go-simple-mail/v2 v2.16.0
 	golang.org/x/crypto v0.36.0
-	modernc.org/sqlite v1.36.0
+	modernc.org/sqlite v1.36.1
 )
 
 require (
