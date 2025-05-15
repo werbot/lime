@@ -1,13 +1,14 @@
 module github.com/werbot/lime
 
-go 1.22
+go 1.23.0
+
 toolchain go1.24.1
 
 require (
 	github.com/go-ozzo/ozzo-validation v3.6.0+incompatible
 	github.com/go-ozzo/ozzo-validation/v4 v4.3.0
 	github.com/gofiber/contrib/fiberzerolog v1.0.3
-	github.com/gofiber/contrib/jwt v1.1.1
+	github.com/gofiber/contrib/jwt v1.1.2
 	github.com/gofiber/fiber/v2 v2.52.6
 	github.com/golang-jwt/jwt/v5 v5.2.2
 	github.com/jackc/pgx/v5 v5.7.4
