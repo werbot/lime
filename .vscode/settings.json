@@ -6,5 +6,11 @@
 
   "editor.tabSize": 2,
   "editor.insertSpaces": true,
-  "editor.detectIndentation": false
+  "editor.detectIndentation": false,
+
+  "github.copilot.chat.commitMessageGeneration.instructions": [
+    {
+      "file": "./copilot/commit-message-instructions.md"
+    }
+  ]
 }
