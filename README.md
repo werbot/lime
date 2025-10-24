@@ -25,25 +25,273 @@
 Light license-key server in 1 file
 
 > [!WARNING]
-> Current major version is zero (`v0.x.x`) to accommodate rapid development and fast iteration while getting early feedback from users. Please keep in mind that litecart is still under active development and therefore full backward compatibility is not guaranteed before reaching v1.0.0.
+> Current major version is zero (`v0.x.x`) to accommodate rapid development and fast iteration while getting early feedback from users. Please keep in mind that lime is still under active development and therefore full backward compatibility is not guaranteed before reaching v1.0.0.
 
 ## 🏆&nbsp;&nbsp;Features
-... coming soon ...  
+
+- **License Key Management** - Generate, validate, and manage license keys with Ed25519 cryptographic signatures
+- **Multi-tier Licensing** - Support for different license types (Trial, Standard, Enterprise, etc.) with customizable limits
+- **Customer Portal** - Self-service portal for customers to manage their licenses
+- **Admin Dashboard** - Comprehensive admin panel built with Vue3 and TailwindCSS
+- **Payment Integration** - Built-in support for Stripe payment processing
+- **Database Support** - SQLite (default) and PostgreSQL support
+- **Geo-location Tracking** - Track license usage by country (MaxMind, IPinfo, GeoOpen)
+- **JWT Authentication** - Secure API access with JWT tokens
+- **Email Notifications** - Automated email notifications for license events
+- **Multi-currency Support** - Handle payments in multiple currencies (USD, EUR, GBP, etc.)
+- **Audit Logging** - Track all administrative actions
+- **RESTful API** - Complete API for integration with your applications
+- **Single Binary** - All features packed into one executable file
+- **Docker Support** - Easy deployment with Docker and Docker Compose
 
 ## ⬇️&nbsp;&nbsp;Installation
-... coming soon ...  
+
+### Binary Installation
+
+Download the latest release for your platform from [GitHub Releases](https://github.com/werbot/lime/releases):
+
+```bash
+# Linux
+wget https://github.com/werbot/lime/releases/latest/download/lime-linux-amd64
+chmod +x lime-linux-amd64
+mv lime-linux-amd64 /usr/local/bin/lime
+
+# macOS
+wget https://github.com/werbot/lime/releases/latest/download/lime-darwin-amd64
+chmod +x lime-darwin-amd64
+mv lime-darwin-amd64 /usr/local/bin/lime
+```
+
+### Docker Installation
+
+```bash
+docker pull ghcr.io/werbot/lime:latest
+
+# Run with Docker
+docker run -d \
+  -p 8088:8088 \
+  -v $(pwd)/data:/data \
+  --name lime \
+  ghcr.io/werbot/lime:latest
+```
+
+### Docker Compose
+
+```bash
+# Clone the repository
+git clone https://github.com/werbot/lime.git
+cd lime
+
+# Start with Docker Compose
+docker compose -f docker/docker-compose.yaml up -d
+```
+
+### Build from Source
+
+```bash
+# Clone the repository
+git clone https://github.com/werbot/lime.git
+cd lime
+
+# Build frontend
+yarn --cwd ./web run build
+
+# Build and run
+cd ./cmd
+go build -o lime main.go
+./lime serve
+```
 
 ## ⬇️&nbsp;&nbsp;Updating
-... coming soon ...  
+
+### Binary Update
+
+1. Download the latest release
+2. Stop the running instance
+3. Replace the old binary with the new one
+4. Restart the service
+
+```bash
+# Backup your data
+cp -r ./lime_base ./lime_base.backup
+cp -r ./lime_keys ./lime_keys.backup
+
+# Download and replace binary
+wget https://github.com/werbot/lime/releases/latest/download/lime-linux-amd64
+chmod +x lime-linux-amd64
+mv lime-linux-amd64 /usr/local/bin/lime
+
+# Restart service
+systemctl restart lime
+```
+
+### Docker Update
+
+```bash
+# Pull the latest image
+docker pull ghcr.io/werbot/lime:latest
+
+# Stop and remove old container
+docker stop lime
+docker rm lime
+
+# Start with new image
+docker run -d \
+  -p 8088:8088 \
+  -v $(pwd)/data:/data \
+  --name lime \
+  ghcr.io/werbot/lime:latest
+```
 
 ## 🚀&nbsp;&nbsp;Getting started
-... coming soon ...  
+
+### 1. Generate Configuration File
+
+```bash
+lime gen --config
+```
+
+This creates `lime.toml` with default settings. Edit the file to configure:
+- HTTP address and port (default: `0.0.0.0:8088`)
+- Admin credentials (default: `admin@mail.com` / `Pass123`)
+- Database settings (SQLite or PostgreSQL)
+- Geo-location provider
+- Email settings
+
+### 2. Initialize Keys
+
+Keys are generated automatically on first run, or manually:
+
+```bash
+# Generate JWT keys
+lime gen --jwt
+
+# Generate license master keys
+lime gen --license
+```
+
+### 3. Start the Server
+
+```bash
+lime serve
+```
+
+The server will start on `http://0.0.0.0:8088`
+
+### 4. Access Admin Panel
+
+Navigate to `http://localhost:8088/_/` and login with:
+- **Email:** admin@mail.com
+- **Password:** Pass123
+
+> [!IMPORTANT]
+> Change the default admin credentials immediately after first login!
+
+### 5. Create License Patterns
+
+1. Go to Admin Panel → Patterns
+2. Create license patterns (e.g., Trial, Standard, Enterprise)
+3. Define limits, pricing, and duration for each pattern
+
+### 6. Generate Licenses
+
+1. Add customers via Admin Panel → Customers
+2. Create payments for customers
+3. Generate license keys from payments
 
 ## 📚&nbsp;&nbsp;Commands
-... coming soon ...  
+
+### `lime serve`
+
+Start the license server.
+
+```bash
+lime serve
+```
+
+Server will start on the address defined in `lime.toml` (default: `0.0.0.0:8088`)
+
+### `lime gen`
+
+Generate configuration files and cryptographic keys.
+
+```bash
+# Generate configuration file
+lime gen --config
+
+# Generate JWT key pair
+lime gen --jwt
+
+# Generate license master key pair
+lime gen --license
+```
+
+### Helper Scripts
+
+Development helper scripts are available in the `./scripts` folder:
+
+```bash
+# Install or update Go version
+./scripts/golang
+
+# Database migrations
+./scripts/migrate dev up      # Apply migrations with fixtures
+./scripts/migrate dev down    # Rollback migrations
+./scripts/migrate up          # Apply migrations only
+./scripts/migrate down        # Rollback migrations
+
+# Optimize SQLite database
+./scripts/sqlite
+
+# Generate keys (alternative to 'lime gen')
+./scripts/gen
+
+# Clean up hung processes
+./scripts/clear
+```
 
 ## 🏦&nbsp;&nbsp;Adding payment systems
-... coming soon ...  
+
+Currently, Lime supports **Stripe** for payment processing. Additional payment providers can be added by extending the payment handler.
+
+### Stripe Integration
+
+1. Get your Stripe API keys from [Stripe Dashboard](https://dashboard.stripe.com/apikeys)
+
+2. Configure Stripe in your application by adding webhook URLs:
+   - Webhook endpoint: `https://yourdomain.com/_/api/webhook/stripe`
+
+3. Handle payment events in the admin panel:
+   - Go to Admin Panel → Payments
+   - View and manage payment transactions
+   - Monitor payment status (Paid, Unpaid, Processed, Canceled, Failed)
+
+### Adding Custom Payment Providers
+
+To add support for additional payment providers:
+
+1. Update `internal/models/payments.go`:
+   ```go
+   const (
+       _ PaymentProvider = iota
+       NONE
+       STRIPE
+       YOUR_PROVIDER  // Add your provider
+   )
+   ```
+
+2. Implement payment webhook handler in `internal/handlers/admin/payment.go`
+
+3. Update frontend in `web/src/utils/index.ts`:
+   ```typescript
+   export const paymentProvidersObj = [
+       { name: "None", color: "gray" },
+       { name: "Stripe", color: "purple" },
+       { name: "YourProvider", color: "blue" },  // Add your provider
+   ];
+   ```
+
+
 
 ## 🧩&nbsp;&nbsp;For developers
 
